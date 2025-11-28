@@ -4,3 +4,5 @@ Android-App für einen individuellen und intelligenten Stundenplan für alle Sch
 Testcommit mit ausgeführt! 👍
 
 Es hat funktioniert! ♥️
+
+Für Maxi!!
