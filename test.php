@@ -25,8 +25,8 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>Datenbank-Test</title>
-    <link rel="stylesheet" href="layout.css">
-    <script src="main.js"></script>
+    <link rel="stylesheet" href="CSS/layout.css">
+    <script src="js/main.js"></script>
 </head>
 
 <body>
