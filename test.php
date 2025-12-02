@@ -1,14 +1,22 @@
 <?php
-require 'Database.php';
-
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $stmt = $pdo->query("SELECT * FROM Benutzer LIMIT 10");
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
+    // REST-API Aufruf statt direkter DB-Zugriff
+    $apiUrl = "http://localhost/bibapp/restapi.php/benutzer";
+    
+    $response = file_get_contents($apiUrl);
+    $rows = json_decode($response, true);
+    
+    if ($rows === null) {
+        throw new Exception("Ungültige JSON-Response von der API");
+    }
+    
+    // Falls die API einen Error-Response zurückgibt
+    if (isset($rows['error'])) {
+        throw new Exception($rows['error']);
+    }
+} catch (Exception $e) {
     $error = "Schade, Noob: " . $e->getMessage();
+    $rows = [];
 }
 ?>
 <!DOCTYPE html>
