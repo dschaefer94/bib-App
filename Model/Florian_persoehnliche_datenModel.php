@@ -42,8 +42,11 @@ class Florian_persoehnliche_datenModel extends Database {
     {
         try {
             $pdo = $this->linkDB();
-            $stmt = $pdo->prepare("REPLACE INTO PERSOENLICHE_DATEN (benutzer_id, name, vorname, klassen_id) VALUES (?, ?, ?, ?)");
-            // REPLACE sorgt dafür, dass ein vorhandener Datensatz überschrieben wird oder neu angelegt wird
+            $stmt = $pdo->prepare(
+                "INSERT INTO PERSOENLICHE_DATEN (benutzer_id, name, vorname, klassen_id) VALUES (?, ?, ?, ?) " .
+                "ON DUPLICATE KEY UPDATE name = VALUES(name), vorname = VALUES(vorname), klassen_id = VALUES(klassen_id)"
+            );
+            // Fügt neuen Datensatz ein oder aktualisiert vorhandenen anhand des Primärschlüssels benutzer_id
             $stmt->execute([$benutzer_id, $name, $vorname, $klassen_id ?: null]);
             return true;
         } catch (\PDOException $e) {

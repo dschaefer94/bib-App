@@ -11,12 +11,12 @@ require_once __DIR__ . '/Model/Florian_KlassenModel.php';
 require_once __DIR__ . '/Model/Florian_persoehnliche_datenModel.php';
 
 // Controller laden
-require_once __DIR__ . '/Controller/BenutzerController.php';
+require_once __DIR__ . '/Controller/Florian_BenutzerController.php';
 
-use ppb\Controller\BenutzerController;
+use ppb\Controller\Florian_BenutzerController;
 
 // ========== CONTROLLER INSTANZIIEREN ==========
-$controller = new BenutzerController();
+$controller = new Florian_BenutzerController();
 
 // ========== VARIABLE INITIALISIEREN ==========
 $userData = [];
@@ -43,6 +43,9 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
         $result = $controller->saveUser($_POST);
         
+        // DEBUG: zeige was der Controller zurückgibt
+        error_log("saveUser result: " . json_encode($result));
+        
         if ($result['success']) {
             $success_message = $result['message'];
             // Nach dem Speichern die Daten neu laden
@@ -66,59 +69,6 @@ try {
 
 // ========== VIEW LADEN ==========
 require_once __DIR__ . '/views/benutzer_edit.php';
-            <p class="success"><?php echo htmlspecialchars($success_message); ?></p>
-        <?php endif; ?>
-        
-        <!-- BEARBEITUNGSFORMULAR: Formular zum Bearbeiten und Speichern der Daten -->
-        <form method="POST" action="" class="edit-form">
-            <!-- Verstecktes Feld mit der Benutzer-ID (wird beim Speichern übertragen) -->
-            <input type="hidden" name="benutzer_id" value="<?php echo htmlspecialchars($rows[0]['benutzer_id']); ?>">
-            
-            <!-- NAME-FELD: Editierbares Textfeld für den Namen -->
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($rows[0]['name']); ?>" required>
-            </div>
-            
-            <!-- VORNAME-FELD: Editierbares Textfeld für den Vornamen -->
-            <div class="form-group">
-                <label for="vorname">Vorname:</label>
-                <input type="text" id="vorname" name="vorname" value="<?php echo htmlspecialchars($rows[0]['vorname']); ?>" required>
-            </div>
-            
-            <!-- KLASSENNAME-FELD: Dropdown-Menü mit allen verfügbaren Klassen -->
-            <div class="form-group">
-                <label for="klassen_id">Klassenname:</label>
-                <select id="klassen_id" name="klassen_id">
-                    <!-- Option für "Keine Klasse" -->
-                    <option value="">-- Keine Klasse zugewiesen --</option>
-                    <!-- Alle Klassen aus der Datenbank als Optionen ausgeben -->
-                    <?php foreach ($klassen as $klasse): ?>
-                        <!-- Option mit klassen_id als Wert und klassenname als Anzeigetext -->
-                        <option value="<?php echo htmlspecialchars($klasse['klassen_id']); ?>" 
-                            <?php echo ($rows[0]['klassen_id'] == $klasse['klassen_id']) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($klasse['klassenname']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            
-            <!-- EMAIL-FELD: Editierbares Textfeld für die E-Mail-Adresse -->
-            <div class="form-group">
-                <label for="email">E-Mail:</label>
-                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($rows[0]['email'] ?? ''); ?>" required>
-            </div>
-            
-            <!-- PASSWORT-FELD: Editierbares Textfeld für das Passwort -->
-            <div class="form-group">
-                <label for="passwort">Passwort (leer lassen zum Nicht ändern):</label>
-                <input type="password" id="passwort" name="passwort" value="" placeholder="Neues Passwort eingeben">
-            </div>
-            
-            <!-- SPEICHERN-BUTTON: Button zum Absenden der Änderungen -->
-            <button type="submit" name="save" value="1" class="save-button">Speichern</button>
-        </form>
-    <?php endif; ?>
-</body>
 
-</html>
+    echo "test.php: included view\n";
+    echo "</pre>";

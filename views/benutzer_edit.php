@@ -23,7 +23,7 @@
     
     <!-- SUCHFORMULAR: Eingabeformular für die Benutzer-ID -->
     <div class="search-container">
-        <form method="GET" action="">
+        <form method="GET" action="/SDP/bib-App/test.php">
             <label for="benutzer_id">Benutzer ID:</label>
             <!-- Input-Feld für die Benutzer-ID mit gespeichertem Wert -->
             <input type="number" id="benutzer_id" name="benutzer_id" min="1" 
@@ -35,7 +35,7 @@
     </div>
 
     <!-- FEHLERBEHANDLUNG: Zeige Fehlermeldung wenn kein Datensatz gefunden -->
-    <?php if (isset($error)): ?>
+    <?php if (!empty($error)): ?>
         <p class="error"><?php echo htmlspecialchars($error); ?></p>
     <!-- ERFOLGREICHE ABFRAGE: Zeige das Bearbeitungsformular wenn Datensätze gefunden wurden -->
     <?php elseif (!empty($userData)): ?>
@@ -45,7 +45,7 @@
         <?php endif; ?>
         
         <!-- BEARBEITUNGSFORMULAR: Formular zum Bearbeiten und Speichern der Daten -->
-        <form method="POST" action="" class="edit-form">
+        <form method="POST" action="/SDP/bib-App/test.php" class="edit-form">
             <!-- Verstecktes Feld mit der Benutzer-ID (wird beim Speichern übertragen) -->
             <input type="hidden" name="benutzer_id" value="<?php echo htmlspecialchars($userData['benutzer_id']); ?>">
             
@@ -84,7 +84,8 @@
             <div class="form-group">
                 <label for="email">E-Mail:</label>
                 <input type="email" id="email" name="email" 
-                       value="<?php echo htmlspecialchars($userData['email'] ?? ''); ?>" required>
+                       value="<?php echo htmlspecialchars($userData['email'] ?? ''); ?>">
+                <small class="hint">E-Mail optional — muss mit <code>@bib.de</code> enden, falls angegeben.</small>
             </div>
             
             <!-- PASSWORT-FELD: Editierbares Textfeld für das Passwort -->
