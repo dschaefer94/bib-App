@@ -10,9 +10,9 @@ class Florian_KlassenController {
     {
         
     }
-        public function getProject()
+        public function getklassen()
         {
             $model = new Florian_KlassenModel();
-            echo json_encode($model->selectProject(), JSON_PRETTY_PRINT);
+            echo json_encode($model->selectTask(), JSON_PRETTY_PRINT);
         }
 }

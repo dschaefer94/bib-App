@@ -10,15 +10,15 @@ class Florian_BenutzerController {
     {
         
     }
-        public function getTask()
+        public function getbenutzer()
         {
             $model = new Florian_BenutzerModel();
-            echo json_encode($model->selectTask(), JSON_PRETTY_PRINT);
+            echo json_encode($model->selectBenutzer(), JSON_PRETTY_PRINT);
         }
 
-        public function getFilteredTasks($filter)
+        public function getFilteredBenutzer($filter)
         {
             $model = new Florian_BenutzerModel();
-            echo json_encode($model->selectFilteredTasks($filter), JSON_PRETTY_PRINT);
+            echo json_encode($model->selectFilteredBenutzer($filter), JSON_PRETTY_PRINT);
         }
 }
