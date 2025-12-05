@@ -1,125 +1,71 @@
 <?php
-// Datenbankverbindungs-Konfiguration laden
-require 'Database.php';
+/**
+ * index.php / test.php - MVC-Einstiegspunkt
+ * Orchestriert den BenutzerController und zeigt die View an
+ */
 
-// Benutzer_id aus der URL-Parameter auslesen (GET-Anfrage) oder null setzen
-$benutzer_id = $_GET['benutzer_id'] ?? null;
-// Array für die abgerufenen Datenbankdaten initialisieren
-$rows = [];
-// Array für alle verfügbaren Klassen initialisieren
+// Datenbankverbindungs-Konfiguration und Models laden
+require_once __DIR__ . '/Model/Database.php';
+require_once __DIR__ . '/Model/Florian_BenutzerModel.php';
+require_once __DIR__ . '/Model/Florian_KlassenModel.php';
+require_once __DIR__ . '/Model/Florian_persoehnliche_datenModel.php';
+
+// Controller laden
+require_once __DIR__ . '/Controller/BenutzerController.php';
+
+use ppb\Controller\BenutzerController;
+
+// ========== CONTROLLER INSTANZIIEREN ==========
+$controller = new BenutzerController();
+
+// ========== VARIABLE INITIALISIEREN ==========
+$userData = [];
 $klassen = [];
-// Erfolgsmeldung definieren
 $success_message = '';
+$error = '';
 
-// Try-Block: Alle Operationen, die Fehler verursachen könnten
+// ========== HAUPTLOGIK ==========
 try {
-    // Verbindung zur MySQL-Datenbank mit PDO erstellen
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    // PDO konfigurieren, um Exceptions bei Fehlern zu werfen
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // SPEICHERN: Wenn das Formular per POST abgesendet wurde und der Save-Button geklickt wurde
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
-        // POST-Daten auslesen (mit Standardwert null/leer falls nicht vorhanden)
-        $post_benutzer_id = $_POST['benutzer_id'] ?? null;
-        $name = $_POST['name'] ?? '';
-        $vorname = $_POST['vorname'] ?? '';
-        $klassen_id = $_POST['klassen_id'] ?? null;
-        $email = $_POST['email'] ?? '';
-        $passwort = $_POST['passwort'] ?? '';
-
-        // EMAIL-VALIDIERUNG: Überprüfung ob Email mit @bib.de endet
-        if (!str_ends_with($email, '@bib.de')) {
-            // Falls Email nicht mit @bib.de endet: Fehlermeldung setzen und nicht speichern
-            $error = "Fehler: Die E-Mail-Adresse muss mit @bib.de enden!";
-        }
-        // FELDVALIDIERUNG: Alle erforderlichen Felder müssen gefüllt sein
-        elseif ($post_benutzer_id && $name && $vorname && $email) {
-            // UPDATE PERSOENLICHE_DATEN: Name, Vorname und Klasse aktualisieren
-            $update_stmt = $pdo->prepare("UPDATE PERSOENLICHE_DATEN SET name = ?, vorname = ?, klassen_id = ? WHERE benutzer_id = ?");
-            // Parameterbindung und Ausführung: ? werden durch die Werte ersetzt (sichere Abfrage)
-            $update_stmt->execute([$name, $vorname, $klassen_id ?: null, $post_benutzer_id]);
-            
-            // UPDATE BENUTZER-TABELLE: Email und optional Passwort aktualisieren
-            if ($passwort) {
-                // FALL 1: Wenn Passwort geändert werden soll - Email UND Passwort aktualisieren
-                $benutzer_update = $pdo->prepare("UPDATE BENUTZER SET email = ?, passwort = ? WHERE benutzer_id = ?");
-                $benutzer_update->execute([$email, $passwort, $post_benutzer_id]);
-            } else {
-                // FALL 2: Wenn Passwort leer ist - nur Email aktualisieren
-                $benutzer_update = $pdo->prepare("UPDATE BENUTZER SET email = ? WHERE benutzer_id = ?");
-                $benutzer_update->execute([$email, $post_benutzer_id]);
-            }
-            
-            // Erfolgsmeldung setzen wenn alles gespeichert wurde
-            $success_message = "Daten erfolgreich aktualisiert!";
-            // Benutzer_id setzen für die nachfolgende Abfrage
-            $benutzer_id = $post_benutzer_id;
-        }
-    }
-
-    // ABFRAGEN: Wenn eine Benutzer_id vorhanden ist
-    if ($benutzer_id) {
-        // SELECT-Statement mit JOIN vorbereiten: Persönliche Daten + Klassendaten + Benutzer-Daten kombinieren
-        $stmt = $pdo->prepare("SELECT pd.benutzer_id, pd.name, pd.vorname, pd.klassen_id, k.klassenname, b.email, b.passwort
-                               FROM PERSOENLICHE_DATEN pd 
-                               LEFT JOIN KLASSEN k ON pd.klassen_id = k.klassen_id
-                               LEFT JOIN BENUTZER b ON pd.benutzer_id = b.benutzer_id
-                               WHERE pd.Benutzer_id = ?");
-        // SQL-Statement ausführen mit der Benutzer_id
-        $stmt->execute([$benutzer_id]);
-        // Alle Ergebnisse als assoziatives Array abrufen
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // GET-Request: Benutzer laden
+    if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['benutzer_id'])) {
+        $benutzer_id = (int)$_GET['benutzer_id'];
         
-        // Wenn keine Datensätze gefunden wurden: Fehlermeldung setzen
-        if (empty($rows)) {
-            $error = "Kein Datensatz mit Benutzer_id: " . htmlspecialchars($benutzer_id) . " gefunden.";
+        $result = $controller->loadUser($benutzer_id);
+        
+        if ($result['success']) {
+            $userData = $result['data'];
+        } else {
+            $error = $result['error'];
         }
-    } else {
-        // Wenn keine Benutzer_id eingegeben wurde: Hinweismeldung setzen
-        $error = "Bitte geben Sie eine Benutzer_id an (z.B. ?benutzer_id=1)";
     }
     
-    // KLASSEN LADEN: Alle verfügbaren Klassen aus der Datenbank abfragen
-    $klassen_stmt = $pdo->query("SELECT klassen_id, klassenname FROM KLASSEN ORDER BY klassenname");
-    $klassen = $klassen_stmt->fetchAll(PDO::FETCH_ASSOC);
-// FEHLERBEHANDLUNG: Wenn ein Datenbankfehler auftritt
-} catch (PDOException $e) {
-    // Fehlermeldung mit Exception-Details setzen
-    $error = "Schade, Noob: " . $e->getMessage();
-}
-?>
-<!DOCTYPE html>
-<html lang="de">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Datenbank-Test</title>
-    <link rel="stylesheet" href="layout.css">
-    <script src="main.js"></script>
-</head>
-
-<body>
-    <h3>EZ Datenbankverbindung</h3>
+    // POST-Request: Benutzer speichern
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
+        $result = $controller->saveUser($_POST);
+        
+        if ($result['success']) {
+            $success_message = $result['message'];
+            // Nach dem Speichern die Daten neu laden
+            if (isset($_POST['benutzer_id'])) {
+                $reload = $controller->loadUser((int)$_POST['benutzer_id']);
+                if ($reload['success']) {
+                    $userData = $reload['data'];
+                }
+            }
+        } else {
+            $error = $result['message'];
+        }
+    }
     
-    <!-- SUCHFORMULAR: Eingabeformular für die Benutzer-ID -->
-    <div class="search-container">
-        <form method="GET" action="">
-            <label for="benutzer_id">Benutzer ID:</label>
-            <!-- Input-Feld für die Benutzer-ID mit gespeichertem Wert -->
-            <input type="number" id="benutzer_id" name="benutzer_id" min="1" value="<?php echo htmlspecialchars($_GET['benutzer_id'] ?? ''); ?>" placeholder="z.B. 1">
-            <!-- Button zum Absenden der Suchanfrage -->
-            <button type="submit">Suchen</button>
-        </form>
-    </div>
+    // Klassen immer laden (für das Dropdown-Menü)
+    $klassen = $controller->getAllClasses();
+    
+} catch (\Exception $e) {
+    $error = "Fehler: " . $e->getMessage();
+}
 
-    <!-- FEHLERBEHANDLUNG: Zeige Fehlermeldung wenn kein Datensatz gefunden -->
-    <?php if (isset($error)): ?>
-        <p class="error"><?php echo htmlspecialchars($error); ?></p>
-    <!-- ERFOLGREICHE ABFRAGE: Zeige das Bearbeitungsformular wenn Datensätze gefunden wurden -->
-    <?php elseif (!empty($rows)): ?>
-        <!-- ERFOLGSMELDUNG: Zeige die Meldung wenn Daten gespeichert wurden -->
-        <?php if ($success_message): ?>
+// ========== VIEW LADEN ==========
+require_once __DIR__ . '/views/benutzer_edit.php';
             <p class="success"><?php echo htmlspecialchars($success_message); ?></p>
         <?php endif; ?>
         

@@ -8,22 +8,47 @@ class Florian_persoehnliche_datenModel extends Database {
     
     public function __construct()
     {
-        
+        // leer
     }
-    public function selectProject ()
+
+    /**
+     * Liefert persönliche Daten anhand der Benutzer_id
+     * @param int $benutzer_id
+     * @return array|null
+     */
+    public function getPersonalDataByUserId(int $benutzer_id)
     {
         try {
-       //Verbindung zur DB
-        $pdo = $this->linkDB();
-
-        //abfrage SQL-Start -> Select * from projects
-        $stmt = $pdo->query("SELECT id, name FROM project");
-
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        //Rückgabe verarbeiten
-    
+            $pdo = $this->linkDB();
+            $stmt = $pdo->prepare("SELECT benutzer_id, name, vorname, klassen_id FROM PERSOENLICHE_DATEN WHERE benutzer_id = ?");
+            $stmt->execute([$benutzer_id]);
+            $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $row ?: null;
         } catch (\PDOException $e) {
-           new Msg(true,"Fehler beim lesen der Project Tabelle", $e);
+            new Msg(true, "Fehler beim Lesen der PERSOENLICHE_DATEN-Tabelle", $e);
+            return null;
+        }
+    }
+
+    /**
+     * Aktualisiert persönliche Daten (name, vorname, klassen_id)
+     * @param int $benutzer_id
+     * @param string $name
+     * @param string $vorname
+     * @param int|null $klassen_id
+     * @return bool
+     */
+    public function updatePersonalData(int $benutzer_id, string $name, string $vorname, ?int $klassen_id = null): bool
+    {
+        try {
+            $pdo = $this->linkDB();
+            $stmt = $pdo->prepare("REPLACE INTO PERSOENLICHE_DATEN (benutzer_id, name, vorname, klassen_id) VALUES (?, ?, ?, ?)");
+            // REPLACE sorgt dafür, dass ein vorhandener Datensatz überschrieben wird oder neu angelegt wird
+            $stmt->execute([$benutzer_id, $name, $vorname, $klassen_id ?: null]);
+            return true;
+        } catch (\PDOException $e) {
+            new Msg(true, "Fehler beim Aktualisieren der persönlichen Daten", $e);
+            return false;
         }
     }
 }

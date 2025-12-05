@@ -4,43 +4,43 @@ namespace ppb\Model;
 
 use ppb\Library\Msg;
 
+/**
+ * Abstract Database class - Basis für alle Model-Klassen
+ * Stellt PDO-Verbindung zur Verfügung
+ */
 abstract class Database {
     
-    /**
-     * Zugangsdaten für die Datenbank 
-     */
-    private $dbName = "pbd2h24ash_task_it"; //Datenbankname
-    private $linkName = "mysql.pb.bib.de"; //Datenbank-Server URL
-    private $user = "pbd2h24ash"; //Benutzername
-    private $pw = "7gA8J53BPjEX"; //Passwort
+    // Datenbankverbindungsdaten
+    private $host = "localhost";
+    private $dbname = "stundenplan_db";
+    private $username = "root";
+    private $password = "root";
     
     /**
      * Stellt eine Verbindung zur Datenbank her
-     * 
-     * @return \PDO Gibt eine Datenbankverbindung zurueck
+     * @return \PDO
      */
     public function linkDB() {
         try {
-            $pdo = new \PDO("mysql:dbname=$this->dbName;host=$this->linkName"
-                , $this->user
-                , $this->pw
-                , array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+            $pdo = new \PDO("mysql:host=$this->host;dbname=$this->dbname;charset=utf8", 
+                $this->username, 
+                $this->password,
+                array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
             return $pdo;
         } catch (\PDOException $e) {
-            new Msg(true, null, $e);
+            new Msg(true, "Datenbankfehler", $e);
+            return null;
         }
     }
 
     /**
-     * Zum serverseitigen generieren einer UUID
-     * 
-     * @return string Liefert eine UUID
+     * Zum serverseitigen Generieren einer UUID
+     * @return string
      */
-    public function createUUID()
-    {
+    public function createUUID() {
         $data = openssl_random_pseudo_bytes(16);
         $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
         $data[8] = chr(ord($data[8]) & 0x3f | 0x80); 
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
-    } 
+    }
 }

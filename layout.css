@@ -2,9 +2,18 @@
 /* Allgemeines Layout */
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: auto;
     background-color: #f4f4f4;
     color: #333;
+
+}
+div.container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 h3 {
