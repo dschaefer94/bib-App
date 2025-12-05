@@ -1,3 +1,4 @@
+// hier die URL fürs lokale Testen ändern
 const url = "http://localhost/2024_EIA/taskit_vorlage/restAPI.php/";
 async function getProjectData(url) {
     // Default options are marked with *
