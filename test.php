@@ -1,23 +1,25 @@
 <?php
-try {
-    // REST-API Aufruf statt direkter DB-Zugriff
-    $apiUrl = "http://localhost/bibapp/restapi.php/benutzer";
-    
-    $response = file_get_contents($apiUrl);
-    $rows = json_decode($response, true);
-    
-    if ($rows === null) {
-        throw new Exception("Ungültige JSON-Response von der API");
+    define('API', 'restAPI.php'); // NICHT VERAENDERN!!!
+    $url = "http://localhost/bibapp_xampp/" . API;
+    $filepath = "c:\\xampp\\htdocs\\bibapp_xampp\\";
+
+        $defaults = array(
+        CURLOPT_URL => $url . '/benutzer',
+        // CURLOPT_COOKIEFILE => $filepath . 'cookie.txt', // set cookie file to given file
+        // CURLOPT_COOKIEJAR => $filepath . 'cookie.txt', // set same file as cookie jar
+        CURLOPT_CUSTOMREQUEST => "GET"
+    );
+    $ch = curl_init();
+    curl_setopt_array($ch, ($defaults));
+    curl_exec($ch);
+    if(curl_error($ch)) {
+        print(curl_error($ch));
     }
-    
-    // Falls die API einen Error-Response zurückgibt
-    if (isset($rows['error'])) {
-        throw new Exception($rows['error']);
-    }
-} catch (Exception $e) {
-    $error = "Schade, Noob: " . $e->getMessage();
-    $rows = [];
-}
+    curl_close($ch);
+
+    // session_start();
+
+?>
 ?>
 <!DOCTYPE html>
 <html lang="de">

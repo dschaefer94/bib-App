@@ -14,19 +14,19 @@ use ppb\Library\Msg;
 
 abstract class Database {
     
-    /*
-     Zugangsdaten für die Datenbank 
+    
+    // Zugangsdaten für die lokale Datenbank 
      
-    private $dbName = "taskit"; //Datenbankname
+    private $dbName = "stundenplan_db"; //Datenbankname
     private $linkName = "localhost"; //Datenbank-Server
     private $user = "root"; //Benutzername
     private $pw = "root"; //Passwort
-    */
-//MySQL-Datenbank Zugangsdaten
-    private $dbName = "pbd2h24asc_taskit"; //Datenbankname
-    private $linkName = "mysql.pb.bib.de"; //Datenbank-Server
-    private $user = "pbd2h24asc"; //Benutzername
-    private $pw = "8x2uXWAeTEMC"; //Passwort
+    
+// //MySQL-Datenbank Zugangsdaten
+//     private $dbName = "pbd2h24asc_taskit"; //Datenbankname
+//     private $linkName = "mysql.pb.bib.de"; //Datenbank-Server
+//     private $user = "pbd2h24asc"; //Benutzername
+//     private $pw = "8x2uXWAeTEMC"; //Passwort
 
     
     /**
