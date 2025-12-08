@@ -1,6 +1,6 @@
 <?php
 /**
- * test.php - Einfacher Front-Controller mit integrierter View
+ * profil.php - Haupt-Einstiegspunkt für Benutzerverwaltung
  *
  * Dieses Skript dient als Haupteinstiegspunkt für die Web-Anwendung.
  * Es übernimmt folgende Aufgaben:
@@ -104,11 +104,11 @@ try {
     <script src="main.js"></script>
 </head>
 <body>
-    <h3>EZ Datenbankverbindung</h3>
+    <h3>Persönliche Daten</h3>
     
     <!-- SUCHFORMULAR: Eingabeformular für die Benutzer-ID -->
     <div class="search-container">
-        <form method="GET" action="/SDP/bib-App/test.php">
+        <form method="GET" action="/SDP/bib-App/profil.php">
             <label for="benutzer_id">Benutzer ID:</label>
             <!-- Input-Feld für die Benutzer-ID mit gespeichertem Wert -->
             <input type="number" id="benutzer_id" name="benutzer_id" min="1" 
@@ -130,7 +130,7 @@ try {
         <?php endif; ?>
         
         <!-- BEARBEITUNGSFORMULAR: Formular zum Bearbeiten und Speichern der Daten -->
-        <form method="POST" action="/SDP/bib-App/test.php" class="edit-form">
+        <form method="POST" action="/SDP/bib-App/profil.php" class="edit-form">
             <!-- Verstecktes Feld mit der Benutzer-ID (wird beim Speichern übertragen) -->
             <input type="hidden" name="benutzer_id" value="<?php echo htmlspecialchars($userData['benutzer_id']); ?>">
             
