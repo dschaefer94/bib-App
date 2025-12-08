@@ -47,8 +47,6 @@ document.querySelector("#userForm").addEventListener("submit", async (e) => {
   const vorname = document.querySelector("#vorname").value;
   const klassenname = document.querySelector("#klasseSelect").value;
 
-
-
   const payload = {
     email: email,
     passwort: password,
