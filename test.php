@@ -5,6 +5,7 @@
  */
 
 // Datenbankverbindungs-Konfiguration und Models laden
+require_once __DIR__ . '/Library/Msg.php';
 require_once __DIR__ . '/Model/Database.php';
 require_once __DIR__ . '/Model/Florian_BenutzerModel.php';
 require_once __DIR__ . '/Model/Florian_KlassenModel.php';
