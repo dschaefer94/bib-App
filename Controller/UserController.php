@@ -19,7 +19,7 @@ class UserController
     public function writeUser($data)
     {
         $model = new UserModel();
-        $newId = $model->insertUser($data); // gibt jetzt UUID zurück
+        $newId = $model->insertUser($data);
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode([
             'benutzer_id' => $newId,

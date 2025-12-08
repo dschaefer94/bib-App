@@ -6,7 +6,6 @@ class ClassModel extends Database
 {
   public function __construct() {}
 
-  // Holt alle Klassen für das Dropdown
   public function selectClass()
   {
     $pdo = $this->linkDB();

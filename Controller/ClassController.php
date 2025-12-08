@@ -8,7 +8,6 @@ class ClassController
 {
   public function __construct() {}
 
-  // GET /restAPI.php/klasse
   public function getClass()
   {
     $model = new ClassModel();
