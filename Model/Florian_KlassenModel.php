@@ -2,68 +2,58 @@
 
 namespace ppb\Model;
 
-use ppb\Library\Msg;
+use PDO;
+use PDOException;
 
-class Florian_KlassenModel extends Database {
-    
-    public function __construct()
-    {
-        // leer
-    }
+/**
+ * Florian_KlassenModel
+ *
+ * Verantwortlich für alle Datenbankoperationen, die die KLASSEN-Tabelle betreffen.
+ */
+class Florian_KlassenModel {
 
     /**
-     * Liefert alle Klassen
-     * @return array
+     * Holt alle Klassen aus der Datenbank, sortiert nach dem Klassennamen.
+     *
+     * @return array Eine Liste von assoziativen Arrays, die die Klassen repräsentieren.
+     * @throws PDOException
      */
     public function getAllClasses(): array
     {
-        try {
-            $pdo = $this->linkDB();
-            $stmt = $pdo->query("SELECT klassen_id, klassenname FROM KLASSEN ORDER BY klassenname");
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
-            new Msg(true, "Fehler beim Lesen der KLASSEN-Tabelle", $e);
-            return [];
-        }
+        $pdo = Database::getConnection();
+        $stmt = $pdo->query("SELECT klassen_id, klassenname FROM KLASSEN ORDER BY klassenname");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
-     * Liefert eine Klasse anhand der ID
-     * @param int $klassen_id
-     * @return array|null
+     * Holt eine einzelne Klasse anhand ihrer ID aus der Datenbank.
+     *
+     * @param int $klassen_id Die ID der zu suchenden Klasse.
+     * @return array|null Ein assoziatives Array mit den Klassendaten oder null, wenn nicht gefunden.
+     * @throws PDOException
      */
-    public function getClassById(int $klassen_id)
+    public function getClassById(int $klassen_id): ?array
     {
-        try {
-            $pdo = $this->linkDB();
-            $stmt = $pdo->prepare("SELECT klassen_id, klassenname FROM KLASSEN WHERE klassen_id = ?");
-            $stmt->execute([$klassen_id]);
-            $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-            return $row ?: null;
-        } catch (\PDOException $e) {
-            new Msg(true, "Fehler beim Lesen einer Klasse", $e);
-            return null;
-        }
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("SELECT klassen_id, klassenname FROM KLASSEN WHERE klassen_id = ?");
+        $stmt->execute([$klassen_id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ?: null;
     }
 
     /**
-     * Aktualisiert eine Klasse (z.B. klassenname)
-     * @param int $klassen_id
-     * @param string $klassenname
-     * @return bool
+     * Aktualisiert den Namen einer bestehenden Klasse in der Datenbank.
+     *
+     * @param int $klassen_id Die ID der zu aktualisierenden Klasse.
+     * @param string $klassenname Der neue Name für die Klasse.
+     * @return bool True, wenn die Aktualisierung erfolgreich war, sonst false.
+     * @throws PDOException
      */
     public function updateClass(int $klassen_id, string $klassenname): bool
     {
-        try {
-            $pdo = $this->linkDB();
-            $stmt = $pdo->prepare("UPDATE KLASSEN SET klassenname = ? WHERE klassen_id = ?");
-            $stmt->execute([$klassenname, $klassen_id]);
-            return true;
-        } catch (\PDOException $e) {
-            new Msg(true, "Fehler beim Aktualisieren der Klasse", $e);
-            return false;
-        }
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("UPDATE KLASSEN SET klassenname = ? WHERE klassen_id = ?");
+        $stmt->execute([$klassenname, $klassen_id]);
+        return $stmt->rowCount() > 0;
     }
-
-    
 }

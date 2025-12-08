@@ -3,44 +3,34 @@
 namespace ppb\Controller;
 
 use ppb\Model\Florian_persoehnliche_datenModel;
-use ppb\Model\Florian_KlassenModel;
 
 /**
  * Florian_persoehnliche_datenController
  *
- * Controller für persönliche Daten (Persoenliche_Daten).
- * Enthält:
- * - Legacy helper-Methoden für JSON-Ausgaben
- * - MVC-Methoden zum Laden, Validieren und Speichern persönlicher Daten
+ * Verantwortlich für alle Aktionen, die mit den persönlichen Daten eines Benutzers zu tun haben.
+ * Koordiniert das Model für persönliche Daten und den Klassen-Controller.
  */
 class Florian_persoehnliche_datenController {
 
     private $persModel;
-    private $klassenModel;
+    private $klassenController;
 
+    /**
+     * Konstruktor.
+     * Initialisiert das Model für persönliche Daten und den Klassen-Controller.
+     */
     public function __construct()
     {
         $this->persModel = new Florian_persoehnliche_datenModel();
-        $this->klassenModel = new Florian_KlassenModel();
+        $this->klassenController = new Florian_KlassenController();
     }
 
-    // Alte helper-methoden
     /**
-     * Legacy: Gibt persönliche Daten als JSON aus (für Debug/Legacy-API).
+     * Holt die persönlichen Daten für einen Benutzer und reichert sie mit dem Klassennamen an.
      *
-     * @return void
-     */
-    public function getpersoehnliche_daten()
-    {
-        echo json_encode($this->persModel->selectProject(), JSON_PRETTY_PRINT);
-    }
-
-    // MVC-Methoden aus PersoehnlicheDatenController.php
-    /**
-     * Liefert persönliche Daten für einen Benutzer inkl. Klassenname.
-     *
-     * @param int $benutzer_id
-     * @return array ['success'=>bool, 'data'=>array|null, 'error'=>string|null]
+     * @param int $benutzer_id Die ID des Benutzers.
+     * @return array Ein Array, das den Erfolgsstatus und bei Erfolg die Daten enthält.
+     *               ['success'=>bool, 'data'=>array|null, 'error'=>string|null]
      */
     public function getPersonalData(int $benutzer_id): array {
         try {
@@ -51,7 +41,7 @@ class Florian_persoehnliche_datenController {
 
             $klassenName = '';
             if (!empty($personalData['klassen_id'])) {
-                $classData = $this->klassenModel->getClassById((int)$personalData['klassen_id']);
+                $classData = $this->klassenController->getClassById((int)$personalData['klassen_id']);
                 $klassenName = $classData['klassenname'] ?? '';
             }
 
@@ -64,66 +54,21 @@ class Florian_persoehnliche_datenController {
     }
 
     /**
-     * Speichert persönliche Daten (Name, Vorname, Klassenzuordnung).
+     * Aktualisiert die persönlichen Daten eines Benutzers in der Datenbank.
+     * Dient als Wrapper für die entsprechende Model-Methode.
      *
-     * @param array $formData
-     * @return array ['success'=>bool, 'message'=>string]
+     * @param int $benutzer_id Die ID des Benutzers.
+     * @param string $name Der neue Nachname.
+     * @param string $vorname Der neue Vorname.
+     * @param int|null $klassen_id Die neue Klassen-ID oder null.
+     * @return bool True bei Erfolg, false bei einem Fehler.
      */
-    public function savePersonalData(array $formData): array {
+    public function updatePersonalData(int $benutzer_id, string $name, string $vorname, ?int $klassen_id): bool
+    {
         try {
-            $validation = $this->validateFormData($formData);
-            if (!$validation['valid']) {
-                return [ 'success' => false, 'message' => $validation['error'] ];
-            }
-
-            $benutzer_id = (int)$formData['benutzer_id'];
-            $name = $formData['name'] ?? '';
-            $vorname = $formData['vorname'] ?? '';
-            $klassen_id = !empty($formData['klassen_id']) ? (int)$formData['klassen_id'] : null;
-
-            $updated = $this->persModel->updatePersonalData($benutzer_id, $name, $vorname, $klassen_id);
-            if ($updated) {
-                return [ 'success' => true, 'message' => 'Persönliche Daten erfolgreich aktualisiert!' ];
-            }
-
-            return [ 'success' => false, 'message' => 'Fehler beim Speichern der Daten.' ];
+            return $this->persModel->updatePersonalData($benutzer_id, $name, $vorname, $klassen_id);
         } catch (\Exception $e) {
-            return [ 'success' => false, 'message' => 'Fehler: ' . $e->getMessage() ];
+            return false;
         }
-    }
-
-    /**
-     * Liefert alle Klassen (wird von Views/Dropdowns verwendet).
-     *
-     * @return array
-     */
-    public function getAllClasses(): array {
-        try {
-            return $this->klassenModel->getAllClasses();
-        } catch (\Exception $e) {
-            return [];
-        }
-    }
-
-    /**
-     * Validiert persönliche Daten vor dem Speichern.
-     *
-     * @param array $data
-     * @return array ['valid'=>bool, 'error'=>string|null]
-     */
-    private function validateFormData(array $data): array {
-        $benutzer_id = $data['benutzer_id'] ?? null;
-        $name = $data['name'] ?? '';
-        $vorname = $data['vorname'] ?? '';
-
-        if (!$benutzer_id || !$name || !$vorname) {
-            return [ 'valid' => false, 'error' => 'Alle Pflichtfelder müssen gefüllt sein (Name, Vorname).' ];
-        }
-
-        if (strlen($name) < 2 || strlen($vorname) < 2) {
-            return [ 'valid' => false, 'error' => 'Name und Vorname müssen mindestens 2 Zeichen lang sein.' ];
-        }
-
-        return [ 'valid' => true ];
     }
 }

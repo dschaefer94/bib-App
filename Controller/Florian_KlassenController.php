@@ -7,106 +7,49 @@ use ppb\Model\Florian_KlassenModel;
 /**
  * Florian_KlassenController
  *
- * Zusammengeführter Controller für Klassen-bezogene Funktionalität.
- * Enthält:
- * - Legacy helper-Methoden (z.B. JSON-Ausgaben)
- * - MVC-Methoden zum Laden, Speichern und Validieren von Klassen
+ * Verantwortlich für alle Aktionen, die mit Klassen zu tun haben.
+ * Dient als Schnittstelle zum Florian_KlassenModel.
  */
 class Florian_KlassenController {
 
     private $klassenModel;
 
+    /**
+     * Konstruktor. Initialisiert das Klassen-Model.
+     */
     public function __construct()
     {
         $this->klassenModel = new Florian_KlassenModel();
     }
 
-    // MVC-Methoden aus KlassenController.php
     /**
-     * Liefert alle Klassen in einem einheitlichen Antwort-Array.
+     * Liefert alle Klassen.
+     * Wrapper-Methode, die die Daten direkt vom Model holt.
+     * Gedacht für die Verwendung in Views (z.B. für Dropdowns).
      *
-     * @return array ['success'=>bool, 'data'=>array|'error'=>string]
+     * @return array Eine Liste von Klassen-Arrays oder ein leeres Array bei einem Fehler.
      */
     public function getAllClasses(): array {
         try {
-            $klassen = $this->klassenModel->getAllClasses();
-            return [
-                'success' => true,
-                'data' => $klassen
-            ];
+            return $this->klassenModel->getAllClasses();
         } catch (\Exception $e) {
-            return [
-                'success' => false,
-                'error' => "Fehler beim Laden der Klassen: " . $e->getMessage()
-            ];
+            // Im Fehlerfall ein leeres Array zurückgeben, um die UI nicht zu brechen
+            return [];
         }
     }
 
     /**
-     * Liefert eine Klasse nach ID.
+     * Liefert eine einzelne Klasse anhand ihrer ID.
+     * Wrapper-Methode, die die Daten direkt vom Model holt.
      *
-     * @param int $klassen_id
-     * @return array ['success'=>bool, 'data'=>array|'error'=>string]
+     * @param int $klassen_id Die ID der zu suchenden Klasse.
+     * @return array|null Das Klassen-Array bei Erfolg, sonst null.
      */
-    public function getClassById(int $klassen_id): array {
+    public function getClassById(int $klassen_id): ?array {
         try {
-            $klasse = $this->klassenModel->getClassById($klassen_id);
-            if (!$klasse) {
-                return [ 'success' => false, 'error' => "Klasse mit ID $klassen_id nicht gefunden." ];
-            }
-            return [ 'success' => true, 'data' => $klasse ];
+            return $this->klassenModel->getClassById($klassen_id);
         } catch (\Exception $e) {
-            return [ 'success' => false, 'error' => "Fehler beim Laden der Klasse: " . $e->getMessage() ];
+            return null;
         }
-    }
-
-    /**
-     * Speichert bzw. aktualisiert eine Klasse.
-     * Erwartet `klassen_id` und `klassenname` im Formular-Array.
-     *
-     * @param array $formData
-     * @return array ['success'=>bool, 'message'=>string]
-     */
-    public function saveClass(array $formData): array {
-        try {
-            $validation = $this->validateFormData($formData);
-            if (!$validation['valid']) {
-                return [ 'success' => false, 'message' => $validation['error'] ];
-            }
-
-            $klassen_id = (int)($formData['klassen_id'] ?? 0);
-            $klassenname = $formData['klassenname'] ?? '';
-
-            $updated = $this->klassenModel->updateClass($klassen_id, $klassenname);
-
-            if ($updated) {
-                return [ 'success' => true, 'message' => 'Klasse erfolgreich aktualisiert!' ];
-            }
-
-            return [ 'success' => false, 'message' => 'Fehler beim Speichern der Klasse.' ];
-        } catch (\Exception $e) {
-            return [ 'success' => false, 'message' => 'Fehler: ' . $e->getMessage() ];
-        }
-    }
-
-    /**
-     * Validiert das Formular für Klassen.
-     *
-     * @param array $data
-     * @return array ['valid'=>bool, 'error'=>string|null]
-     */
-    private function validateFormData(array $data): array {
-        $klassen_id = $data['klassen_id'] ?? null;
-        $klassenname = $data['klassenname'] ?? '';
-
-        if (!$klassen_id || !$klassenname) {
-            return [ 'valid' => false, 'error' => 'Alle Felder sind erforderlich.' ];
-        }
-
-        if (strlen($klassenname) < 2) {
-            return [ 'valid' => false, 'error' => 'Klassenname muss mindestens 2 Zeichen lang sein.' ];
-        }
-
-        return [ 'valid' => true ];
     }
 }

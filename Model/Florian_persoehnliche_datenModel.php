@@ -2,56 +2,49 @@
 
 namespace ppb\Model;
 
-use ppb\Library\Msg;
+use PDO;
+use PDOException;
 
-class Florian_persoehnliche_datenModel extends Database {
-    
-    public function __construct()
-    {
-        // leer
-    }
+/**
+ * Florian_persoehnliche_datenModel
+ *
+ * Verantwortlich für alle Datenbankoperationen, die die PERSOENLICHE_DATEN-Tabelle betreffen.
+ */
+class Florian_persoehnliche_datenModel {
 
     /**
-     * Liefert persönliche Daten anhand der Benutzer_id
-     * @param int $benutzer_id
-     * @return array|null
+     * Holt die persönlichen Daten eines Benutzers anhand seiner Benutzer-ID.
+     *
+     * @param int $benutzer_id Die ID des Benutzers.
+     * @return array|null Ein assoziatives Array mit den persönlichen Daten oder null, wenn nicht gefunden.
+     * @throws PDOException
      */
-    public function getPersonalDataByUserId(int $benutzer_id)
+    public function getPersonalDataByUserId(int $benutzer_id): ?array
     {
-        try {
-            $pdo = $this->linkDB();
-            $stmt = $pdo->prepare("SELECT benutzer_id, name, vorname, klassen_id FROM PERSOENLICHE_DATEN WHERE benutzer_id = ?");
-            $stmt->execute([$benutzer_id]);
-            $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-            return $row ?: null;
-        } catch (\PDOException $e) {
-            new Msg(true, "Fehler beim Lesen der PERSOENLICHE_DATEN-Tabelle", $e);
-            return null;
-        }
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("SELECT benutzer_id, name, vorname, klassen_id FROM PERSOENLICHE_DATEN WHERE benutzer_id = ?");
+        $stmt->execute([$benutzer_id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ?: null;
     }
 
     /**
-     * Aktualisiert persönliche Daten (name, vorname, klassen_id)
-     * @param int $benutzer_id
-     * @param string $name
-     * @param string $vorname
-     * @param int|null $klassen_id
-     * @return bool
+     * Aktualisiert die persönlichen Daten eines bestehenden Benutzers.
+     *
+     * @param int $benutzer_id Die ID des Benutzers.
+     * @param string $name Der neue Nachname.
+     * @param string $vorname Der neue Vorname.
+     * @param int|null $klassen_id Die neue zugehörige Klassen-ID oder null.
+     * @return bool True, wenn die Aktualisierung erfolgreich war, sonst false.
+     * @throws PDOException
      */
     public function updatePersonalData(int $benutzer_id, string $name, string $vorname, ?int $klassen_id = null): bool
     {
-        try {
-            $pdo = $this->linkDB();
-            $stmt = $pdo->prepare(
-                "INSERT INTO PERSOENLICHE_DATEN (benutzer_id, name, vorname, klassen_id) VALUES (?, ?, ?, ?) " .
-                "ON DUPLICATE KEY UPDATE name = VALUES(name), vorname = VALUES(vorname), klassen_id = VALUES(klassen_id)"
-            );
-            // Fügt neuen Datensatz ein oder aktualisiert vorhandenen anhand des Primärschlüssels benutzer_id
-            $stmt->execute([$benutzer_id, $name, $vorname, $klassen_id ?: null]);
-            return true;
-        } catch (\PDOException $e) {
-            new Msg(true, "Fehler beim Aktualisieren der persönlichen Daten", $e);
-            return false;
-        }
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare(
+            "UPDATE PERSOENLICHE_DATEN SET name = ?, vorname = ?, klassen_id = ? WHERE benutzer_id = ?"
+        );
+        $stmt->execute([$name, $vorname, $klassen_id, $benutzer_id]);
+        return $stmt->rowCount() > 0;
     }
 }

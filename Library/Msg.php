@@ -2,24 +2,34 @@
 
 namespace ppb\Library;
 
+/**
+ * Msg Class
+ *
+ * Eine Hilfsklasse, die eine formatierte JSON-Antwort ausgibt und danach
+ * die Skriptausführung sofort beendet.
+ * Nützlich für einfaches, zentralisiertes Fehler-Handling in Models oder Controllern.
+ *
+ * WICHTIG: Die Instanziierung dieser Klasse führt immer zu einem `die;`.
+ */
 class Msg
 {
     /**
-     * Sends either an error or a success message as JSON Object. The error message contains 
-     * additional informations about the error. If no individual msg is given as parameter, 
-     * the default msg will be send
+     * Gibt eine Erfolgs- oder Fehlermeldung als JSON-Objekt aus und beendet das Skript.
      *
-     * @param boolean $isError is the msg an error msg?
-     * @param string $msg optional error message
-     * @param string $ex optional debug message
+     * Bei einem Fehler (`$isError = true`) wird ein Objekt mit den Details zum Fehler ausgegeben.
+     * Bei Erfolg wird ein einfaches Objekt zurückgegeben, das den Erfolg signalisiert.
+     *
+     * @param bool $isError Gibt an, ob es sich um eine Fehlermeldung handelt.
+     * @param string $msg Eine optionale, benutzerdefinierte Nachricht.
+     * @param mixed $ex Optionale Debug-Informationen, oft ein Exception-Objekt. HTML-Tags werden entfernt.
      */
     public function __construct($isError = false, $msg = '', $ex = '')
     {
         if ($isError) {
-            $striped = strip_tags($ex);
+            $striped = strip_tags((string)$ex);
             echo json_encode(array(
                 "isError" => true,
-                "msg" => is_null($msg) ? 'Ihre Anfrage konnte nicht verarbeitet werden' : $msg,
+                "msg" => is_null($msg) || $msg === '' ? 'Ihre Anfrage konnte nicht verarbeitet werden' : $msg,
                 "ex" => $striped
             ));
         } else {
