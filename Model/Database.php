@@ -70,12 +70,12 @@ abstract class Database {
     /**
      * Der Konstruktor ist privat, um eine direkte Instanziierung zu verhindern.
      */
-    final private function __construct() {}
+    private function __construct() {}
 
     /**
      * Klonen ist nicht erlaubt.
      */
-    final private function __clone() {}
+    private function __clone() {}
 
     /**
      * Aufwachen aus dem serialisierten Zustand ist nicht erlaubt.
