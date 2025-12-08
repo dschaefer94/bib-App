@@ -1,21 +1,46 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Task it</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <link href="CSS/layout.css" rel="stylesheet" type="text/css"/>
-    </head>
-    <body>
-        <div id="wrapper">  
-            <div id="sticky" >
-                
-                <div class="navBtn"><a id="showTasks" class="active" href="?controller=task&do=getProjects">Aufgaben anzeigen</a></div>
-                <div class="navBtn"><a id="showProjects" href="#">Projekte anzeigen</a></div>
-            </div>
-            <main>
-            </main>
+
+<head>
+    <title>Task it</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link href="CSS/layout.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="sticky">
+
+            <div class="navBtn"><a id="showTasks" class="active" href="?controller=task&do=getUser">Aufgaben
+                    anzeigen</a></div>
+            <div class="navBtn"><a id="showUser" href="#">Benutzer anzeigen</a></div>
         </div>
-        <script type="text/javascript" src="js/api_in_js.js"></script>
-    </body>
+
+
+
+
+        <div id="Registrieren">
+
+            <h2>Neuen Benutzer anlegen</h2>
+
+            <form id="userForm">
+                <input type="email" id="email" placeholder="E-Mail" />
+                <input type="password" id="password" placeholder="Passwort" />
+                <input type="vorname" id="vorname" placeholder="Vorname" />
+                <input type="nachname" id="name" placeholder="Nachname" />
+                <select id="klasseSelect">
+                    <option value="">Bitte wählen…</option>
+                </select>
+
+
+                <button type="submit">Anlegen</button>
+            </form>
+        </div>
+        <main>
+        </main>
+    </div>
+    <script type="text/javascript" src="js/api_in_js.js"></script>
+</body>
+
 </html>
