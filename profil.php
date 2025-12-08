@@ -1,5 +1,6 @@
 <?php
 /**
+ * Florian  
  * profil.php - Haupt-Einstiegspunkt für Benutzerverwaltung
  *
  * Dieses Skript dient als Haupteinstiegspunkt für die Web-Anwendung.
@@ -20,11 +21,11 @@ require_once __DIR__ . '/Library/Msg.php';
 require_once __DIR__ . '/Model/Database.php';
 require_once __DIR__ . '/Model/Florian_BenutzerModel.php';
 require_once __DIR__ . '/Model/Florian_KlassenModel.php';
-require_once __DIR__ . '/Model/Florian_persoehnliche_datenModel.php';
+require_once __DIR__ . '/Model/Florian_Persoenliche_datenModel.php';
 
 // Controller laden (Reihenfolge ist wichtig wegen Abhängigkeiten in Konstruktoren)
 require_once __DIR__ . '/Controller/Florian_KlassenController.php';
-require_once __DIR__ . '/Controller/Florian_persoehnliche_datenController.php';
+require_once __DIR__ . '/Controller/Florian_Persoenliche_datenController.php';
 require_once __DIR__ . '/Controller/Florian_BenutzerController.php';
 
 use ppb\Controller\Florian_BenutzerController;

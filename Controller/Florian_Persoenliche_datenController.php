@@ -2,15 +2,15 @@
 
 namespace ppb\Controller;
 
-use ppb\Model\Florian_persoehnliche_datenModel;
+use ppb\Model\Florian_Persoenliche_datenModel;
 
 /**
- * Florian_persoehnliche_datenController
+ * Florian_Persoenliche_datenController
  *
  * Verantwortlich für alle Aktionen, die mit den persönlichen Daten eines Benutzers zu tun haben.
  * Koordiniert das Model für persönliche Daten und den Klassen-Controller.
  */
-class Florian_persoehnliche_datenController {
+class Florian_Persoenliche_datenController {
 
     private $persModel;
     private $klassenController;
@@ -21,7 +21,7 @@ class Florian_persoehnliche_datenController {
      */
     public function __construct()
     {
-        $this->persModel = new Florian_persoehnliche_datenModel();
+        $this->persModel = new Florian_Persoenliche_datenModel();
         $this->klassenController = new Florian_KlassenController();
     }
 

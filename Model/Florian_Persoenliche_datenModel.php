@@ -6,11 +6,11 @@ use PDO;
 use PDOException;
 
 /**
- * Florian_persoehnliche_datenModel
+ * Florian_Persoenliche_datenModel
  *
  * Verantwortlich für alle Datenbankoperationen, die die PERSOENLICHE_DATEN-Tabelle betreffen.
  */
-class Florian_persoehnliche_datenModel {
+class Florian_Persoenliche_datenModel {
 
     /**
      * Holt die persönlichen Daten eines Benutzers anhand seiner Benutzer-ID.

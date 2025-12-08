@@ -2,6 +2,7 @@
 
 namespace ppb\Controller;
 
+use ppb\Controller\Florian_Persoenliche_datenController;
 use ppb\Model\Florian_BenutzerModel;
 
 /**
@@ -21,7 +22,7 @@ class Florian_BenutzerController {
     public function __construct()
     {
         $this->benutzerModel = new Florian_BenutzerModel();
-        $this->persDatenController = new Florian_persoehnliche_datenController();
+        $this->persDatenController = new Florian_Persoenliche_datenController();
     }
 
     // -------------------- Benutzer-spezifische MVC-Methoden --------------------
