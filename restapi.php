@@ -25,40 +25,53 @@
         }
     }
     
-    $controllerClassName = 'ppb\\Controller\\'.ucfirst($controllerName). 'Controller';
+    $controllerClassName = 'ppb\\Controller\\Florian_'.ucfirst($controllerName). 'Controller';
     
-    if ($_SERVER['REQUEST_METHOD'] == "DELETE") {
-        $methodName = "delete" . ucfirst($controllerName);
-    } else if ($_SERVER['REQUEST_METHOD'] == "PUT") {
-        $methodName = "update" . ucfirst($controllerName);
-    } else if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        $methodName = "write" . ucfirst($controllerName);
-    } else if ($_SERVER['REQUEST_METHOD'] == "GET") {
-        if ($alias) {
-            $methodName = $alias;
-        } else {
-            $methodName = "get" . ucfirst($controllerName);
-        } 
-    }
+    $requestMethod = $_SERVER['REQUEST_METHOD'];
+    $methodName = '';
 
+    // Logik zur Bestimmung des Methodennamens basierend auf der HTTP-Methode und dem Vorhandensein einer ID
+    switch ($requestMethod) {
+        case 'GET':
+            $methodName = $id ? 'get' . ucfirst($controllerName) . 'ByIdApi' : 'get' . ucfirst($controllerName) . 'Api';
+            break;
+        case 'POST':
+        case 'PUT':
+            $methodName = 'save' . ucfirst($controllerName) . 'Api';
+            break;
+        case 'DELETE':
+            $methodName = 'delete' . ucfirst($controllerName) . 'Api';
+            break;
+    }
+    
     if (method_exists($controllerClassName, $methodName)) {
         $controller = new $controllerClassName();
-        if ($_SERVER['REQUEST_METHOD'] == "GET") {
-            if ($id) {
-                $controller->$methodName($id);
-            } else {
-                $controller->$methodName();
-            }
-        } else if ($_SERVER['REQUEST_METHOD'] == "POST"){
-            $controller->$methodName($data);
-        } else if ($_SERVER['REQUEST_METHOD'] == "DELETE"){
-            $controller->$methodName($id);    
-        } else {
-            $controller->$methodName($id, $data);
-        }
-    } else {
-        //http_response_code(404);
-        new \ppb\Library\Msg(true, 'Page not found: '.$controllerClassName.'::'.$methodName); 
+        $params = [];
 
+        // Parameter für den Methodenaufruf vorbereiten
+        switch ($requestMethod) {
+            case 'GET':
+            case 'DELETE':
+                if ($id) {
+                    $params[] = $id;
+                }
+                break;
+            case 'PUT':
+                // Bei PUT wird die ID als Parameter erwartet
+                if ($id) {
+                    $params[] = $id;
+                }
+                break;
+            case 'POST':
+                // POST erwartet keine ID in der URL, die save-Methode sollte das verarbeiten können
+                break;
+        }
+
+        // Die Methode mit den entsprechenden Parametern aufrufen
+        call_user_func_array([$controller, $methodName], $params);
+
+    } else {
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => "API endpoint not found: {$controllerClassName}::{$methodName}"]);
     }
 ?>

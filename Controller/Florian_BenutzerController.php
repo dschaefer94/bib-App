@@ -31,29 +31,6 @@ class Florian_BenutzerController {
         $this->klassenModel = new Florian_KlassenModel();
     }
 
-    // -------------------- Legacy / Helper-Methoden --------------------
-    /**
-     * Gibt alle Benutzer als JSON aus (Legacy helper).
-     * Nutze diese Methode nur bei API-ähnlichen Endpunkten.
-     *
-     * @return void
-     */
-    public function getbenutzer()
-    {
-        echo json_encode($this->benutzerModel->selectBenutzer(), JSON_PRETTY_PRINT);
-    }
-
-    /**
-     * Gibt gefilterte Benutzer als JSON aus (Legacy helper).
-     *
-     * @param mixed $filter Filterkriterium
-     * @return void
-     */
-    public function getFilteredBenutzer($filter)
-    {
-        echo json_encode($this->benutzerModel->selectFilteredBenutzer($filter), JSON_PRETTY_PRINT);
-    }
-
     // -------------------- Benutzer-spezifische MVC-Methoden --------------------
     /**
      * Lädt alle benötigten Benutzerdaten (persönliche Daten + Login-Daten + Klassenname)
@@ -63,28 +40,25 @@ class Florian_BenutzerController {
      */
     public function loadUser(int $benutzer_id): array {
         try {
-            $personalData = $this->persModel->getPersonalDataByUserId($benutzer_id);
-            if (!$personalData) {
-                return [
-                    'success' => false,
-                    'error' => "Kein Datensatz mit Benutzer_id: $benutzer_id gefunden."
-                ];
-            }
-
-            $klassenName = '';
-            if (!empty($personalData['klassen_id'])) {
-                $classData = $this->klassenModel->getClassById((int)$personalData['klassen_id']);
-                $klassenName = $classData['klassenname'] ?? '';
+            // Rufe die konsolidierte Methode für persönliche Daten ab
+            $personalDataResult = $this->getPersonalData($benutzer_id);
+            if (!$personalDataResult['success']) {
+                return $personalDataResult; // Fehler weitergeben
             }
 
             $benutzerData = $this->benutzerModel->getUserById($benutzer_id);
-            $email = $benutzerData['email'] ?? '';
-            $passwort = $benutzerData['passwort'] ?? '';
+            if (!$benutzerData) {
+                // Dies sollte nicht passieren, wenn persönliche Daten existieren, aber als Sicherheitsnetz
+                return [
+                    'success' => false,
+                    'error' => "Keine Login-Daten für Benutzer_id: $benutzer_id gefunden."
+                ];
+            }
 
-            $userData = array_merge($personalData, [
-                'klassenname' => $klassenName,
-                'email' => $email,
-                'passwort' => $passwort
+            // Mische die Daten zusammen
+            $userData = array_merge($personalDataResult['data'], [
+                'email' => $benutzerData['email'] ?? '',
+                'passwort' => $benutzerData['passwort'] ?? ''
             ]);
 
             return [
@@ -103,33 +77,43 @@ class Florian_BenutzerController {
      * Speichert Benutzer- und persönliche Daten.
      * Führt Validierung durch und ruft Model-Methoden für Updates auf.
      *
-     * @param array $formData Daten aus dem Formular ($_POST)
+     * @param array $formData Daten aus dem Formular ($_POST oder API)
      * @return array ['success' => bool, 'message' => string]
      */
     public function saveUser(array $formData): array {
         try {
-            $validation = $this->validateUserFormData($formData);
+            // Schritt 1: Validierung der Formulardaten
+            $validation = $this->validateUserData($formData);
             if (!$validation['valid']) {
-                return [ 'success' => false, 'message' => $validation['error'] ];
+                return ['success' => false, 'message' => $validation['error']];
             }
 
+            // Schritt 2: Daten extrahieren und vorbereiten
             $benutzer_id = (int)$formData['benutzer_id'];
             $name = $formData['name'] ?? '';
             $vorname = $formData['vorname'] ?? '';
             $klassen_id = !empty($formData['klassen_id']) ? (int)$formData['klassen_id'] : null;
             $email = trim($formData['email'] ?? '');
-            $passwort = $formData['passwort'] ?? null;
-
-            $pd_updated = $this->persModel->updatePersonalData($benutzer_id, $name, $vorname, $klassen_id);
-            $user_updated = $this->benutzerModel->updateUser($benutzer_id, $email, $passwort ?: null);
-
-            if ($pd_updated && $user_updated) {
-                return [ 'success' => true, 'message' => 'Daten erfolgreich aktualisiert!' ];
+            
+            // Passwort nur aktualisieren, wenn es explizit übergeben wird
+            $passwort = null;
+            if (isset($formData['passwort']) && $formData['passwort'] !== '') {
+                $passwort = $formData['passwort'];
             }
 
-            return [ 'success' => false, 'message' => 'Fehler beim Speichern der Daten.' ];
+            // Schritt 3: Daten in der Datenbank aktualisieren
+            $pd_updated = $this->persModel->updatePersonalData($benutzer_id, $name, $vorname, $klassen_id);
+            $user_updated = $this->benutzerModel->updateUser($benutzer_id, $email, $passwort);
+
+            if ($pd_updated || $user_updated) {
+                return ['success' => true, 'message' => 'Daten erfolgreich aktualisiert!'];
+            }
+
+            // Fall, wenn keine Änderungen vorgenommen wurden, aber auch kein Fehler auftrat
+            return ['success' => true, 'message' => 'Keine Änderungen vorgenommen.'];
+
         } catch (\Exception $e) {
-            return [ 'success' => false, 'message' => 'Fehler: ' . $e->getMessage() ];
+            return ['success' => false, 'message' => 'Fehler beim Speichern: ' . $e->getMessage()];
         }
     }
 
@@ -142,36 +126,39 @@ class Florian_BenutzerController {
         try {
             return $this->klassenModel->getAllClasses();
         } catch (\Exception $e) {
+            // Im Fehlerfall ein leeres Array zurückgeben, um die UI nicht zu brechen
             return [];
         }
     }
 
     /**
-     * Validiert Benutzerdaten vor dem Speichern.
-     * Prüft Pflichtfelder und das E-Mail-Suffix @bib.de.
+     * Validiert die vollständigen Benutzerdaten vor dem Speichern.
      *
      * @param array $data
      * @return array ['valid' => bool, 'error' => string|null]
      */
-    private function validateUserFormData(array $data): array {
+    private function validateUserData(array $data): array {
         $benutzer_id = $data['benutzer_id'] ?? null;
         $name = $data['name'] ?? '';
         $vorname = $data['vorname'] ?? '';
         $email = trim($data['email'] ?? '');
 
-        // Pflichtfelder: benutzer_id, name, vorname - Email wird geprüft wenn vorhanden
+        // Pflichtfelder
         if (!$benutzer_id || !$name || !$vorname) {
-            return [ 'valid' => false, 'error' => 'Alle Pflichtfelder müssen gefüllt sein (Name, Vorname).' ];
+            return ['valid' => false, 'error' => 'Alle Pflichtfelder müssen gefüllt sein (Name, Vorname).'];
         }
 
-        // Email-Validierung: wenn Email eingegeben, prüfe auf gültiges Email-Format
-        if (!empty($email)) {
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                return [ 'valid' => false, 'error' => 'Bitte geben Sie eine gültige E-Mail-Adresse ein.' ];
-            }
+        // Namenslänge prüfen
+        if (strlen($name) < 2 || strlen($vorname) < 2) {
+            return ['valid' => false, 'error' => 'Name und Vorname müssen mindestens 2 Zeichen lang sein.'];
         }
 
-        return [ 'valid' => true ];
+        // E-Mail-Validierung
+        if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return ['valid' => false, 'error' => 'Bitte geben Sie eine gültige E-Mail-Adresse ein.'];
+        }
+
+        return ['valid' => true, 'error' => null];
     }
 
     // -------------------- Methoden für persönliche Daten --------------------
@@ -202,54 +189,79 @@ class Florian_BenutzerController {
         }
     }
 
+    // -------------------- REST API Endpunkte --------------------
     /**
-     * Speichert/aktualisiert persönliche Daten (Name, Vorname, Klassenzuweisung).
+     * GET /api/benutzer - Gibt alle Benutzer als JSON aus
      *
-     * @param array $formData
-     * @return array ['success'=>bool, 'message'=>string]
+     * @return void
      */
-    public function savePersonalData(array $formData): array {
-        try {
-            $validation = $this->validatePersonalFormData($formData);
-            if (!$validation['valid']) {
-                return [ 'success' => false, 'message' => $validation['error'] ];
-            }
-
-            $benutzer_id = (int)$formData['benutzer_id'];
-            $name = $formData['name'] ?? '';
-            $vorname = $formData['vorname'] ?? '';
-            $klassen_id = !empty($formData['klassen_id']) ? (int)$formData['klassen_id'] : null;
-
-            $updated = $this->persModel->updatePersonalData($benutzer_id, $name, $vorname, $klassen_id);
-            if ($updated) {
-                return [ 'success' => true, 'message' => 'Persönliche Daten erfolgreich aktualisiert!' ];
-            }
-
-            return [ 'success' => false, 'message' => 'Fehler beim Speichern der Daten.' ];
-        } catch (\Exception $e) {
-            return [ 'success' => false, 'message' => 'Fehler: ' . $e->getMessage() ];
-        }
+    public function getBenutzerApi() {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true,
+            'data' => $this->benutzerModel->selectBenutzer()
+        ], JSON_PRETTY_PRINT);
     }
 
     /**
-     * Validiert die Felder für persönliche Daten.
+     * GET /api/benutzer/{id} - Gibt einen Benutzer mit persönlichen Daten aus
      *
-     * @param array $data
-     * @return array ['valid'=>bool, 'error'=>string|null]
+     * @param int $id Benutzer_id
+     * @return void
      */
-    private function validatePersonalFormData(array $data): array {
-        $benutzer_id = $data['benutzer_id'] ?? null;
-        $name = $data['name'] ?? '';
-        $vorname = $data['vorname'] ?? '';
+    public function getBenutzerByIdApi(int $id) {
+        header('Content-Type: application/json');
+        $result = $this->loadUser($id);
+        echo json_encode($result, JSON_PRETTY_PRINT);
+    }
 
-        if (!$benutzer_id || !$name || !$vorname) {
-            return [ 'valid' => false, 'error' => 'Alle Pflichtfelder müssen gefüllt sein (Name, Vorname).' ];
+    /**
+     * POST /api/benutzer
+     * PUT /api/benutzer/{id} - Erstellt oder aktualisiert einen Benutzer
+     *
+     * @param int|null $id
+     * @return void
+     */
+    public function saveBenutzerApi(int $id = null) {
+        header('Content-Type: application/json');
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if (!$data) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'Ungültige JSON-Daten']);
+            return;
         }
 
-        if (strlen($name) < 2 || strlen($vorname) < 2) {
-            return [ 'valid' => false, 'error' => 'Name und Vorname müssen mindestens 2 Zeichen lang sein.' ];
+        // Wenn eine ID in der URL übergeben wird (PUT-Request), hat diese Vorrang
+        if ($id !== null) {
+            $data['benutzer_id'] = $id;
         }
 
-        return [ 'valid' => true ];
+        $result = $this->saveUser($data);
+        http_response_code($result['success'] ? 200 : 400);
+        echo json_encode($result, JSON_PRETTY_PRINT);
+    }
+
+    /**
+     * DELETE /api/benutzer/{id} - Löscht einen Benutzer
+     *
+     * @param int $id Benutzer_id
+     * @return void
+     */
+    public function deleteBenutzerApi(int $id) {
+        header('Content-Type: application/json');
+        
+        try {
+            $deleted = $this->benutzerModel->deleteUser($id);
+            if ($deleted) {
+                echo json_encode(['success' => true, 'message' => 'Benutzer erfolgreich gelöscht.']);
+            } else {
+                http_response_code(404);
+                echo json_encode(['success' => false, 'error' => 'Benutzer nicht gefunden oder konnte nicht gelöscht werden.']);
+            }
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'error' => 'Serverfehler: ' . $e->getMessage()]);
+        }
     }
 }

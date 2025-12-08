@@ -1,0 +1,12 @@
+# REST API Routing
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /SDP/bib-App/
+    
+    # Ignoriere vorhandene Dateien und Verzeichnisse
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Leite alle API-Anfragen auf restapi.php weiter
+    RewriteRule ^api/(.*)$ restapi.php [QSA,L]
+</IfModule>

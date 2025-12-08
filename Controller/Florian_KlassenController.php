@@ -21,17 +21,6 @@ class Florian_KlassenController {
         $this->klassenModel = new Florian_KlassenModel();
     }
 
-    // Alte helper-methoden
-    /**
-     * Legacy: Gibt Klassen als JSON aus (für einfache API-Endpunkte).
-     *
-     * @return void
-     */
-    public function getklassen()
-    {
-        echo json_encode($this->klassenModel->selectTask(), JSON_PRETTY_PRINT);
-    }
-
     // MVC-Methoden aus KlassenController.php
     /**
      * Liefert alle Klassen in einem einheitlichen Antwort-Array.
