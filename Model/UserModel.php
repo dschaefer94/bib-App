@@ -19,41 +19,42 @@ class UserModel extends Database
         //Rückgabe verarbeiten
     }
 
+public function insertUser(array $data)
+{
+    $pdo  = $this->linkDB();
+    $uuid = $this->createUUID();
+    $pdo->beginTransaction();
 
-    public function insertUser($data)
-    {
-        $pdo  = $this->linkDB();
-        $uuid = $this->createUUID();
-        $pdo->beginTransaction();
-        
-        //Doppelpunkte für praram überprüfen
-        //erst in Benutzer-Tabelle rein
+    $query = "INSERT IGNORE INTO Benutzer (benutzer_id, passwort, email)
+              VALUES (:benutzer_id, :passwort, :email)";
+    $stmtUser = $pdo->prepare($query);
+    $stmtUser->bindParam(':benutzer_id', $uuid);
+    $stmtUser->bindParam(':passwort', $data['passwort']);
+    $stmtUser->bindParam(':email', $data['email']);
+    $stmtUser->execute();
 
-        $query = "INSERT INTO Benutzer (benutzer_id, passwort, email)
-        VALUES (:benutzer_id, :passwort, :email)";
-        $stmtUser = $pdo->prepare($query);
-        $stmtUser->bindParam(':benutzer_id', $uuid);
-        $stmtUser->bindParam(':passwort',    $data['passwort']); // du hast 'passwort' im Frontend
-        $stmtUser->bindParam(':email',       $data['email']);
-        $stmtUser->execute();
-        
-        //dann in persönliche Daten rein, Transaktionsgrenze einfügen
-
-        $query = "    INSERT INTO persoenliche_daten (benutzer_id, name, vorname, klassen_id)
-        VALUES (
-            :benutzer_id,
-            :name,
-            :vorname,
-            (SELECT klassen_id FROM klassen WHERE klassenname = :klassenname)
-        )";
-        $stmtPD = $pdo->prepare($query);
-        $stmtPD->bindParam(':benutzer_id', $uuid);
-        $stmtPD->bindParam(':name',        $data['name']);
-        $stmtPD->bindParam(':vorname',     $data['vorname']);
-        $stmtPD->bindParam(':klassenname', $data['klassenname']);
-        $stmtPD->execute();
-
-        $pdo->commit();
-        return $uuid;
+    if ($stmtUser->rowCount() === 0) {
+        $pdo->rollBack();
+        return null; // Benutzer existiert schon
     }
+
+    $query = "INSERT INTO persoenliche_daten (benutzer_id, name, vorname, klassen_id)
+              VALUES (
+                  :benutzer_id,
+                  :name,
+                  :vorname,
+                  (SELECT klassen_id FROM klassen WHERE klassenname = :klassenname)
+              )";
+    $stmtPD = $pdo->prepare($query);
+    $stmtPD->bindParam(':benutzer_id', $uuid);
+    $stmtPD->bindParam(':name', $data['name']);
+    $stmtPD->bindParam(':vorname', $data['vorname']);
+    $stmtPD->bindParam(':klassenname', $data['klassenname']);
+    $stmtPD->execute();
+
+    $pdo->commit();
+
+    return $uuid; // UUID zurückgeben, kein echo
+}
+
 }

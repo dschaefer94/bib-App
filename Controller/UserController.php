@@ -20,10 +20,11 @@ class UserController
     {
         $model = new UserModel();
         $newId = $model->insertUser($data);
+
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode([
-            'benutzer_id' => $newId,
-            'email'       => $data['email'] ?? null
+            'benutzer_id' => $newId,          // UUID oder null
+            'email' => $data['email'] ?? null
         ], JSON_UNESCAPED_UNICODE);
     }
 }

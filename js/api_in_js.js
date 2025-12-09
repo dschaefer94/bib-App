@@ -41,26 +41,31 @@ async function createUser(payload) {
 // Formular-Submit
 document.querySelector("#userForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+
   const email = document.querySelector("#email").value;
   const password = document.querySelector("#password").value;
   const name = document.querySelector("#name").value;
   const vorname = document.querySelector("#vorname").value;
   const klassenname = document.querySelector("#klasseSelect").value;
 
-  const payload = {
-    email: email,
-    passwort: password,
-    name: name,
-    vorname: vorname,
-    klassenname: klassenname
-  };
-
+  const payload = { email, passwort: password, name, vorname, klassenname };
 
   const created = await createUser(payload);
-  console.log("Benutzer angelegt:", created);
 
+  // Meldungs-Div auswählen
+  const registrierungsFeedback = document.querySelector("#registrierungsFeedback");
+
+  if (!created.benutzer_id) { // null oder falsy
+    registrierungsFeedback.textContent = "Den Benutzer gibt es bereits.";
+    registrierungsFeedback.style.color = "red";
+  } else {
+    registrierungsFeedback.textContent = "Benutzer erfolgreich angelegt!";
+    registrierungsFeedback.style.color = "green";
+  }
+  // Formular zurücksetzen
   e.target.reset();
 });
+
 
 
 
