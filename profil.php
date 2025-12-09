@@ -79,7 +79,7 @@ try {
                 }
             }
         } else {
-            $error = $result['message'];
+            $error = $result['error'];
         }
     }
     
