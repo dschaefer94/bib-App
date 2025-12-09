@@ -3,3 +3,5 @@
 //     private $linkName = "mysql.pb.bib.de"; //Datenbank-Server
 //     private $user = "pbd2h24asc"; //Benutzername
 //     private $pw = "8x2uXWAeTEMC"; //Passwort
+
+Kommentare in UserModel beachten
