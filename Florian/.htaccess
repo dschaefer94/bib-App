@@ -8,5 +8,5 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     
     # Leite alle API-Anfragen auf restapi.php weiter
-    RewriteRule ^api/(.*)$ restapi.php [QSA,L]
+    RewriteRule ^api/(.*)$ restapi.php/$1 [L,QSA]
 </IfModule>

@@ -101,15 +101,15 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>Benutzer bearbeiten</title>
-    <link rel="stylesheet" href="layout.css">
-    <script src="main.js"></script>
+    <link rel="stylesheet" href="CSS/layout.css">
+    <script src="JS/main.js"></script>
 </head>
 <body>
     <h3>Persönliche Daten</h3>
     
     <!-- SUCHFORMULAR: Eingabeformular für die Benutzer-ID -->
     <div class="search-container">
-        <form method="GET" action="/SDP/bib-App/profil.php">
+        <form method="GET" action="profil.php">
             <label for="benutzer_id">Benutzer ID:</label>
             <!-- Input-Feld für die Benutzer-ID mit gespeichertem Wert -->
             <input type="number" id="benutzer_id" name="benutzer_id" min="1" 
@@ -131,7 +131,7 @@ try {
         <?php endif; ?>
         
         <!-- BEARBEITUNGSFORMULAR: Formular zum Bearbeiten und Speichern der Daten -->
-        <form method="POST" action="/SDP/bib-App/profil.php" class="edit-form">
+        <form method="POST" action="profil.php" class="edit-form">
             <!-- Verstecktes Feld mit der Benutzer-ID (wird beim Speichern übertragen) -->
             <input type="hidden" name="benutzer_id" value="<?php echo htmlspecialchars($userData['benutzer_id']); ?>">
             
