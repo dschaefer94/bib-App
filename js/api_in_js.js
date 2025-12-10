@@ -50,9 +50,10 @@ document.querySelector("#userForm").addEventListener("submit", async (e) => {
 
   const payload = { email, passwort: password, name, vorname, klassenname };
 
+  //erwartete Rückgabe: JSON mit benutzer_ID und email
   const created = await createUser(payload);
 
-  // Meldungs-Div auswählen
+  //Auswertung der benutzer_ID
   const registrierungsFeedback = document.querySelector("#registrierungsFeedback");
 
   if (!created.benutzer_id) { // null oder falsy
@@ -72,7 +73,8 @@ document.querySelector("#userForm").addEventListener("submit", async (e) => {
 // GET: Klassenliste holen
 async function getKlassen() {
   const res = await fetch(url + "class"); // ClassController -> getClass()
-  return res.json(); // erwartet ein Array
+  return res.json(); // erwartet ein Array mit klassen_id, klassenname, ical_link (Json-Link(null)),
+  //muss noch alles außer klassenname herausschmeißen
 }
 
 // Dropdown befüllen (nur Name)
