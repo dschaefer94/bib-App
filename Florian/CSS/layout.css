@@ -1,0 +1,226 @@
+
+/* Allgemeines Layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: auto;
+    background-color: #f4f4f4;
+    color: #333;
+
+}
+div.container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+h3 {
+    color: #222;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Tabellen-Styling */
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #007BFF;
+    color: #fff;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Hover-Effekt */
+tr:hover {
+    background-color: #e6f7ff;
+}
+
+/* Fehlernachricht */
+.error {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 20px auto;
+    width: 60%;
+}
+
+/* Benutzer-Info Container */
+.benutzer-info {
+    width: 60%;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Suchformular */
+.search-container {
+    width: 60%;
+    margin: 20px auto;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.search-container form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-container label {
+    font-weight: bold;
+    color: #333;
+}
+
+.search-container input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    flex: 1;
+    max-width: 200px;
+}
+
+.search-container button {
+    padding: 8px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-container button:hover {
+    background-color: #0056b3;
+}
+
+/* Bearbeitungsformular */
+.edit-form {
+    width: 60%;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.form-group input:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+/* Dropdown-Menü Styling */
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.save-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.save-button:hover {
+    background-color: #218838;
+}
+
+/* Erfolgsmeldung */
+.success {
+    color: #155724;
+    font-weight: bold;
+    text-align: center;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 20px auto;
+    width: 60%;
+}
+
+.info-container {
+    margin-bottom: 15px;
+    padding: 12px;
+    border-left: 4px solid #007BFF;
+    background-color: #f9f9f9;
+}
+
+.info-container label {
+    display: block;
+    font-weight: bold;
+    color: #007BFF;
+    margin-bottom: 5px;
+}
+
+.info-value {
+    font-size: 16px;
+    color: #333;
+    padding: 5px 0;
+}
+
