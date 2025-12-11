@@ -32,3 +32,8 @@ async function fillKlasseSelect() {
 // Beim Laden ausführen
 document.addEventListener("DOMContentLoaded", fillKlasseSelect);
 
+document.getElementById('cheatbutton').addEventListener('click', function(event) {
+    event.preventDefault(); 
+    window.location.href = 'startseite.html';
+});
+
