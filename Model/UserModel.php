@@ -8,7 +8,11 @@ class UserModel extends Database
 {
 
     public function __construct() {}
-
+    /**
+     * Daniel
+     * einfache Benutzerabfrage
+     * @return array mit allen benutzer:ids und Emails
+     */
     public function selectUser()
     {
 
@@ -18,8 +22,13 @@ class UserModel extends Database
 
         //Rückgabe verarbeiten
     }
-
-    public function insertUser(array $data)
+    /**
+     * Daniel
+     * beim Registrieren checkt die DB auf Email-Duplikate und bricht entweder den Registrierungsvorgang ab
+     * bzw. legt den Benutzer in den Tabellen "Benutzer" und "persoenliche_daten" an
+     * @return array true: hat geklappt, false: Benutzer bereits vorhanden
+     */
+    public function insertUser(array $data):bool
     {
         $pdo  = $this->linkDB();
         $uuid = $this->createUUID();
@@ -41,7 +50,7 @@ class UserModel extends Database
             //Rollback macht, dass alles während der Transaktion geschehene rückgängig gemacht wird
             $pdo->rollBack();
             //für JSON im Controller null als UUID zurückgeben, JS wertet dies dann so, dass es den Nutzer schon gibt
-            return null;
+            return false;
         }
 
         $query = "INSERT INTO persoenliche_daten (benutzer_id, name, vorname, klassen_id)
@@ -60,6 +69,6 @@ class UserModel extends Database
 
         $pdo->commit();
 
-        return $uuid;
+        return true;
     }
 }

@@ -56,7 +56,7 @@ document.querySelector("#userForm").addEventListener("submit", async (e) => {
   //Auswertung der benutzer_ID
   const registrierungsFeedback = document.querySelector("#registrierungsFeedback");
 
-  if (!created.benutzer_id) { // null oder falsy
+  if (!created.benutzerAngelegt) { // null oder falsy
     registrierungsFeedback.textContent = "Den Benutzer gibt es bereits.";
     registrierungsFeedback.style.color = "red";
   } else {

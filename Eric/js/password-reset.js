@@ -1,7 +1,7 @@
 document.getElementById('forgotForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value;
-
+    
     const response = await fetch('restapi.php/user/requestPasswordReset', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

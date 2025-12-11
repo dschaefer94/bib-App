@@ -7,7 +7,11 @@ use ppb\Model\ClassModel;
 class ClassController
 {
   public function __construct() {}
-
+  /**
+   * Daniel
+   * gibt alle gespeicherten Klassennamen für das Dropdown-Menü der Registrierung aus
+   * @return void, JSON mit Klassennamen-Array
+   */
   public function getClass()
   {
     $model = new ClassModel();
