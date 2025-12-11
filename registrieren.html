@@ -4,45 +4,58 @@
 <head>
     <title>Registrieren</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
-    <link href="CSS/layout.css" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="CSS/layout.css" rel="stylesheet" />
 </head>
 
-<body>
-    <header>
-        <nav>
-            <a href = "index.html" >Anmelden</a>
-        </nav>
-    </header>
-    <div id="wrapper">
-        <div id="sticky">
-          <!--  <div class="navBtn"><a id="showTasks" class="active" href="?controller=class&do=getclass">Aufgaben
-                    anzeigen</a></div> -->
-            <div class="navBtn"><a id="showUser" href="#">Benutzer anzeigen</a></div>
-        </div>
-
-
-        <div id="Registrieren">
-
-            <h2>Neuen Benutzer anlegen</h2>
-
+<body class="login-page">
+   
+    <main class="login-form">
+        <div class="card">
+            <h1>Registrieren</h1>
             <form id="userForm">
-                <input type="email" id="email" placeholder="E-Mail" />
-                <input type="password" id="password" placeholder="Passwort" />
-                <input type="vorname" id="vorname" placeholder="Vorname" />
-                <input type="nachname" id="name" placeholder="Nachname" />
-                <select id="klasseSelect">
-                    <option value="">Bitte wählen…</option>
-                </select>
-
-
-                <button type="submit">Anlegen</button>
+                <div class="input-group">
+                    <label for="email">E-Mail-Adresse</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Passwort</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="input-group">
+                    <label for="vorname">Vorname</label>
+                    <input type="text" id="vorname" name="vorname" required>
+                </div>
+                <div class="input-group">
+                    <label for="name">Nachname</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="input-group">
+                    <label for="klasseSelect">Klasse</label>
+                    <select id="klasseSelect" name="klasseSelect" required>
+                        <option value="">Bitte wählen…</option>
+                    </select>
+                </div>
+                <div class="actions">
+                    <button type="submit" class="btn">Registrieren</button>
+                </div>
             </form>
             <div id="registrierungsFeedback"></div>
+            <div class="sub-links">
+                <a href="index.html">Bereits ein Konto? Anmelden</a>
+            </div>
+            <div class="actions">
+                <a id="showUser" href="#" class="btn">Benutzer anzeigen</a>
+            </div>
         </div>
-        <main>
-        </main>
-    </div>
+
+        <div id="user-list-box" class="card" style="display: none; margin-top: 1rem;">
+            <div id="user-list-content"></div>
+            <div class="actions" style="margin-top: 1rem;">
+                <button id="close-user-list" class="btn">Schließen</button>
+            </div>
+        </div>
+    </main>
     <script type="text/javascript" src="js/api_in_js.js"></script>
 </body>
 

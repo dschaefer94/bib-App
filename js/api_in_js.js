@@ -1,5 +1,8 @@
 // hier die URL fürs lokale Testen ändern
-const url = "http://localhost/bibapp_xampp/restAPI.php/";
+const url = "http://localhost/SDP/bib-App/restAPI.php/";
+
+
+
 async function getProjectData(url) {
   // Default options are marked with *
   const response = await fetch(url, {
@@ -8,12 +11,15 @@ async function getProjectData(url) {
   return response.json(); // parses JSON response into native JavaScript objects
 }
 let linkElement = document.querySelector("#showUser");
+const userListBox = document.getElementById('user-list-box');
+const userListContent = document.getElementById('user-list-content');
+const closeUserListBtn = document.getElementById('close-user-list');
+
 linkElement.addEventListener("click", e => {
   e.preventDefault();
   getProjectData(url + "user").then((data) => {
     console.log(data); // JSON data parsed by `data.json()` call
-    let main = document.querySelector("main");
-    console.log(main);
+    
     let c = "<ul>";
     data.forEach(d => {
       //hier unten wird ein index mithilfe des Keys des assoziativen Arrays ausgegeben
@@ -22,8 +28,13 @@ linkElement.addEventListener("click", e => {
 
     c += "</ul>";
 
-    main.innerHTML = c;
+    userListContent.innerHTML = c;
+    userListBox.style.display = 'block';
   });
+});
+
+closeUserListBtn.addEventListener('click', () => {
+    userListBox.style.display = 'none';
 });
 
 

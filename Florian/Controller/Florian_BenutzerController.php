@@ -116,6 +116,13 @@ class Florian_BenutzerController {
             }
         }
 
+        // Passwort-Validierung
+        if (!empty($data['passwort'])) {
+            if ($data['passwort'] !== ($data['passwort_confirm'] ?? '')) {
+                $errors[] = 'Die Passwörter stimmen nicht überein.';
+            }
+        }
+
         if (!empty($errors)) {
             return ['valid' => false, 'error' => implode(' ', $errors)];
         }
