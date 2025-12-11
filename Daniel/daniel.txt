@@ -5,3 +5,8 @@
 //     private $pw = "8x2uXWAeTEMC"; //Passwort
 
 Kommentare in UserModel beachten
+
+Login mit einfacher select email,passwort from benutzer vorerst cheaten
+
+auf Handygröße designen (CSS)
+js für alles außer Registrieren
