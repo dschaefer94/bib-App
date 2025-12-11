@@ -7,11 +7,11 @@
 
 /* Root variables (easy theming) */
 :root {
-  --bg: #0f172a;             /* slate-900 */
-  --surface: #111827;        /* gray-900 */
+  --bg: #12917F;             /* slate-900 */
+  --surface: #12917F;        /* gray-900 */
   --card: #1f2937;           /* gray-800 */
-  --text: #e5e7eb;           /* gray-200 */
-  --muted: #9ca3af;          /* gray-400 */
+  --text: white;           /* gray-200 */
+  --muted: #ffffff;          /* gray-400 */
   --primary: #7c3aed;        /* violet-600 */
   --primary-hover: #6d28d9;  /* violet-700 */
   --accent: #22d3ee;         /* cyan-400 */
@@ -29,12 +29,13 @@ html { font-size: 16px; }
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(1200px 800px at 20% 0%, #0b1220 0%, var(--bg) 40%),
-              radial-gradient(900px 600px at 100% 100%, #111827 0%, var(--bg) 50%);
+  background: radial-gradient(1200px 800px at 20% 0%, #0b1220 0%, var(--bg) 30%),
+              radial-gradient(900px 600px at 100% 100%, #111827 0%, var(--bg) 10%);
   color: var(--text);
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif;
   line-height: 1.5;
 }
+
 
 /* Page container */
 .container {
@@ -161,7 +162,7 @@ body {
 #success-video { display: none; border-radius: var(--radius); box-shadow: var(--shadow); }
 
 /* Typography */
-h1, h2, h3 { font-weight: 800; }
+h1, h2, h3 { font-weight: 800; color: #FF7700; }
 h1 { font-size: 1.9rem; margin: 0 0 1rem 0; }
 h2 { font-size: 1.35rem; margin: 1.2rem 0 .6rem; }
 
@@ -241,4 +242,10 @@ body.login-page {
 }
 .sub-links a:hover {
     color: var(--text);
+}
+
+#user-list-content {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 1rem;
 }

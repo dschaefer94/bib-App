@@ -1,3 +1,4 @@
+//Florians Code
 // hier die URL fürs lokale Testen ändern
 const url = "http://localhost/SDP/bib-App/restAPI.php/";
 
