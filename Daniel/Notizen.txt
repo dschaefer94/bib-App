@@ -1,0 +1,2 @@
+js von Reichelt bezieht sich auf projekte und tasks, muss noch eigene testfälle einfügen
+muss mit controller und model die datenbank anrufen, form zuerst erstellen

@@ -1,0 +1,12 @@
+//     MySQL-Datenbank Zugangsdaten
+//     private $dbName = "pbd2h24asc_taskit"; //Datenbankname
+//     private $linkName = "mysql.pb.bib.de"; //Datenbank-Server
+//     private $user = "pbd2h24asc"; //Benutzername
+//     private $pw = "8x2uXWAeTEMC"; //Passwort
+
+Kommentare in UserModel beachten
+
+Login mit einfacher select email,passwort from benutzer vorerst cheaten
+
+auf Handygröße designen (CSS)
+js für alles außer Registrieren
