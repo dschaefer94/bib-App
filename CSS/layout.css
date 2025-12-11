@@ -173,3 +173,72 @@ h2 { font-size: 1.35rem; margin: 1.2rem 0 .6rem; }
   .header { flex-direction: column; align-items: flex-start; }
   .nav { flex-wrap: wrap; }
 }
+
+/* Styles for the login page */
+body.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 400px;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: .5rem;
+    color: var(--muted);
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: .75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid color-mix(in srgb, var(--muted) 35%, transparent);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 1rem;
+}
+
+.error-message {
+    color: var(--danger);
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.success-message {
+    color: var(--success);
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.login-form .actions {
+    margin-top: 1.5rem;
+    justify-content: center;
+}
+
+.login-form .card h1 {
+    text-align: center;
+}
+
+.sub-links {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+.sub-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: block;
+    margin-top: 0.5rem;
+}
+.sub-links a:hover {
+    color: var(--text);
+}

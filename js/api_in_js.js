@@ -1,5 +1,8 @@
 // hier die URL fürs lokale Testen ändern
-const url = "http://localhost/bibapp_xampp/restAPI.php/";
+const url = "http://localhost/SDP/bib-App/restAPI.php/";
+
+
+
 async function getProjectData(url) {
   // Default options are marked with *
   const response = await fetch(url, {
