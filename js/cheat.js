@@ -1,5 +1,6 @@
 //Florians Code
 // hier die URL fürs lokale Testen ändern
+//Daniel: const url = "http://localhost/bibapp_xampp/restAPI.php/";
 const url = "http://localhost/SDP/bib-App/restAPI.php/";
 
 
