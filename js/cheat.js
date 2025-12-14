@@ -1,7 +1,8 @@
 //Florians Code
 // hier die URL fürs lokale Testen ändern
-//Daniel: const url = "http://localhost/bibapp_xampp/restAPI.php/";
-const url = "http://localhost/SDP/bib-App/restAPI.php/";
+//Daniel: 
+const url = "http://localhost/bibapp_xampp/restAPI.php/";
+//const url = "http://localhost/SDP/bib-App/restAPI.php/";
 
 
 // GET: Klassenliste holen
@@ -36,6 +37,6 @@ document.addEventListener("DOMContentLoaded", fillKlasseSelect);
 
 document.getElementById('cheatbutton').addEventListener('click', function(event) {
     event.preventDefault(); 
-    window.location.href = 'startseite.html';
+    window.location.href = 'startseite.php';
 });
 
