@@ -1,61 +1,30 @@
 <?php
 require 'Database.php';
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
 
-    $stmt = $pdo->query("SELECT * FROM Benutzer LIMIT 10");
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    $error = "Schade, Noob: " . $e->getMessage();
+    $db = new Database();
+    $pdo = $db->linkDB();
+
+    $stmt = $pdo->prepare("SELECT * FROM bib_users_test WHERE username = ?");
+    $stmt->execute([$username]);
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && $password === $user['password_hash']) {
+        echo "✅ Login erfolgreich! User ID: " . $user['user_id'];
+    } else {
+        echo "❌ Login fehlgeschlagen";
+    }
 }
 ?>
-<!DOCTYPE html>
-<html lang="de">
+<!-- Im Frontend nur HTML & JS -->
+ <!-- Fetch aufruf gegen PHP -->
 
-<head>
-    <meta charset="UTF-8">
-    <title>Datenbank-Test</title>
-    <link rel="stylesheet" href="layout.css">
-    <script src="main.js"></script>
-</head>
-
-<body>
-    <h3>EZ Datenbankverbindung</h3>
-    <?php if (isset($error)): ?>
-        <p class="error"><?php echo htmlspecialchars($error); ?></p>
-    <?php else: ?>
-        <table id="daten-tabelle">
-            <thead>
-                <tr>
-                    <?php foreach (array_keys($rows[0] ?? []) as $col): ?>
-                        <th><?php echo htmlspecialchars($col); ?></th>
-                    <?php endforeach; ?>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($rows as $row): ?>
-                    <tr>
-                        <?php foreach ($row as $value): ?>
-                            <td><?php echo htmlspecialchars($value); ?></td>
-                        <?php endforeach; ?>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <video id="success-video"
-            width="640"
-            height="360"
-            controls
-            preload="metadata"
-            poster="poster.jpg"
-            playsinline
-            style="display:none;"
-            aria-label="one">
-            <source src="videos/one.mp4" type="video/mp4">
-        </video>
-    <?php endif; ?>
-</body>
-
-</html>
+<form method="POST">
+    <input type="text" name="username" placeholder="Username"><br><br>
+    <input type="password" name="password" placeholder="Password"><br><br>
+    <button type="submit">Login</button>
+</form>

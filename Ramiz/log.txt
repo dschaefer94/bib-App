@@ -1,0 +1,245 @@
+Endpoint: Array
+(
+    [0] => 
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => 
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => 
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => 
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => 
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => 
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => 
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => 
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => 
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => loginhttp:
+    [1] => localhost
+    [2] => bib-App
+    [3] => restapi.php
+    [4] => user
+    [5] => login
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: POST
+Data: Array
+(
+    [username] => admin
+    [password] => ADMIN!"§
+)
+
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: POST
+Data: Array
+(
+    [username] => admin
+    [password] => ADMIN!"§
+)
+
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: POST
+Data: Array
+(
+    [username] => admin
+    [password] => ADMIN!"§
+)
+
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: POST
+Data: Array
+(
+    [username] => admin
+    [password] => ADMIN!"§
+)
+
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: POST
+Data: Array
+(
+    [username] => admin
+    [password] => ADMIN!"§
+)
+
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: GET
+Data: 
+Endpoint: Array
+(
+    [0] => user
+)
+
+Method: POST
+Data: Array
+(
+    [username] => admin
+    [password] => admin123
+)
+

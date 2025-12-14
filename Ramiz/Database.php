@@ -1,16 +1,25 @@
-
 <?php
-// Datenbank-Daten, damit diese nicht hardgecodet im index.php rumliegt.
-$host = "localhost";
-$dbname = "stundenplan_db";
-$username = "root";
-$password = "";
+namespace ppb;
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Verbindung zur Datenbank erfolgreich!";
-} catch (PDOException $e) {
-    die("Fehler bei der Verbindung: " . $e->getMessage());
+use PDO;
+use PDOException;
+
+class Database {
+    private $dbName = "pbd2h24ani_taskit";
+    private $linkName = "mysql.pb.bib.de";
+    private $user = "pbd2h24ani";
+    private $pw = "M4gajX3TjNvy";
+
+    public function linkDB() {
+        try {
+            $pdo = new PDO(
+                "mysql:host={$this->linkName};dbname={$this->dbName};charset=utf8mb4",
+                $this->user,
+                $this->pw
+            );
+            return $pdo;
+        } catch (PDOException $e) {
+            die("DB error: " . $e->getMessage());
+        }
+    }
 }
-?>
