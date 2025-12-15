@@ -17,7 +17,7 @@ class UserModel extends Database
     {
 
         $pdo = $this->linkDB();
-        $stmt = $pdo->query("SELECT benutzer_id, email FROM Benutzer");
+        $stmt = $pdo->query("SELECT benutzer_id, email FROM benutzer");
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         //Rückgabe verarbeiten
@@ -37,7 +37,7 @@ class UserModel extends Database
         //angerufen wird, um zu checken, ob es einen Benutzer bereits gibt.
         $pdo->beginTransaction();
         //"INSERT IGNORE" fügt keine Duplikate bei einem Unique Index ein (Email) - ohne eine Exception zu werfen!
-        $query = "INSERT IGNORE INTO Benutzer (benutzer_id, passwort, email)
+        $query = "INSERT IGNORE INTO benutzer (benutzer_id, passwort, email)
               VALUES (:benutzer_id, :passwort, :email)";
         $stmtUser = $pdo->prepare($query);
         $stmtUser->bindParam(':benutzer_id', $uuid);
