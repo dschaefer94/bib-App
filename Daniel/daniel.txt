@@ -10,3 +10,7 @@ Login mit einfacher select email,passwort from benutzer vorerst cheaten
 
 auf Handygröße designen (CSS)
 js für alles außer Registrieren
+
+Pro Klasse 1 Ordner generieren lassen per Shell-Skript
+bekommt als Argumente einmal alle Klassen übergeben fürs Kreieren und Updaten
+Pro Benutzer auch einen Ordner für gelesen.json oder lieber im Frontend?

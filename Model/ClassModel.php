@@ -17,13 +17,4 @@ class ClassModel extends Database
     $stmt = $pdo->query($query);
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
   }
-
-  public function getClassById(int $id): ?array
-{
-    $pdo = $this->linkDB();
-    $stmt = $pdo->prepare("SELECT klassen_id, klassenname, ical_link FROM klassen WHERE klassen_id = ?");
-    $stmt->execute([$id]);
-    $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-    return $row ?: null;
-}
 }

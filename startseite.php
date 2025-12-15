@@ -10,7 +10,7 @@
 date_default_timezone_set('Europe/Berlin'); // lokal sinnvoll für Paderborn
 
 // === Konfiguration: Pfad zur ICS-Datei anpassen ===
-$icsPath = __DIR__ . '/data/pbd2h24a.ics';
+$icsPath = __DIR__ . '/Kalender/Kalenderdateien/pbd2h24a/pbd2h24a.ics';
 
 // --- Hilfsfunktionen ---
 /**
