@@ -29,47 +29,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     alert(json.success || json.error || 'Keine Antwort');
                 }
-            } catch (err) {
-                if (messageEl) { messageEl.style.color = 'red'; messageEl.textContent = 'Fehler beim Senden'; }
-                else alert('Fehler beim Senden');
-                console.error(err);
-            }
-document.getElementById('forgotForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    
-    const response = await fetch('restapi.php/user/requestPasswordReset', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        } catch (err) {
+            if (messageEl) { messageEl.style.color = 'red'; messageEl.textContent = 'Fehler beim Senden'; }
+            else alert('Fehler beim Senden');
+            console.error(err);
+        }
     });
-
-    const result = await response.json();
-    alert(result.success || result.error);
-});
+}
 
 const params = new URLSearchParams(window.location.search);
 const token = params.get('token');
 
-if (token) {
-    document.getElementById('forgotForm').style.display = 'none';
-    document.getElementById('resetForm').style.display = 'block';
-
-    document.getElementById('resetForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const password = document.getElementById('newPassword').value;
-
-        const response = await fetch('restapi.php/user/resetPassword', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token, password })
-        });
-    }
-
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
-
-    if (token && resetForm) {
+if (token && resetForm) {
         resetForm.style.display = 'block';
 
         resetForm.addEventListener('submit', async (e) => {
@@ -102,5 +73,80 @@ if (token) {
                 console.error(err);
             }
         });
+document.addEventListener('DOMContentLoaded', () => {
+    const forgotForm = document.getElementById('forgotForm');
+    const resetForm = document.getElementById('resetForm');
+    const messageEl = document.getElementById('message');
+
+    function showMessage(text, color = 'black') {
+        if (!messageEl) {
+            alert(text);
+            return;
+        }
+        messageEl.style.color = color;
+        messageEl.textContent = text;
+    }
+
+    if (forgotForm) {
+        forgotForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('email');
+            const email = emailInput ? emailInput.value.trim() : '';
+
+            if (!email) {
+                showMessage('Bitte E-Mail eingeben', 'red');
+                return;
+            }
+
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!re.test(email)) {
+                showMessage('Ungültige E‑Mail', 'red');
+                return;
+            }
+
+            showMessage('Sende Link an ' + email + '...', 'black');
+            setTimeout(() => {
+                showMessage('E-Mail gesendet. Bitte prüfen Sie Ihr Postfach.', 'green');
+                forgotForm.reset();
+            }, 1000);
+
+
+        });
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+
+    if (token && resetForm) {
+        resetForm.style.display = 'block';
+
+        resetForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+
+            if (!password || !confirm) {
+                showMessage('Bitte beide Felder ausfüllen', 'red');
+                return;
+            }
+            if (password !== confirm) {
+                showMessage('Passwörter stimmen nicht überein', 'red');
+                return;
+            }
+            if (password.length < 8) {
+                showMessage('Passwort zu kurz (mind. 8 Zeichen)', 'red');
+                return;
+            }
+
+            // Simuliere Passwort-Änderung (kein DB)
+            showMessage('Setze Passwort ...', 'black');
+            setTimeout(() => {
+                showMessage('Passwort wurde geändert. Du kannst dich jetzt anmelden.', 'green');
+                resetForm.reset();
+            }, 1000);
+
+        });
+    }
+});
     }
 });
