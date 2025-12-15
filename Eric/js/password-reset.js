@@ -72,13 +72,12 @@ if (token && resetForm) {
                 else alert('Fehler beim Zurücksetzen');
                 console.error(err);
             }
-        });// ...existing code...
+        });
 document.addEventListener('DOMContentLoaded', () => {
     const forgotForm = document.getElementById('forgotForm');
     const resetForm = document.getElementById('resetForm');
     const messageEl = document.getElementById('message');
 
-    // Helper: show message
     function showMessage(text, color = 'black') {
         if (!messageEl) {
             alert(text);
@@ -88,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
         messageEl.textContent = text;
     }
 
-    // Minimal: Simulierter Request (kein DB / kein Mailserver)
     if (forgotForm) {
         forgotForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -100,28 +98,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Optional: einfache E-Mail-Formatprüfung
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!re.test(email)) {
                 showMessage('Ungültige E‑Mail', 'red');
                 return;
             }
 
-            // Simuliere Anfrage: Ladezustand -> Erfolg
             showMessage('Sende Link an ' + email + '...', 'black');
-            // Simulationszeit (1s)
             setTimeout(() => {
                 showMessage('E-Mail gesendet. Bitte prüfen Sie Ihr Postfach.', 'green');
                 forgotForm.reset();
             }, 1000);
 
-            // Wenn du später echte API nutzen willst, ersetze diese Simulation mit fetch:
-            // const url = 'restapi.php?controller=user&do=requestPasswordReset&email=' + encodeURIComponent(email);
-            // fetch(url).then(...).catch(...);
+
         });
     }
 
-    // Reset-Seite (falls du token param in URL hast)
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token');
 
@@ -151,13 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 showMessage('Passwort wurde geändert. Du kannst dich jetzt anmelden.', 'green');
                 resetForm.reset();
-                // optional redirect:
-                // setTimeout(() => { window.location.href = 'index.html'; }, 1500);
             }, 1000);
 
-            // Später: tatsächliche API-Aufruf-Variante:
-            // fetch('restapi.php?controller=user&do=resetPassword', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ token, password }) })
-            //  .then(r => r.json()).then(json => ...)
         });
     }
 });

@@ -32,12 +32,10 @@ class PasswordController {
         if ($this->db) {
             $this->passwordModel = new PasswordModel($this->db);
         } else {
-            // create a tiny stub model that will not be used (we use session fallback in controller)
             $this->passwordModel = new PasswordModel(new PDO('sqlite::memory:')); // not used
         }
     }
 
-    // requestPasswordReset: expects ['email'=>...] or ?email=...
     public function requestPasswordReset($data = null) {
         header('Content-Type: application/json');
         if (empty($data)) $data = $_REQUEST;
@@ -50,7 +48,6 @@ class PasswordController {
 
         $response = ['success' => 'Wenn die E-Mail existiert, wurde ein Link gesendet.'];
 
-        // Check user existence
         $user = null;
         if ($this->db) {
             try {
@@ -59,7 +56,6 @@ class PasswordController {
                 $user = null;
             }
         } else {
-            // session fallback: treat as if user exists (for local testing)
             $user = ['email' => $email, 'id' => 0];
         }
 
@@ -68,7 +64,6 @@ class PasswordController {
             return;
         }
 
-        // create token (send plain, store hash)
         $token = bin2hex(random_bytes(32));
         $tokenHash = hash('sha256', $token);
         $expires = date('Y-m-d H:i:s', strtotime('+1 hour'));
@@ -88,10 +83,8 @@ class PasswordController {
             $stored = true;
         }
 
-        // create reset link (relative for local)
         $resetLink = 'passwordaendern.html?token=' . $token;
 
-        // send mail (may fail if no MTA)
         $mailSent = $this->sendResetEmail($email, $resetLink);
 
         if ($this->debug || !$mailSent) {
@@ -102,7 +95,6 @@ class PasswordController {
         echo json_encode($response);
     }
 
-    // resetPassword: expects ['token'=>..., 'password'=>...]
     public function resetPassword($data = null) {
         header('Content-Type: application/json');
         if (empty($data)) $data = $_REQUEST;
@@ -130,12 +122,10 @@ class PasswordController {
             }
         }
 
-        // session fallback check
         if (!$user && $this->useSessionFallback) {
             if (session_status() === PHP_SESSION_NONE) session_start();
             $entry = $_SESSION['password_resets'][$tokenHash] ?? null;
             if ($entry && strtotime($entry['expires']) > time()) {
-                // simulate a user record with id = 0 and email
                 $user = ['id' => 0, 'email' => $entry['email']];
             }
         }
@@ -155,9 +145,7 @@ class PasswordController {
                 $updated = false;
             }
         } elseif ($this->useSessionFallback) {
-            // store hashed password in session (local test only)
             $_SESSION['passwords'][$user['email']] = $passwordHash;
-            // remove token
             unset($_SESSION['password_resets'][$tokenHash]);
             $updated = true;
         }
