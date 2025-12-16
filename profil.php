@@ -47,7 +47,7 @@ try {
 
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if (isset($_GET['benutzer_id'])) {
-            $benutzer_id = (int)$_GET['benutzer_id'];
+            $benutzer_id = $_GET['benutzer_id'];
             $result = $benutzerController->loadUser($benutzer_id);
 
             if ($result['success']) {
