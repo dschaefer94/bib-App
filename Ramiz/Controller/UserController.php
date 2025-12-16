@@ -5,7 +5,6 @@ use ppb\Model\UserModel;
 
 class UserController
 {
-    // Метод для GET-запроса (можно тестировать через браузер)
     public function getUser($data = null)
     {
         $data = $data ?? $_GET;
