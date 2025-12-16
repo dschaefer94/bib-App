@@ -24,8 +24,7 @@ class UserController
             return;
         }
 
-        // Сравнение plain-text пароля
-        if ($password !== $user['password_hash']) {
+        if ($password !== $user['passwort']) {
             echo json_encode([
                 "success" => false,
                 "message" => "Wrong password"
@@ -36,23 +35,19 @@ class UserController
         echo json_encode([
             "success" => true,
             "user" => [
-                "id" => $user['id'],
-                "username" => $user['username']
+                "id" => $user['benutzer_id'],
+                "email" => $user['email']
             ]
         ]);
     }
 
-    // Метод для POST-запроса через REST API
     public function writeUser($data)
     {
-        // Просто переиспользуем getUser
         $this->getUser($data);
     }
 
-    // Legacy alias support: allow calling ?action=login or /user/login
     public function login($data = null)
     {
         $this->getUser($data);
     }
 }
-?>

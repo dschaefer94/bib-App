@@ -21,8 +21,9 @@ document.getElementById("login-btn").addEventListener("click", async () => {
         const data = await response.json(); // теперь JSON точно вернется
 
         if (data.success) {
-            resultEl.textContent = `✔ Успешный вход! Привет, ${data.user.username}`;
+            resultEl.textContent = `✔ Успешный вход! Привет, ${data.user.email}`;
             resultEl.style.color = "green";
+
         } else {
             resultEl.textContent = `❌ ${data.message}`;
             resultEl.style.color = "red";

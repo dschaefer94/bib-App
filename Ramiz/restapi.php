@@ -1,4 +1,10 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL); 
+
+
 // CORS + OPTIONS handling
 // Prüft, ob die Anfrage von einer bestimmten Origin kommt und fügt die entsprechenden CORS-Header hinzu
 if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -71,7 +77,7 @@ $alias = isset($alias) ? $alias : false;
 
 // Überprüft, ob der zweite Endpunkt Teil eine ID oder einen Alias darstellt
 if ($endpoint2) {
-    if (preg_match('/\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/', $endpoint2)) {
+        if (preg_match('/\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/', $endpoint2)) {
         $id = $endpoint2;  // Wenn es eine UUID ist, behandeln wir es als ID
     } else {
         $alias = $endpoint2;  // Ansonsten als Alias
