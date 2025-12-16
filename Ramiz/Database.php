@@ -5,7 +5,7 @@ use PDO;
 use PDOException;
 
 class Database {
-    private $dbName = "pbd2h24ani_taskit";
+    private $dbName = "pbd2h24ani_stundenplan_db";
     private $linkName = "mysql.pb.bib.de";
     private $user = "pbd2h24ani";
     private $pw = "M4gajX3TjNvy";
