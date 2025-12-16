@@ -32,7 +32,7 @@ class PasswordController {
         if ($this->db) {
             $this->passwordModel = new PasswordModel($this->db);
         } else {
-            $this->passwordModel = new PasswordModel(new PDO('sqlite::memory:')); // not used
+            $this->passwordModel = new PasswordModel(new PDO('sqlite::memory:')); 
         }
     }
 
