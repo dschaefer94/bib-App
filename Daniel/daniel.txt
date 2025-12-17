@@ -14,3 +14,32 @@ js für alles außer Registrieren
 Pro Klasse 1 Ordner generieren lassen per Shell-Skript
 bekommt als Argumente einmal alle Klassen übergeben fürs Kreieren und Updaten
 Pro Benutzer auch einen Ordner für gelesen.json oder lieber im Frontend?
+
+Terminerstellung: Besondere IDs von eigenen Terminen zum gesammelten Aufruf und zum löschen (in DB speichern?)
+
+Webhook mit CI/CD versuchen zu implementieren -> Database.php mit neuen Daten (oder gitignore),
+Kalenderordner außerhalb des Webroots speichern, geht hier ja nicht
+FEHLERBEHANDLUNG IM BACKEND UND FRONTEND FÜR CI/CD UNBEDINGT EINRICHTEN, SOWIE ZWISCHENECHOS
+ALLE CRUD-OPERATIONEN MAL IM TEST DURCHLAUFEN LASSEN
+
+Stundenplan als JSON komplett rüberschicken und im Frontend auslesen
+beim Terminanlegen/-löschen nach dem POST auch ein GET durchführen
+
+JSON für Termine: 
+
+                                    BEGIN:VEVENT
+ja                                  UID:62F5DEE1D5921C0FC1258D0800343E30@bib.de
+ja, geparsed                        SUMMARY:TopUp ENG CAM P-213
+ja, aber nur manchmal vorhanden:    DESCRIPTION:IELTS-Vorbereitung
+ja                                  LOCATION:P-213
+ja                                  DTSTART;TZID=Europe/Berlin:20250930T153000
+ja                                  DTEND;TZID=Europe/Berlin:20250930T170000
+für Unterscheidung?                 DTSTAMP:20251212T194304Z
+                                    END:VEVENT
+                                    KATEGORIE: neu, geändert, gelöscht, Klausur(*)
+
+Kalenderupdater.php lädt Kalender herunter (vllt lieber shell?), vergleicht die Inhalte und macht einen StundenplanJSON
+mit all möglichen Klassen meiner Wahl, die das Frontend dann bekommt (Standartwerte und Tags wie Änderungen, Rowspan)
+über KalenderController zu Kalenderdateien oberhalb des Webroots
+
+Ergänzung beim Registrieren, dass ein Ordner angelegt werden soll für gelesen-Dateien, wie auch Löschungsfunktion

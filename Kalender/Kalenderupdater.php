@@ -16,9 +16,9 @@ if (file_exists($neu)) {
 }
 
 // Neue Datei von der URL herunterladen
-$inhalt = file_get_contents($url);
-if ($inhalt !== false) {
-    file_put_contents($neu, $inhalt);
+$download = file_get_contents($url);
+if ($download !== false) {
+    file_put_contents($neu, $download);
     chmod($neu, 0664);
     echo "Kalenderdatei erfolgreich aktualisiert.";
 } else {
@@ -27,7 +27,7 @@ if ($inhalt !== false) {
 
 // Kalender laden
 $icsA = file_exists($alt) ? file_get_contents($alt) : '';
-$icsB = $inhalt; // Kein erneutes Laden nötig
+$icsB = $download; // Kein erneutes Laden nötig
 
 $eventsA = parseIcsEvents($icsA);
 $eventsB = parseIcsEvents($icsB);

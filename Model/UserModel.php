@@ -28,7 +28,7 @@ class UserModel extends Database
      * bzw. legt den Benutzer in den Tabellen "Benutzer" und "persoenliche_daten" an
      * @return array true: hat geklappt, false: Benutzer bereits vorhanden
      */
-    public function insertUser(array $data):bool
+    public function insertUser(array $data): bool
     {
         $pdo  = $this->linkDB();
         $uuid = $this->createUUID();
@@ -69,6 +69,19 @@ class UserModel extends Database
 
         $pdo->commit();
 
+        //Benutzerordner für gelesene und eigene Events anlegen (heißt wie UUID)
+        //Pfad muss beim Porten noch angepasst werden (noch eine Ebene höher (dirname(__DIR__, 2)))
+        $ordnerName = $uuid;
+        $ordnerPfad = dirname(__DIR__) . '/Benutzer/' . $ordnerName;
+
+        if (!file_exists($ordnerPfad)) {
+            if (mkdir($ordnerPfad, 0777, true)) {
+                file_put_contents($ordnerPfad . '/geleseneEvents.json', json_encode([]));
+                error_log("Ordner mit leerer JSON erfolgreich erstellt!");
+            } else {
+                error_log("Fehler beim Erstellen des Ordners.");
+            }
+        }
         return true;
     }
 }
