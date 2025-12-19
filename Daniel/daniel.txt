@@ -75,3 +75,6 @@ bei Terminbuchung Raumvalidierung schauen, Hinweis, dass Raum nicht geblockt ist
 Raumplan-png OG & UG, vllt Link zu entsprechendem Raum beim Klick auf Event (Raum)
 
 Klassenname muss auch unique sein
+
+Beim Erstellen der Klassen muss die erste Vergleichsoperation unbedingt ignoriert werden, sonst
+sind alle Events der ics-Datei neu!

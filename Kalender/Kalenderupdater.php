@@ -1,28 +1,33 @@
 <?php
+// Daniel
 // #!/usr/bin/env php
 // Das Ding in Zeile 2 heißt shebang und muss auf Linux/macOS ganz oben stehen,
 // wenn das Skript direkt ausführbar sein soll. Da es aber ausschließlich
 // über Kalenderupdater.sh aufgerufen wird ("php Kalenderupdater.php"), ist das hier nicht nötig.
 // PHP-CLI: Parameter vom Kalenderupdater.sh sauber über getopt() einlesen
-// --user-dir  Pfad des gefundenen Unterordners für die Adressierung
-// --name      Ordnername (Basename) zum Anrufen der DB
+// --user-dir: Pfad des gefundenen Unterordners für die Adressierung
+// --name: Ordnername (Basename) zum Anrufen der DB
 
-$options = getopt("", ["klassenname:", "user-dir:"]);
+$parameter = getopt("", ["klassenname:", "klassenordner:"]);
 
-$name    = $options['klassenname'] ?? null;
-$ordner = rtrim($options['user-dir'], "/\\") . DIRECTORY_SEPARATOR;
+$name    = $parameter['klassenname'];
+$ordner = rtrim($parameter['klassenordner'], "/\\") . DIRECTORY_SEPARATOR;
 $alt = $ordner . 'kalender_alt.ics';
 $neu = $ordner . 'kalender_neu.ics';
 
-// rufe die individuelle ical_url der jeweiligen Klasse von der DB ab
-$pdo = $this->linkDB();
-$ical_link = $pdo->query("SELECT ical_link FROM klassen WHERE klassenname = '$name'")->fetchColumn();
+// rufe die individuelle ical_url der jeweiligen Klasse von der DB ab.
+// Die DB-Verbindung hier direkt aufbauen, da wir außerhalb des MVC arbeiten.
+// erstmal hardcoded, später in eine Config auslagern
+$pdo = new \PDO("mysql:dbname=stundenplan_db;host=localhost","root","root", []);
+$stmt = $pdo->prepare("SELECT ical_link FROM klassen WHERE klassenname = :name");
+$stmt->execute([':name' => $name]);
+$ical_link = $stmt->fetchColumn();
 
-// Alte Datei löschen, neue in alt umbenennen
+// "kalender_alt.ics" löschen, "kalender_neu.ics" in "kalender_alt.ics" umbenennen
 unlink($alt);
 rename($neu, $alt);
 
-// Neue Datei von der URL herunterladen
+// Neue Datei von der URL herunterladen und als "kalender_neu.ics" speichern
 $download = file_get_contents($ical_link);
 if ($download !== false) {
     file_put_contents($neu, $download);
