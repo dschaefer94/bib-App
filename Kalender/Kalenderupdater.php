@@ -1,43 +1,49 @@
 <?php
-// Pfade zu den Kalenderdateien
-$ordner = __DIR__ . '/kalenderdateien/';
+// #!/usr/bin/env php
+// Das Ding in Zeile 2 heißt shebang und muss auf Linux/macOS ganz oben stehen,
+// wenn das Skript direkt ausführbar sein soll. Da es aber ausschließlich
+// über Kalenderupdater.sh aufgerufen wird ("php Kalenderupdater.php"), ist das hier nicht nötig.
+// PHP-CLI: Parameter vom Kalenderupdater.sh sauber über getopt() einlesen
+// --user-dir  Pfad des gefundenen Unterordners für die Adressierung
+// --name      Ordnername (Basename) zum Anrufen der DB
+
+$options = getopt("", ["klassenname:", "user-dir:"]);
+
+$name    = $options['klassenname'] ?? null;
+$ordner = rtrim($options['user-dir'], "/\\") . DIRECTORY_SEPARATOR;
 $alt = $ordner . 'kalender_alt.ics';
 $neu = $ordner . 'kalender_neu.ics';
-$url = 'https://intranet.bib.de/ical/d819a07653892b46b6e4d2765246b7ab';
 
-// Alte Datei löschen, falls vorhanden
-if (file_exists($alt)) {
-    unlink($alt);
-}
+// rufe die individuelle ical_url der jeweiligen Klasse von der DB ab
+$pdo = $this->linkDB();
+$ical_link = $pdo->query("SELECT ical_link FROM klassen WHERE klassenname = '$name'")->fetchColumn();
 
-// Neue Datei umbenennen zu alt
-if (file_exists($neu)) {
-    rename($neu, $alt);
-}
+// Alte Datei löschen, neue in alt umbenennen
+unlink($alt);
+rename($neu, $alt);
 
 // Neue Datei von der URL herunterladen
-$download = file_get_contents($url);
+$download = file_get_contents($ical_link);
 if ($download !== false) {
     file_put_contents($neu, $download);
     chmod($neu, 0664);
-    echo "Kalenderdatei erfolgreich aktualisiert.";
-} else {
-    echo "Fehler beim Herunterladen der Kalenderdatei.";
 }
 
 // Kalender laden
-$icsA = file_exists($alt) ? file_get_contents($alt) : '';
-$icsB = $download; // Kein erneutes Laden nötig
+$ics_alt = file_exists($alt) ? file_get_contents($alt) : '';
+$ics_neu = $download; // Kein erneutes Laden nötig
 
-$eventsA = parseIcsEvents($icsA);
-$eventsB = parseIcsEvents($icsB);
+$eventsAlt = parseIcsEvents($ics_alt);
+$eventsNeu = parseIcsEvents($ics_neu);
+
+//######################################################################################
 
 // Unterschiede berechnen und speichern (nur wenn neue gefunden)
 $diffs = loadDiffs();
 $changed = false;
 
-foreach ($eventsB as $uid => $event) {
-    if (!isset($eventsA[$uid]) && !isset($diffs[$uid])) {
+foreach ($eventsNeu as $uid => $event) {
+    if (!isset($eventsAlt[$uid]) && !isset($diffs[$uid])) {
         $diffs[$uid] = [
             'type' => 'neu',
             'summary' => $event['summary'],
@@ -48,9 +54,9 @@ foreach ($eventsB as $uid => $event) {
     }
 }
 
-foreach ($eventsB as $uid => $eventB) {
-    if (isset($eventsA[$uid]) && $eventsA[$uid] !== $eventB && !isset($diffs[$uid])) {
-        $eventA = $eventsA[$uid];
+foreach ($eventsNeu as $uid => $eventB) {
+    if (isset($eventsAlt[$uid]) && $eventsAlt[$uid] !== $eventB && !isset($diffs[$uid])) {
+        $eventA = $eventsAlt[$uid];
         $diffs[$uid] = [
             'type' => 'geändert',
             'alt_summary' => $eventA['summary'],
@@ -64,8 +70,8 @@ foreach ($eventsB as $uid => $eventB) {
     }
 }
 
-foreach ($eventsA as $uid => $event) {
-    if (!isset($eventsB[$uid]) && !isset($diffs[$uid])) {
+foreach ($eventsAlt as $uid => $event) {
+    if (!isset($eventsNeu[$uid]) && !isset($diffs[$uid])) {
         $diffs[$uid] = [
             'type' => 'gelöscht',
             'summary' => $event['summary'],
@@ -80,10 +86,11 @@ if ($changed) {
     saveDiffs($diffs);
 }
 
-file_put_contents(__DIR__ . '/eventsB.json', json_encode($eventsB));
+file_put_contents(__DIR__ . '/eventsB.json', json_encode($eventsNeu));
 
 // Funktionen
-function loadDiffs($filename = __DIR__ . '/unterschiede.json') {
+function loadDiffs($filename = __DIR__ . '/unterschiede.json')
+{
     if (file_exists($filename)) {
         $json = file_get_contents($filename);
         $data = json_decode($json, true);
@@ -94,11 +101,13 @@ function loadDiffs($filename = __DIR__ . '/unterschiede.json') {
     return [];
 }
 
-function saveDiffs($diffs, $filename = __DIR__ . '/unterschiede.json') {
+function saveDiffs($diffs, $filename = __DIR__ . '/unterschiede.json')
+{
     file_put_contents($filename, json_encode($diffs));
 }
 
-function parseIcsEvents($icsContent) {
+function parseIcsEvents($icsContent)
+{
     preg_match_all('/BEGIN:VEVENT(.*?)END:VEVENT/s', $icsContent, $matches);
     $events = [];
     foreach ($matches[1] as $event) {
@@ -117,4 +126,3 @@ function parseIcsEvents($icsContent) {
     }
     return $events;
 }
-?>

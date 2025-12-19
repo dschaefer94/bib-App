@@ -36,10 +36,42 @@ ja                                  DTSTART;TZID=Europe/Berlin:20250930T153000
 ja                                  DTEND;TZID=Europe/Berlin:20250930T170000
 für Unterscheidung?                 DTSTAMP:20251212T194304Z
                                     END:VEVENT
-                                    KATEGORIE: neu, geändert, gelöscht, Klausur(*)
+                                    KATEGORIE: neu, geändert, gelöscht, Klausur(*) separat, special Event, TopUp
+
+✅ Optionale, häufig genutzte Felder
+
+SUMMARY – Titel des Events.
+DESCRIPTION – Beschreibung des Events.
+LOCATION – Ort des Events.
+STATUS – Status (z. B. CONFIRMED, TENTATIVE, CANCELLED).
+CLASS – Sichtbarkeit (PUBLIC, PRIVATE, CONFIDENTIAL).
+TRANSP – Transparenz für Kalender (OPAQUE oder TRANSPARENT).
+PRIORITY – Priorität (1 = hoch, 9 = niedrig).
+CATEGORIES – Kategorien oder Tags.
+URL – Link zu weiteren Informationen.
+
+
+✅ Erweiterte Felder
+
+ATTENDEE – Teilnehmer (z. B. mailto:person@example.com).
+ORGANIZER – Organisator des Events.
+SEQUENCE – Versionsnummer des Events (wichtig bei Updates).
+RECURRENCE-ID – Für wiederkehrende Events.
+RRULE – Wiederholungsregel (z. B. FREQ=DAILY;COUNT=10).
+EXDATE – Ausnahmen von Wiederholungen.
+ATTACH – Anhänge (z. B. Dokumente oder Bilder).
+RELATED-TO – Verknüpfung zu anderen Events.
 
 Kalenderupdater.php lädt Kalender herunter (vllt lieber shell?), vergleicht die Inhalte und macht einen StundenplanJSON
 mit all möglichen Klassen meiner Wahl, die das Frontend dann bekommt (Standartwerte und Tags wie Änderungen, Rowspan)
 über KalenderController zu Kalenderdateien oberhalb des Webroots
 
 Ergänzung beim Registrieren, dass ein Ordner angelegt werden soll für gelesen-Dateien, wie auch Löschungsfunktion
+
+Administrationsfunktion zum Klasse-Hinzufügen und löschen (Ordner erstellen und so) adden
+
+bei Terminbuchung Raumvalidierung schauen, Hinweis, dass Raum nicht geblockt ist
+
+Raumplan-png OG & UG, vllt Link zu entsprechendem Raum beim Klick auf Event (Raum)
+
+Klassenname muss auch unique sein
