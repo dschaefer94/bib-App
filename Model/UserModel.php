@@ -78,7 +78,7 @@ class UserModel extends Database
         $ordnerPfad = dirname(__DIR__) . '/Benutzer/' . $ordnerName;
 
         if (!file_exists($ordnerPfad)) {
-            if (mkdir($ordnerPfad, 0777, true)) {
+            if (mkdir($ordnerPfad, 0700, true)) {
                 file_put_contents($ordnerPfad . '/geleseneEvents.json', json_encode([]));
                 file_put_contents($ordnerPfad . '/eigeneEvents.json', json_encode([]));
                 error_log("Ordner mit leerer JSON erfolgreich erstellt!");

@@ -17,7 +17,5 @@ for klassenordner in "$BASE_DIR"/*; do
 # continue skippt zur nächsten Iteration ohne den Updater aufzurufen
   [ -d "$klassenordner" ] || continue
   name="$(basename "$klassenordner")"
-# lege schonmal leere ICS-Dateien an, damit der Updater nicht meckert
-  touch "$klassenordner/kalender_alt.ics" "$klassenordner/kalender_neu.ics"
   php "$UPDATER" --klassenname "$name" --klassenordner "$klassenordner"
 done

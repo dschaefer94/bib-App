@@ -1,7 +1,7 @@
 <?php
 // Daniel
 // #!/usr/bin/env php
-// Das Ding in Zeile 2 heißt shebang und muss auf Linux/macOS ganz oben stehen,
+// Das Ding in Zeile 3 heißt shebang und muss auf Linux/macOS ganz oben stehen,
 // wenn das Skript direkt ausführbar sein soll. Da es aber ausschließlich
 // über Kalenderupdater.sh aufgerufen wird ("php Kalenderupdater.php"), ist das hier nicht nötig.
 // PHP-CLI: Parameter vom Kalenderupdater.sh sauber über getopt() einlesen
@@ -12,8 +12,8 @@ $parameter = getopt("", ["klassenname:", "klassenordner:"]);
 
 $name    = $parameter['klassenname'];
 $ordner = rtrim($parameter['klassenordner'], "/\\") . DIRECTORY_SEPARATOR;
-$alt = $ordner . 'kalender_alt.ics';
-$neu = $ordner . 'kalender_neu.ics';
+$alt = $ordner . 'stundenplan_alt.ics';
+$neu = $ordner . 'stundenplan_neu.ics';
 
 // rufe die individuelle ical_url der jeweiligen Klasse von der DB ab.
 // Die DB-Verbindung hier direkt aufbauen, da wir außerhalb des MVC arbeiten.
