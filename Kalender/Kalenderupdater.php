@@ -1,7 +1,19 @@
 <?php
 // Daniel
+// Runner für die Kalender-Updates aller Klassen (./Kalenderdateien/*)
+// ruft die DB für individuelle ical_url der jeweiligen Klasse ab
+// speichert die aktuellen Kalenderdaten als JSON in ./Kalenderdateien/*/stundenplan.json,
+// speichert die Änderungen als JSON in ./Kalenderdateien/*/aenderungen.json,
+// die dann vom Frontend direkt eingesammelt wird
+// 
 
-function parseIcsEvents($icsContent)
+/**
+ * Daniel
+ * parset die ics-Datei und gibt die Events als Array zurück
+ * @param mixed $icsContent Der Inhalt der ics-Datei als String
+ * @return array{end: string, location: string, start: string, summary: string[]}
+ */
+function parseIcsEvents($icsContent): array
 {
     preg_match_all('/BEGIN:VEVENT(.*?)END:VEVENT/s', $icsContent, $matches);
     $events = [];
@@ -21,10 +33,15 @@ function parseIcsEvents($icsContent)
     }
     return $events;
 }
-function kalenderupdater(string $name, string $ordner): void
+/**
+ * Daniel
+ * lädt den aktuellen Stundenplan und vergleicht ihn mit dem alten und speichert die Änderungen
+ * @param string $name Name der Klasse für DB-Abfrage
+ * @param string $ordner Pfad zum Klassenordner, wo die Kalenderdateien gespeichert sind
+ */
+function kalenderupdater(string $name, string $ordner)
 {
     $ordner = rtrim($ordner, "/\\") . DIRECTORY_SEPARATOR;
-
     $alt = $ordner . 'stundenplan_alt.ics';
     $neu = $ordner . 'stundenplan_neu.ics';
 
@@ -54,12 +71,10 @@ function kalenderupdater(string $name, string $ordner): void
     $eventsAlt = parseIcsEvents($ics_alt);
     $eventsNeu = parseIcsEvents($ics_neu);
 
-    //######################################################################################
+    //Kategorien der Änderungen
+    $result = ['neu' => [], 'geloescht' => [], 'geaendert' => []];
 
-
-
-    $result = ['neu' => [], 'geloescht' => [], 'geaendert' => [], 'current' => $eventsNeu];
-
+    // Vergleich
     $allKeys = array_unique(array_merge(array_keys($eventsAlt), array_keys($eventsNeu)));
     foreach ($allKeys as $uid) {
         $inOld = isset($eventsAlt[$uid]);
@@ -81,14 +96,21 @@ function kalenderupdater(string $name, string $ordner): void
         }
     }
 
+    // normalen aktuellen Stundenplan als JSON speichern
     file_put_contents(
         $ordner . 'stundenplan.json',
+        json_encode($eventsNeu, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+    );
+
+    // Änderungen als JSON speichern
+    file_put_contents(
+        $ordner . 'aenderungen.json',
         json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
     );
 }
 
-
-
+    
+//Runner für die Kalender-Updates aller Klassen (./Kalenderdateien/*)
 foreach (glob(__DIR__ . '/Kalenderdateien/*') as $dir) {
     if (!is_dir($dir)) continue;
     kalenderupdater(basename($dir), $dir);

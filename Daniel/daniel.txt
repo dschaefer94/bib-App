@@ -78,3 +78,8 @@ Klassenname muss auch unique sein
 
 Beim Erstellen der Klassen muss die erste Vergleichsoperation unbedingt ignoriert werden, sonst
 sind alle Events der ics-Datei neu!
+
+Änderungen werden nur ein Intervall lang erfasst.
+-> alles außer current verbleibt in der Datei oder wird ausgelagert und auf current aufgewogen
+  (abhängig von der geleseneEvents.json?)
+Vergangene Events werden noch nicht ignoriert.
