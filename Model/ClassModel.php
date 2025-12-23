@@ -43,10 +43,18 @@ class ClassModel extends Database
     }
     $pdo->commit();
     $ordnerName = $data['klassenname'];
-    $ordnerPfad = dirname(__DIR__) . '/Kalender/Kalenderdateien' . $ordnerName;
+    $ordnerPfad = dirname(__DIR__) . '/Kalender/Kalenderdateien/' . $ordnerName;
     mkdir($ordnerPfad, 0755, true);
+    $kalenderdatei = file_get_contents($data['ical_link']);
     file_put_contents($ordnerPfad . '/stundenplan_alt.ics', '');
-    file_put_contents($ordnerPfad . '/stundenplan_neu.ics', '');
+    file_put_contents($ordnerPfad . '/stundenplan_neu.ics', $kalenderdatei);
+    file_put_contents($ordnerPfad . '/stundenplan.json', '{}');
+    file_put_contents($ordnerPfad . '/aenderungen.json', json_encode([
+      'neu' => [],
+      'geloescht' => [],
+      'geaendert' => []
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
 
     return true;
   }
