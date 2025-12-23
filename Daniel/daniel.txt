@@ -62,24 +62,21 @@ EXDATE – Ausnahmen von Wiederholungen.
 ATTACH – Anhänge (z. B. Dokumente oder Bilder).
 RELATED-TO – Verknüpfung zu anderen Events.
 
-Kalenderupdater.php lädt Kalender herunter (vllt lieber shell?), vergleicht die Inhalte und macht einen StundenplanJSON
-mit all möglichen Klassen meiner Wahl, die das Frontend dann bekommt (Standartwerte und Tags wie Änderungen, Rowspan)
-über KalenderController zu Kalenderdateien oberhalb des Webroots
 
 Ergänzung beim Registrieren, dass ein Ordner angelegt werden soll für gelesen-Dateien, wie auch Löschungsfunktion
-
 Administrationsfunktion zum Klasse-Hinzufügen und löschen (Ordner erstellen und so) adden
 
 bei Terminbuchung Raumvalidierung schauen, Hinweis, dass Raum nicht geblockt ist
-
 Raumplan-png OG & UG, vllt Link zu entsprechendem Raum beim Klick auf Event (Raum)
 
 Klassenname muss auch unique sein
 
 Beim Erstellen der Klassen muss die erste Vergleichsoperation unbedingt ignoriert werden, sonst
-sind alle Events der ics-Datei neu!
+sind alle Events der ics-Datei neu! Vllt schon einmal befüllen für beide Dateien?
 
-Änderungen werden nur ein Intervall lang erfasst.
--> alles außer current verbleibt in der Datei oder wird ausgelagert und auf current aufgewogen
-  (abhängig von der geleseneEvents.json?)
-Vergangene Events werden noch nicht ignoriert.
+#############################################################################################
+Kalenderupdater
+
+Wenn eine gespeicherte Änderung in der Vergangenheit liegt, wird sie beim Einlesen gelöscht.
+Wenn vergangene Events verändert werden, werden sie ignoriert.
+Weit zukünftige und Spamming von Events werden im Frontend ausgewertet ("neuer Semesterplan hinzugefügt" o.ä., nach Menge)

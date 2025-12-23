@@ -33,6 +33,47 @@ function parseIcsEvents($icsContent): array
     }
     return $events;
 }
+
+/**
+ * Führt alte und neue Änderungskategorien zusammen.
+ * - Für 'neu' und 'geloescht': neue Einträge überschreiben gleichnamige alte UIDs.
+ * - Für 'geaendert': neue Einträge überschreiben alte UIDs; optional werden Felder vereinheitlicht.
+ */
+
+function mergeChanges(array $old, array $new): array
+{
+    $merged = ['neu' => [], 'geloescht' => [], 'geaendert' => []];
+
+    foreach (['neu', 'geloescht', 'geaendert'] as $key) {
+        foreach ($old[$key] ?? [] as $uid => $payload) {
+            $event = $key === 'geaendert' ? ($payload['new'] ?? $payload['old'] ?? null) : $payload;
+            if ($event && strtotime($event['start']) >= time()) {
+                $merged[$key][$uid] = $payload;
+            }
+        }
+    }
+
+    foreach (['neu', 'geloescht', 'geaendert'] as $key) {
+        foreach ($new[$key] ?? [] as $uid => $payload) {
+            $merged[$key][$uid] = $payload;
+        }
+    }
+
+    return $merged;
+}
+
+
+/**
+ * Liest aenderungen.json aus dem gegebenen Pfad und gibt sie als Array zurück.
+ * @param string $path Pfad zu aenderungen.json.
+ */
+function loadExistingChanges(string $path): array
+{
+    $json = json_decode(file_get_contents($path), true);
+    return $json;
+}
+
+
 /**
  * Daniel
  * lädt den aktuellen Stundenplan und vergleicht ihn mit dem alten und speichert die Änderungen
@@ -72,6 +113,7 @@ function kalenderupdater(string $name, string $ordner)
     $eventsNeu = parseIcsEvents($ics_neu);
 
     //Kategorien der Änderungen
+
     $result = ['neu' => [], 'geloescht' => [], 'geaendert' => []];
 
     // Vergleich
@@ -79,6 +121,16 @@ function kalenderupdater(string $name, string $ordner)
     foreach ($allKeys as $uid) {
         $inOld = isset($eventsAlt[$uid]);
         $inNew = isset($eventsNeu[$uid]);
+
+        // Prüfen: Ist der relevante Termin in der Vergangenheit?
+        // Wir nehmen END, wenn vorhanden, sonst START.
+        $checkEvent = $inNew ? $eventsNeu[$uid] : ($eventsAlt[$uid] ?? null);
+        $dateStr = $checkEvent['end'] ?? $checkEvent['start'] ?? null;
+
+        if ($dateStr && strtotime($dateStr) < time()) {
+            continue; // Vergangenheit -> ignorieren
+        }
+
         if ($inNew && !$inOld) {
             $result['neu'][$uid] = $eventsNeu[$uid];
         } elseif ($inOld && !$inNew) {
@@ -96,20 +148,30 @@ function kalenderupdater(string $name, string $ordner)
         }
     }
 
-    // normalen aktuellen Stundenplan als JSON speichern
+
+    // --- alten Änderungen-Stand laden & sichern ---
+    $aenderungenPfad = $ordner . 'aenderungen.json';
+    $oldChanges = loadExistingChanges($aenderungenPfad);
+
+    // --- neue Änderungen (aus aktuellem Vergleich) mit alten zusammenführen ---
+    $mergedChanges = mergeChanges($oldChanges, $result);
+
+    // aktuellen Stundenplan als JSON speichern (wie bisher)
     file_put_contents(
         $ordner . 'stundenplan.json',
         json_encode($eventsNeu, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
     );
+    @chmod($ordner . 'stundenplan.json', 0664);
 
-    // Änderungen als JSON speichern
+    // zusammengeführte Änderungen als JSON speichern (ersetzt die alte Datei)
     file_put_contents(
-        $ordner . 'aenderungen.json',
-        json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+        $aenderungenPfad,
+        json_encode($mergedChanges, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
     );
+    @chmod($aenderungenPfad, 0664);
 }
 
-    
+
 //Runner für die Kalender-Updates aller Klassen (./Kalenderdateien/*)
 foreach (glob(__DIR__ . '/Kalenderdateien/*') as $dir) {
     if (!is_dir($dir)) continue;

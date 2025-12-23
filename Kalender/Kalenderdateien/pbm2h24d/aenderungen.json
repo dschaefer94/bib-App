@@ -1,5 +1,24 @@
 {
-    "neu": [],
+    "neu": {
+        "29985DCA34654A1AC1258CDF0008675B@bib.de": {
+            "summary": "1. Weihnachtsfeiertag",
+            "start": "20251225T080000",
+            "end": "20251225T170000",
+            "location": ""
+        },
+        "B91679DC60BF31BBC1258CE000086A74@bib.de": {
+            "summary": "2. Weihnachtsfeiertag",
+            "start": "20251226T080000",
+            "end": "20251226T170000",
+            "location": ""
+        },
+        "3EABAF51EDC735ADC1258D0000085955@bib.de": {
+            "summary": "Ferien",
+            "start": "20251224T080000",
+            "end": "20251224T170000",
+            "location": ""
+        }
+    },
     "geloescht": [],
     "geaendert": []
 }
