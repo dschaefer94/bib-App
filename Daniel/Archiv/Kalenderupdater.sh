@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 
 # Daniel
@@ -11,7 +10,6 @@
 # Ordner und Worker liegen hier mit im Ordner rum
 BASE_DIR="Kalenderdateien"
 UPDATER="Kalenderupdater.php"
-
 for klassenordner in "$BASE_DIR"/*; do
 # mit -d prüfen wir, ob es ein Verzeichnis ist,
 # continue skippt zur nächsten Iteration ohne den Updater aufzurufen

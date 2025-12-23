@@ -1,0 +1,2389 @@
+{
+    "neu": [],
+    "geloescht": [],
+    "geaendert": [],
+    "current": {
+        "A8A423BA59F68E4BC1258D0000085A51@bib.de": {
+            "summary": "Ferien",
+            "start": "20251013T080000",
+            "end": "20251013T170000",
+            "location": ""
+        },
+        "9A5A943478A8E957C1258D0000085A53@bib.de": {
+            "summary": "Ferien",
+            "start": "20251014T080000",
+            "end": "20251014T170000",
+            "location": ""
+        },
+        "2E7FD3170ACB3D3AC1258D0000085A54@bib.de": {
+            "summary": "Ferien",
+            "start": "20251015T080000",
+            "end": "20251015T170000",
+            "location": ""
+        },
+        "F1CE9AE9C95D82D7C1258D0000085A56@bib.de": {
+            "summary": "Ferien",
+            "start": "20251016T080000",
+            "end": "20251016T170000",
+            "location": ""
+        },
+        "DE018B45640B9E7DC1258D0000085A57@bib.de": {
+            "summary": "Ferien",
+            "start": "20251017T080000",
+            "end": "20251017T170000",
+            "location": ""
+        },
+        "2C62F43232C6B5DBC1258D0000085A59@bib.de": {
+            "summary": "Ferien",
+            "start": "20251018T080000",
+            "end": "20251018T170000",
+            "location": ""
+        },
+        "D864D24389668014C1258D0000085A5A@bib.de": {
+            "summary": "Ferien",
+            "start": "20251019T080000",
+            "end": "20251019T170000",
+            "location": ""
+        },
+        "E4D52171BC7C92A4C1258D0000085A5C@bib.de": {
+            "summary": "Ferien",
+            "start": "20251020T080000",
+            "end": "20251020T170000",
+            "location": ""
+        },
+        "7F306122118828ADC1258D0000085A5D@bib.de": {
+            "summary": "Ferien",
+            "start": "20251021T080000",
+            "end": "20251021T170000",
+            "location": ""
+        },
+        "90990EA5A99C01F9C1258D0000085A5F@bib.de": {
+            "summary": "Ferien",
+            "start": "20251022T080000",
+            "end": "20251022T170000",
+            "location": ""
+        },
+        "AA937B443C12ABA8C1258D0000085A61@bib.de": {
+            "summary": "Ferien",
+            "start": "20251023T080000",
+            "end": "20251023T170000",
+            "location": ""
+        },
+        "E23B73DA0FE24BBDC1258D0000085A62@bib.de": {
+            "summary": "Ferien",
+            "start": "20251024T080000",
+            "end": "20251024T170000",
+            "location": ""
+        },
+        "83AABE602DF9B1EFC1258D0000085A64@bib.de": {
+            "summary": "Ferien",
+            "start": "20251025T080000",
+            "end": "20251025T170000",
+            "location": ""
+        },
+        "D222420B949BE960C1258CAB00086EAF@bib.de": {
+            "summary": "Allerheiligen",
+            "start": "20251101T080000",
+            "end": "20251101T170000",
+            "location": ""
+        },
+        "C5CAE96633F8413DC1258D0800343E32@bib.de": {
+            "summary": "TopUp ENG CAM P-213",
+            "start": "20251028T153000",
+            "end": "20251028T170000",
+            "location": "P-213"
+        },
+        "74A90D9A9921E2BDC1258D08003440B6@bib.de": {
+            "summary": "SOT PAP P-103.P",
+            "start": "20251028T080000",
+            "end": "20251028T093000",
+            "location": "P-103.P"
+        },
+        "7E05C8DDA0D1B889C1258D08003440C6@bib.de": {
+            "summary": "SDP PAP P-102.D",
+            "start": "20251030T080000",
+            "end": "20251030T093000",
+            "location": "P-102.D"
+        },
+        "1429F6FB225BCFE9C1258D08003440D6@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251028T134500",
+            "end": "20251028T151500",
+            "location": "P-167.K"
+        },
+        "175BDE196157EC6FC1258D08003440E8@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251027T134500",
+            "end": "20251027T151500",
+            "location": "P-167.K"
+        },
+        "9E5C507010524C79C1258D08003440FA@bib.de": {
+            "summary": "SDP",
+            "start": "20251031T080000",
+            "end": "20251031T093000",
+            "location": ""
+        },
+        "E203CF3D0133B3BDC1258D080034410B@bib.de": {
+            "summary": "SPO STH P-166.A",
+            "start": "20251028T095000",
+            "end": "20251028T112000",
+            "location": "P-166.A"
+        },
+        "8851EDD00ECDAC0EC1258D080034411A@bib.de": {
+            "summary": "BED REB P-103.P",
+            "start": "20251028T113000",
+            "end": "20251028T130000",
+            "location": "P-103.P"
+        },
+        "0B63F11623EBB825C1258D0800344129@bib.de": {
+            "summary": "DSQ BOC P-220",
+            "start": "20251027T080000",
+            "end": "20251027T093000",
+            "location": "P-220"
+        },
+        "C06458DB1ACE27BDC1258D080034414B@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20251029T095000",
+            "end": "20251029T112000",
+            "location": "P-165.B"
+        },
+        "0EFF1E02E375748FC1258D080034415F@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20251029T113000",
+            "end": "20251029T130000",
+            "location": "P-165.B"
+        },
+        "39E056C0309C589BC1258D0800344181@bib.de": {
+            "summary": "SDP",
+            "start": "20251027T095000",
+            "end": "20251027T112000",
+            "location": ""
+        },
+        "DF5EDCD2F7ADFAF1C1258D0800344190@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251030T095000",
+            "end": "20251030T112000",
+            "location": "P-103.P"
+        },
+        "024F9BBA3D3F872FC1258D08003441A0@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251030T113000",
+            "end": "20251030T130000",
+            "location": "P-103.P"
+        },
+        "6B2188379DB94FA5C1258D08003441C3@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251031T095000",
+            "end": "20251031T112000",
+            "location": "P-168.E"
+        },
+        "B66F7A01256E5004C1258D08003441D4@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251030T134500",
+            "end": "20251030T151500",
+            "location": "P-168.E"
+        },
+        "8CB2EF89484DFB38C1258D08003441E3@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251031T113000",
+            "end": "20251031T130000",
+            "location": "P-168.E"
+        },
+        "DA492800111F9630C1258D08003441EE@bib.de": {
+            "summary": "BED REB P-223",
+            "start": "20251031T134500",
+            "end": "20251031T151500",
+            "location": "P-223"
+        },
+        "C60E325117EBAB39C1258D0800344D9A@bib.de": {
+            "summary": "bib -Talk NAK P-220",
+            "start": "20251029T130000",
+            "end": "20251029T134500",
+            "location": "P-220"
+        },
+        "500489D8211739BEC1258D0800344EB5@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251029T080000",
+            "end": "20251029T093000",
+            "location": "P-168.E"
+        },
+        "87F0ED20CF866CF6C1258D1B0021580E@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251027T113000",
+            "end": "20251027T130000",
+            "location": "P-167.K"
+        },
+        "953F98CCF6B06541C1258D0800343E33@bib.de": {
+            "summary": "TopUp ENG CAM P-225.GAR",
+            "start": "20251104T153000",
+            "end": "20251104T170000",
+            "location": "P-225.GAR"
+        },
+        "E09AC7973251EF0CC1258D0800344258@bib.de": {
+            "summary": "SOT PAP P-170.F",
+            "start": "20251104T080000",
+            "end": "20251104T093000",
+            "location": "P-170.F"
+        },
+        "38D5460B715CEE9AC1258D080034426B@bib.de": {
+            "summary": "SDP PAP P-167.K",
+            "start": "20251103T095000",
+            "end": "20251103T112000",
+            "location": "P-167.K"
+        },
+        "82AF6D79708E161EC1258D0800344280@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251104T134500",
+            "end": "20251104T151500",
+            "location": "P-167.K"
+        },
+        "38EFBFBC4FB1C93EC1258D0800344297@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251103T134500",
+            "end": "20251103T151500",
+            "location": "P-167.K"
+        },
+        "A0C8D4438C7C65E3C1258D08003442AE@bib.de": {
+            "summary": "SDP",
+            "start": "20251106T153000",
+            "end": "20251106T170000",
+            "location": ""
+        },
+        "F80BB3AA0054B47AC1258D08003442C2@bib.de": {
+            "summary": "SPO STH P-264",
+            "start": "20251104T095000",
+            "end": "20251104T112000",
+            "location": "P-264"
+        },
+        "83343071AC88A561C1258D08003442D5@bib.de": {
+            "summary": "BED REB P-222",
+            "start": "20251104T113000",
+            "end": "20251104T130000",
+            "location": "P-222"
+        },
+        "A889C93A3BA6837DC1258D08003442E8@bib.de": {
+            "summary": "DSQ BOC P-103.P",
+            "start": "20251103T080000",
+            "end": "20251103T093000",
+            "location": "P-103.P"
+        },
+        "7A1F0C452FB978F0C1258D0800344302@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251107T113000",
+            "end": "20251107T130000",
+            "location": "P-168.E"
+        },
+        "F816464F52DBFE68C1258D0800344311@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20251105T095000",
+            "end": "20251105T112000",
+            "location": "P-165.B"
+        },
+        "502A6718ED2A149CC1258D0800344329@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20251105T113000",
+            "end": "20251105T130000",
+            "location": "P-165.B"
+        },
+        "EDDFFA836FC3258FC1258D0800344352@bib.de": {
+            "summary": "SDP",
+            "start": "20251103T153000",
+            "end": "20251103T170000",
+            "location": ""
+        },
+        "70B7A2B1034B89D3C1258D0800344365@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251106T095000",
+            "end": "20251106T112000",
+            "location": "P-103.P"
+        },
+        "86B7FA1F0CF21C52C1258D0800344379@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251106T113000",
+            "end": "20251106T130000",
+            "location": "P-103.P"
+        },
+        "4CB7697041B19AF8C1258D08003443B9@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251107T095000",
+            "end": "20251107T112000",
+            "location": "P-168.E"
+        },
+        "D25E573876C40BE9C1258D08003443CE@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251105T134500",
+            "end": "20251105T151500",
+            "location": "P-168.E"
+        },
+        "7311BF9E80E43866C1258D08003443DF@bib.de": {
+            "summary": "BED REB P-223",
+            "start": "20251107T134500",
+            "end": "20251107T151500",
+            "location": "P-223"
+        },
+        "EB0741F4D03F3D8BC1258D0800344EB6@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251105T153000",
+            "end": "20251105T170000",
+            "location": "P-168.E"
+        },
+        "F9B9E26FA81F0597C1258D1B002180B5@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251103T113000",
+            "end": "20251103T130000",
+            "location": "P-167.K"
+        },
+        "ECF1BF2CDD909ADEC1258D30003FFB37@bib.de": {
+            "summary": "SOT PAP P-167.K",
+            "start": "20251106T080000",
+            "end": "20251106T093000",
+            "location": "P-167.K"
+        },
+        "841DFE61913B4425C1258D0800343E39@bib.de": {
+            "summary": "TopUp ENG CAM P-213",
+            "start": "20251111T153000",
+            "end": "20251111T170000",
+            "location": "P-213"
+        },
+        "91100006B856083DC1258D0800343E3A@bib.de": {
+            "summary": "TopUp ENG CAM P-266",
+            "start": "20251115T080000",
+            "end": "20251115T130000",
+            "location": "P-266"
+        },
+        "5226E26A3CC64BE2C1258D0800344446@bib.de": {
+            "summary": "SDP",
+            "start": "20251111T080000",
+            "end": "20251111T093000",
+            "location": ""
+        },
+        "B7AFC76B52DC5A6AC1258D080034445A@bib.de": {
+            "summary": "SPO STH P-223",
+            "start": "20251111T095000",
+            "end": "20251111T112000",
+            "location": "P-223"
+        },
+        "4CC8A5208F82F334C1258D080034446D@bib.de": {
+            "summary": "BED  P-103.P",
+            "start": "20251111T113000",
+            "end": "20251111T130000",
+            "location": "P-103.P"
+        },
+        "7937660566B2259DC1258D0800344480@bib.de": {
+            "summary": "DSQ BOC P-103.P",
+            "start": "20251111T134500",
+            "end": "20251111T151500",
+            "location": "P-103.P"
+        },
+        "AF0B73AB45890B89C1258D080034449A@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251114T113000",
+            "end": "20251114T130000",
+            "location": "P-168.E"
+        },
+        "DA035EA7DD0C6572C1258D08003444A9@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20251112T095000",
+            "end": "20251112T112000",
+            "location": "P-165.B"
+        },
+        "4405CFB24B9089EEC1258D08003444C1@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20251112T113000",
+            "end": "20251112T130000",
+            "location": "P-165.B"
+        },
+        "F4D3CC854C472D85C1258D08003444E9@bib.de": {
+            "summary": "SOT PAP P-171.L",
+            "start": "20251113T080000",
+            "end": "20251113T093000",
+            "location": "P-171.L"
+        },
+        "B8933924BAC9EDA4C1258D08003444FC@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251113T095000",
+            "end": "20251113T112000",
+            "location": "P-103.P"
+        },
+        "BD2CD635FEC68585C1258D0800344510@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251113T113000",
+            "end": "20251113T130000",
+            "location": "P-103.P"
+        },
+        "2BD107F985224CFBC1258D0800344550@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251113T134500",
+            "end": "20251113T151500",
+            "location": "P-168.E"
+        },
+        "BBF3B47C127F28C5C1258D0800344565@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251114T095000",
+            "end": "20251114T112000",
+            "location": "P-168.E"
+        },
+        "84EE8A979B48EFB1C1258D0800344576@bib.de": {
+            "summary": "BED REB P-223",
+            "start": "20251114T134500",
+            "end": "20251114T151500",
+            "location": "P-223"
+        },
+        "FF11DA431C322139C1258D0800344EB7@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251112T134500",
+            "end": "20251112T151500",
+            "location": "P-168.E"
+        },
+        "8A3F07677BAC88C1C1258D0A00236754@bib.de": {
+            "summary": "SCRUM-Workshop PAP\\,MEJ P-221\\,P-222",
+            "start": "20251110T080000",
+            "end": "20251110T151500",
+            "location": "P-221\\,P-222"
+        },
+        "83327FB8582CB151C1258D30004013FC@bib.de": {
+            "summary": "SDP",
+            "start": "20251113T153000",
+            "end": "20251113T170000",
+            "location": ""
+        },
+        "3657CF95FFE033BFC1258D0800343E34@bib.de": {
+            "summary": "TopUp ENG CAM P-213",
+            "start": "20251118T153000",
+            "end": "20251118T170000",
+            "location": "P-213"
+        },
+        "6271B75A47B33B90C1258D080034458C@bib.de": {
+            "summary": "SOT PAP P-167.K",
+            "start": "20251117T080000",
+            "end": "20251117T093000",
+            "location": "P-167.K"
+        },
+        "02249A9E6AFA8074C1258D080034459E@bib.de": {
+            "summary": "SDP PAP P-167.K",
+            "start": "20251117T095000",
+            "end": "20251117T112000",
+            "location": "P-167.K"
+        },
+        "F51E7164C73EB9D8C1258D08003445B2@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251117T113000",
+            "end": "20251117T130000",
+            "location": "P-167.K"
+        },
+        "A0EDBAD6CE606FA1C1258D08003445C8@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251117T134500",
+            "end": "20251117T151500",
+            "location": "P-167.K"
+        },
+        "348C98EF96D6630EC1258D08003445DD@bib.de": {
+            "summary": "SDP",
+            "start": "20251118T080000",
+            "end": "20251118T093000",
+            "location": ""
+        },
+        "072070A7D3E3B812C1258D08003445F0@bib.de": {
+            "summary": "SPO STH P-W6.MZH",
+            "start": "20251118T095000",
+            "end": "20251118T112000",
+            "location": "P-W6.MZH"
+        },
+        "AA5C03B3870E3851C1258D0800344602@bib.de": {
+            "summary": "BED REB P-103.P",
+            "start": "20251118T113000",
+            "end": "20251118T130000",
+            "location": "P-103.P"
+        },
+        "96C1656B3A7C79ABC1258D0800344615@bib.de": {
+            "summary": "* DSQ BOC P-214.215",
+            "start": "20251118T134500",
+            "end": "20251118T151500",
+            "location": "P-214.215"
+        },
+        "8820056BF28D3A64C1258D0800344630@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251119T134500",
+            "end": "20251119T151500",
+            "location": "P-168.E"
+        },
+        "B4A49BE61B1EF443C1258D080034463F@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20251119T095000",
+            "end": "20251119T112000",
+            "location": "P-165.B"
+        },
+        "E6058CE807CCB4EEC1258D0800344657@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20251119T113000",
+            "end": "20251119T130000",
+            "location": "P-165.B"
+        },
+        "0D6617FD6447CA42C1258D080034467E@bib.de": {
+            "summary": "SOT PAP P-171.L",
+            "start": "20251120T080000",
+            "end": "20251120T093000",
+            "location": "P-171.L"
+        },
+        "604EABAAD99C5CEEC1258D0800344690@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251120T095000",
+            "end": "20251120T112000",
+            "location": "P-103.P"
+        },
+        "07D91D5BE0813757C1258D08003446A3@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251120T113000",
+            "end": "20251120T130000",
+            "location": "P-103.P"
+        },
+        "DC6BDD5E18A57B39C1258D08003446E1@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251121T095000",
+            "end": "20251121T112000",
+            "location": "P-168.E"
+        },
+        "B938959050A9C282C1258D08003446F4@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251121T113000",
+            "end": "20251121T130000",
+            "location": "P-168.E"
+        },
+        "DE36806BD0612BC6C1258D0800344705@bib.de": {
+            "summary": "BED REB P-258",
+            "start": "20251121T134500",
+            "end": "20251121T151500",
+            "location": "P-258"
+        },
+        "862CE13776CDAD0CC1258D0800344EB8@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251119T080000",
+            "end": "20251119T093000",
+            "location": "P-168.E"
+        },
+        "0D7B390B9F382C85C1258D31003455B9@bib.de": {
+            "summary": "REB P-220",
+            "start": "20251120T134500",
+            "end": "20251120T151500",
+            "location": "P-220"
+        },
+        "62EB2FE2A807DF52C1258D0800343E3B@bib.de": {
+            "summary": "TopUp ENG CAM P-266",
+            "start": "20251129T080000",
+            "end": "20251129T130000",
+            "location": "P-266"
+        },
+        "7D59F8E43B4699F2C1258D0800344715@bib.de": {
+            "summary": "SOT PAP P-167.K",
+            "start": "20251124T080000",
+            "end": "20251124T093000",
+            "location": "P-167.K"
+        },
+        "14EA6785F6565673C1258D0800344728@bib.de": {
+            "summary": "SDP PAP P-167.K",
+            "start": "20251124T095000",
+            "end": "20251124T112000",
+            "location": "P-167.K"
+        },
+        "6E1B3AA65B366223C1258D080034473C@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251124T113000",
+            "end": "20251124T130000",
+            "location": "P-167.K"
+        },
+        "70224A53E9135FBFC1258D0800344752@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251124T134500",
+            "end": "20251124T151500",
+            "location": "P-167.K"
+        },
+        "8858B7B21B4E5290C1258D0800344766@bib.de": {
+            "summary": "SDP",
+            "start": "20251125T080000",
+            "end": "20251125T093000",
+            "location": ""
+        },
+        "6F2C679E78B2A456C1258D0800344779@bib.de": {
+            "summary": "SPO STH P-W6.MZH",
+            "start": "20251125T113000",
+            "end": "20251125T130000",
+            "location": "P-W6.MZH"
+        },
+        "7EB08E35526CE353C1258D080034478B@bib.de": {
+            "summary": "BED REB P-103.P",
+            "start": "20251127T080000",
+            "end": "20251127T093000",
+            "location": "P-103.P"
+        },
+        "19E7E360EA7D789DC1258D080034479E@bib.de": {
+            "summary": "* DSQ BOC P-103.P",
+            "start": "20251125T134500",
+            "end": "20251125T151500",
+            "location": "P-103.P"
+        },
+        "2AC7EBF8D9DA0CFFC1258D08003447B9@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251126T134500",
+            "end": "20251126T151500",
+            "location": "P-168.E"
+        },
+        "F2D69844A3CE072FC1258D08003447C8@bib.de": {
+            "summary": "ADE  P-165.B",
+            "start": "20251126T095000",
+            "end": "20251126T112000",
+            "location": "P-165.B"
+        },
+        "7DC4292E8478CA22C1258D08003447E0@bib.de": {
+            "summary": "ADE  P-165.B",
+            "start": "20251126T113000",
+            "end": "20251126T130000",
+            "location": "P-165.B"
+        },
+        "04CC5C9BB9D15A7AC1258D0800344807@bib.de": {
+            "summary": "SDP",
+            "start": "20251125T095000",
+            "end": "20251125T112000",
+            "location": ""
+        },
+        "8BEE4DE2360EE83EC1258D0800344819@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251127T095000",
+            "end": "20251127T112000",
+            "location": "P-103.P"
+        },
+        "578AF65217D08431C1258D080034482C@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251127T113000",
+            "end": "20251127T130000",
+            "location": "P-103.P"
+        },
+        "1B6CD8AF6CC71EC7C1258D080034486A@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251127T134500",
+            "end": "20251127T151500",
+            "location": "P-168.E"
+        },
+        "8AD13009CFDD62C3C1258D080034487D@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251128T095000",
+            "end": "20251128T112000",
+            "location": "P-168.E"
+        },
+        "48D2B795D8A6A326C1258D080034488E@bib.de": {
+            "summary": "BED REB P-223",
+            "start": "20251128T134500",
+            "end": "20251128T151500",
+            "location": "P-223"
+        },
+        "A9E1DCF94194F4FBC1258D0800344EB9@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251128T113000",
+            "end": "20251128T130000",
+            "location": "P-168.E"
+        },
+        "352C1A305DC46BB6C1258D320034F2FB@bib.de": {
+            "summary": "Projekt-Info TEP P-141.Forum",
+            "start": "20251124T153000",
+            "end": "20251124T163000",
+            "location": "P-141.Forum"
+        },
+        "4A879E2D01DD7869C1258D0800343E36@bib.de": {
+            "summary": "TopUp ENG CAM P-225.GAR",
+            "start": "20251202T153000",
+            "end": "20251202T170000",
+            "location": "P-225.GAR"
+        },
+        "3D3295CAB412FAF5C1258D080034489E@bib.de": {
+            "summary": "SOT PAP P-167.K",
+            "start": "20251201T080000",
+            "end": "20251201T093000",
+            "location": "P-167.K"
+        },
+        "B4C5783D1E113FF9C1258D08003448B1@bib.de": {
+            "summary": "SDP PAP P-167.K",
+            "start": "20251201T095000",
+            "end": "20251201T112000",
+            "location": "P-167.K"
+        },
+        "42BB1C44006A2A02C1258D08003448C6@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251201T113000",
+            "end": "20251201T130000",
+            "location": "P-167.K"
+        },
+        "8897E39CF89ADA7EC1258D08003448DD@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251201T134500",
+            "end": "20251201T151500",
+            "location": "P-167.K"
+        },
+        "5B1C9481D3195744C1258D08003448F3@bib.de": {
+            "summary": "SDP",
+            "start": "20251202T080000",
+            "end": "20251202T093000",
+            "location": ""
+        },
+        "520E15BB07CDDB92C1258D0800344907@bib.de": {
+            "summary": "SPO STH P-W6.MZH",
+            "start": "20251202T095000",
+            "end": "20251202T112000",
+            "location": "P-W6.MZH"
+        },
+        "4498A99A15394024C1258D080034491A@bib.de": {
+            "summary": "BED REB P-103.P",
+            "start": "20251202T113000",
+            "end": "20251202T130000",
+            "location": "P-103.P"
+        },
+        "901E1BABCD6935E9C1258D080034492E@bib.de": {
+            "summary": "DSQ BOC P-165.G",
+            "start": "20251202T134500",
+            "end": "20251202T151500",
+            "location": "P-165.G"
+        },
+        "0617F0B6AE67A35DC1258D0800344949@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251201T153000",
+            "end": "20251201T170000",
+            "location": "P-168.E"
+        },
+        "8DA7F0BED379FABDC1258D0800344959@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20251203T095000",
+            "end": "20251203T112000",
+            "location": "P-165.B"
+        },
+        "B97155933C4E0998C1258D0800344971@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20251203T113000",
+            "end": "20251203T130000",
+            "location": "P-165.B"
+        },
+        "033522EA476F5D1FC1258D080034499A@bib.de": {
+            "summary": "SDP",
+            "start": "20251204T080000",
+            "end": "20251204T093000",
+            "location": ""
+        },
+        "815F7B05CED42FD2C1258D08003449AD@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251204T095000",
+            "end": "20251204T112000",
+            "location": "P-103.P"
+        },
+        "4714CD877574DAE1C1258D08003449C0@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251204T113000",
+            "end": "20251204T130000",
+            "location": "P-103.P"
+        },
+        "CABBA70ED8623735C1258D0800344A01@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251205T095000",
+            "end": "20251205T112000",
+            "location": "P-168.E"
+        },
+        "29ECDD9C5DB6EF97C1258D0800344A15@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251205T113000",
+            "end": "20251205T130000",
+            "location": "P-168.E"
+        },
+        "4E41C016C6A17A86C1258D0800344A27@bib.de": {
+            "summary": "BED REB P-225.GAR",
+            "start": "20251205T080000",
+            "end": "20251205T093000",
+            "location": "P-225.GAR"
+        },
+        "00108DC4846254D6C1258D0800344A2F@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20251203T134500",
+            "end": "20251203T151500",
+            "location": "P-172.M"
+        },
+        "FE656D92B32041B6C1258D0800344A30@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20251204T153000",
+            "end": "20251204T170000",
+            "location": "P-172.M"
+        },
+        "5B06287972676BDCC1258D0800344A31@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20251204T134500",
+            "end": "20251204T151500",
+            "location": "P-172.M"
+        },
+        "11E609FC1ED71477C1258D0800344EBA@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251203T080000",
+            "end": "20251203T093000",
+            "location": "P-168.E"
+        },
+        "15C0F3B973FBF4F7C1258D0800343E37@bib.de": {
+            "summary": "TopUp ENG CAM P-225.GAR",
+            "start": "20251209T153000",
+            "end": "20251209T170000",
+            "location": "P-225.GAR"
+        },
+        "A8E124CD048DA04CC1258D0800343E3C@bib.de": {
+            "summary": "TopUp ENG CAM P-266",
+            "start": "20251213T080000",
+            "end": "20251213T130000",
+            "location": "P-266"
+        },
+        "41CECF94459C9EC0C1258D0800344A3D@bib.de": {
+            "summary": "* SOT PAP P-216.217",
+            "start": "20251209T113000",
+            "end": "20251209T130000",
+            "location": "P-216.217"
+        },
+        "52154E991982AB4AC1258D0800344A4F@bib.de": {
+            "summary": "SDP PAP P-167.K",
+            "start": "20251211T080000",
+            "end": "20251211T093000",
+            "location": "P-167.K"
+        },
+        "A3430BBDA3A63FEEC1258D0800344A62@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251208T113000",
+            "end": "20251208T130000",
+            "location": "P-167.K"
+        },
+        "00CF914AE93DA64BC1258D0800344A79@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251208T134500",
+            "end": "20251208T151500",
+            "location": "P-167.K"
+        },
+        "006E3EFAE9A01C4FC1258D0800344A8F@bib.de": {
+            "summary": "SDP",
+            "start": "20251208T080000",
+            "end": "20251208T093000",
+            "location": ""
+        },
+        "A7FFF543F97D2E99C1258D0800344AA2@bib.de": {
+            "summary": "SPO STH P-W6.MZH",
+            "start": "20251209T080000",
+            "end": "20251209T093000",
+            "location": "P-W6.MZH"
+        },
+        "F20EAF594D1C06C1C1258D0800344AB3@bib.de": {
+            "summary": "BED REB P-102.D",
+            "start": "20251209T095000",
+            "end": "20251209T112000",
+            "location": "P-102.D"
+        },
+        "F3FDD12854DD666FC1258D0800344AC6@bib.de": {
+            "summary": "DSQ BOC P-265",
+            "start": "20251209T134500",
+            "end": "20251209T151500",
+            "location": "P-265"
+        },
+        "9F253F5B16A500FAC1258D0800344ADF@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251208T153000",
+            "end": "20251208T170000",
+            "location": "P-168.E"
+        },
+        "AEBE0BD85F4BAA03C1258D0800344AEC@bib.de": {
+            "summary": "ADE  P-165.B",
+            "start": "20251210T095000",
+            "end": "20251210T112000",
+            "location": "P-165.B"
+        },
+        "5252EB442083E9EBC1258D0800344B04@bib.de": {
+            "summary": "ADE  P-103.P",
+            "start": "20251210T134500",
+            "end": "20251210T151500",
+            "location": "P-103.P"
+        },
+        "688686BCD3ACE22AC1258D0800344B1E@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20251210T113000",
+            "end": "20251210T130000",
+            "location": "P-172.M"
+        },
+        "AA0A040643AC2855C1258D0800344B2B@bib.de": {
+            "summary": "SDP",
+            "start": "20251211T153000",
+            "end": "20251211T170000",
+            "location": ""
+        },
+        "967EA2D778E2D17FC1258D0800344B3D@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251211T095000",
+            "end": "20251211T112000",
+            "location": "P-103.P"
+        },
+        "40AF9DEED59305D7C1258D0800344B4F@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251211T113000",
+            "end": "20251211T130000",
+            "location": "P-103.P"
+        },
+        "239094EEB0A86A98C1258D0800344B69@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20251211T134500",
+            "end": "20251211T151500",
+            "location": "P-172.M"
+        },
+        "4F4CF20C78019374C1258D0800344B6F@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20251212T080000",
+            "end": "20251212T093000",
+            "location": "P-172.M"
+        },
+        "58F079ADDBE11471C1258D0800344B8D@bib.de": {
+            "summary": "* DES KUE P-168.E",
+            "start": "20251212T095000",
+            "end": "20251212T112000",
+            "location": "P-168.E"
+        },
+        "AFADCDD03F91E71AC1258D0800344BA0@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251212T113000",
+            "end": "20251212T130000",
+            "location": "P-168.E"
+        },
+        "27B92D47619A3D7BC1258D0800344BB0@bib.de": {
+            "summary": "BED REB P-220",
+            "start": "20251208T095000",
+            "end": "20251208T112000",
+            "location": "P-220"
+        },
+        "79E49BA00C4146B7C1258D0800344EBB@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251210T080000",
+            "end": "20251210T093000",
+            "location": "P-168.E"
+        },
+        "D242769D3D4FC0F5C1258D0800343E38@bib.de": {
+            "summary": "TopUp ENG CAM P-213",
+            "start": "20251216T153000",
+            "end": "20251216T170000",
+            "location": "P-213"
+        },
+        "4CE719092E2BE119C1258D0800344BBF@bib.de": {
+            "summary": "SOT PAP P-167.K",
+            "start": "20251215T080000",
+            "end": "20251215T093000",
+            "location": "P-167.K"
+        },
+        "4343211E2E39408DC1258D0800344BD2@bib.de": {
+            "summary": "SDP PAP P-167.K",
+            "start": "20251215T095000",
+            "end": "20251215T112000",
+            "location": "P-167.K"
+        },
+        "21661F191D71385DC1258D0800344BE5@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251215T113000",
+            "end": "20251215T130000",
+            "location": "P-167.K"
+        },
+        "30B07C2A5B30C45AC1258D0800344BFE@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20251215T134500",
+            "end": "20251215T151500",
+            "location": "P-167.K"
+        },
+        "D32CF99E78E79D00C1258D0800344C14@bib.de": {
+            "summary": "SDP",
+            "start": "20251216T080000",
+            "end": "20251216T093000",
+            "location": ""
+        },
+        "4A7EFAE3AD50B301C1258D0800344C28@bib.de": {
+            "summary": "SPO STH P-223",
+            "start": "20251216T095000",
+            "end": "20251216T112000",
+            "location": "P-223"
+        },
+        "A5593EB01D2FA484C1258D0800344C3B@bib.de": {
+            "summary": "BED REB P-103.P",
+            "start": "20251216T113000",
+            "end": "20251216T130000",
+            "location": "P-103.P"
+        },
+        "F072AAD210154A88C1258D0800344C50@bib.de": {
+            "summary": "DSQ BOC P-218",
+            "start": "20251216T134500",
+            "end": "20251216T151500",
+            "location": "P-218"
+        },
+        "FA41A7C65D214913C1258D0800344C6B@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251215T153000",
+            "end": "20251215T170000",
+            "location": "P-168.E"
+        },
+        "B478F5ECFA90672EC1258D0800344C7A@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20251217T095000",
+            "end": "20251217T112000",
+            "location": "P-165.B"
+        },
+        "5EC23451515BA1D9C1258D0800344C93@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20251217T113000",
+            "end": "20251217T130000",
+            "location": "P-165.B"
+        },
+        "F66302454972FB2CC1258D0800344CAF@bib.de": {
+            "summary": "* IDE WNS P-172.M",
+            "start": "20251217T134500",
+            "end": "20251217T151500",
+            "location": "P-172.M"
+        },
+        "45B91B3C7E326CA6C1258D0800344CD0@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251218T095000",
+            "end": "20251218T112000",
+            "location": "P-103.P"
+        },
+        "D7836D9D28ED8D83C1258D0800344CE4@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20251218T113000",
+            "end": "20251218T130000",
+            "location": "P-103.P"
+        },
+        "4D5575900846425DC1258D0800344D02@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20251218T080000",
+            "end": "20251218T093000",
+            "location": "P-172.M"
+        },
+        "CB7366687EA39D76C1258D0800344D08@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20251219T080000",
+            "end": "20251219T093000",
+            "location": "P-172.M"
+        },
+        "E716288B93B2A6D5C1258D0800344D26@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251219T095000",
+            "end": "20251219T112000",
+            "location": "P-168.E"
+        },
+        "0FB660BFE3B01820C1258D0800344D3A@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20251219T113000",
+            "end": "20251219T130000",
+            "location": "P-168.E"
+        },
+        "A72FE8BADC6DD43EC1258D0800344EBC@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20251217T080000",
+            "end": "20251217T093000",
+            "location": "P-168.E"
+        },
+        "0452722D5E8C6838C1258D1E0052D0C6@bib.de": {
+            "summary": "Schöne Weihnachtsferien! VOT\\,STH\\,LAM\\,OBR\\,WNS\\,BOC\\,AHN\\,KAE\\,MEJ\\,SSA\\,GLR\\,LHE\\,GRR\\,KAZ\\,HKE\\,DYC\\,KCH\\,SCS\\,JUT\\,KUE\\,TEP\\,REB\\,PAP\\,WET\\,HER\\,WNI\\,SMS\\,FIM\\,BHA\\,NAA\\,KMA\\,GAM\\,MEI\\,BIM\\,BMO\\,KOD\\,ARI\\,BOB\\,NEU\\,ERC\\,GUT\\,INH\\,WUE\\,NIH\\,IQB\\,CAM\\,WDL\\,POP\\,ADA\\,FIB\\,BEL\\,LNO\\,SPR\\,DRP\\,GUN\\,PMC\\,BEY\\,NEH\\,LUA\\,LEM\\,BE4\\,CAN\\,BAJ\\,POJ\\,PLA\\,GCH\\,CAE",
+            "start": "20251219T130500",
+            "end": "20251219T151500",
+            "location": ""
+        },
+        "430A2C30B5BB490DC1258D1E005462BE@bib.de": {
+            "summary": "Weihnachtsfeier VOT\\,STH\\,LAM\\,OBR\\,WNS\\,BOC\\,AHN\\,KAE\\,MEJ\\,SSA\\,GLR\\,LHE\\,GRR\\,KAZ\\,HKE\\,DYC\\,KCH\\,SCS\\,JUT\\,KUE\\,TEP\\,REB\\,PAP\\,WET\\,HER\\,WNI\\,SMS\\,FIM\\,BHA\\,NAA\\,KMA\\,GAM\\,MEI\\,BIM\\,BMO\\,KOD\\,ARI\\,BOB\\,NEU\\,ERC\\,GUT\\,INH\\,WUE\\,NIH\\,IQB\\,CAM\\,WDL\\,POP\\,ADA\\,FIB\\,BEL\\,LNO\\,SPR\\,DRP\\,GUN\\,PMC\\,BEY\\,NEH\\,LUA\\,LEM\\,BE4\\,CAN\\,BAJ\\,POJ\\,PLA\\,GCH\\,CAE",
+            "start": "20251218T130500",
+            "end": "20251218T170000",
+            "location": ""
+        },
+        "29985DCA34654A1AC1258CDF0008675B@bib.de": {
+            "summary": "1. Weihnachtsfeiertag",
+            "start": "20251225T080000",
+            "end": "20251225T170000",
+            "location": ""
+        },
+        "B91679DC60BF31BBC1258CE000086A74@bib.de": {
+            "summary": "2. Weihnachtsfeiertag",
+            "start": "20251226T080000",
+            "end": "20251226T170000",
+            "location": ""
+        },
+        "45F2B26DD55CEDEFC1258D0000085A65@bib.de": {
+            "summary": "Ferien",
+            "start": "20251222T080000",
+            "end": "20251222T170000",
+            "location": ""
+        },
+        "B190DFFA46182BFEC1258D0000085A67@bib.de": {
+            "summary": "Ferien",
+            "start": "20251223T080000",
+            "end": "20251223T170000",
+            "location": ""
+        },
+        "138B06061ABAA476C1258D0000085A68@bib.de": {
+            "summary": "Ferien",
+            "start": "20251224T080000",
+            "end": "20251224T170000",
+            "location": ""
+        },
+        "389400E83751DAB8C1258D0000085A6A@bib.de": {
+            "summary": "Ferien",
+            "start": "20251225T080000",
+            "end": "20251225T170000",
+            "location": ""
+        },
+        "E50A76F261AE27BEC1258D0000085A6C@bib.de": {
+            "summary": "Ferien",
+            "start": "20251226T080000",
+            "end": "20251226T170000",
+            "location": ""
+        },
+        "4F265D528E85CF29C1258D0000085A6D@bib.de": {
+            "summary": "Ferien",
+            "start": "20251227T080000",
+            "end": "20251227T170000",
+            "location": ""
+        },
+        "3DBC9043192BC60EC1258D0000085A6F@bib.de": {
+            "summary": "Ferien",
+            "start": "20251228T080000",
+            "end": "20251228T170000",
+            "location": ""
+        },
+        "F4DFA9E117050DA9C1258CE600085C71@bib.de": {
+            "summary": "Neujahr (Agent)",
+            "start": "20260101T080000",
+            "end": "20260101T170000",
+            "location": ""
+        },
+        "18CB64589916F521C1258D0000085A70@bib.de": {
+            "summary": "Ferien (Agent)",
+            "start": "20251229T080000",
+            "end": "20251229T170000",
+            "location": ""
+        },
+        "6D473B06DFFE6AC1C1258D0000085A72@bib.de": {
+            "summary": "Ferien (Agent)",
+            "start": "20251230T080000",
+            "end": "20251230T170000",
+            "location": ""
+        },
+        "5324E917B3746BD1C1258D0000085A73@bib.de": {
+            "summary": "Ferien (Agent)",
+            "start": "20251231T080000",
+            "end": "20251231T170000",
+            "location": ""
+        },
+        "F18927AAB72E2FCDC1258D0000085A75@bib.de": {
+            "summary": "Ferien (Agent)",
+            "start": "20260101T080000",
+            "end": "20260101T170000",
+            "location": ""
+        },
+        "22D6AF4640A8360EC1258D0000085A76@bib.de": {
+            "summary": "Ferien (Agent)",
+            "start": "20260102T080000",
+            "end": "20260102T170000",
+            "location": ""
+        },
+        "E05FC50694E178E1C1258D0000085A78@bib.de": {
+            "summary": "Ferien (Agent)",
+            "start": "20260103T080000",
+            "end": "20260103T170000",
+            "location": ""
+        },
+        "0BAF8FB32878986DC1258D0000085A7A@bib.de": {
+            "summary": "Ferien (Agent)",
+            "start": "20260104T080000",
+            "end": "20260104T170000",
+            "location": ""
+        },
+        "7F8778DE9E6C5192C1258D0000085A7B@bib.de": {
+            "summary": "Ferien",
+            "start": "20260105T080000",
+            "end": "20260105T170000",
+            "location": ""
+        },
+        "CEC8BFE1563ADE75C1258D0000085A7D@bib.de": {
+            "summary": "Ferien",
+            "start": "20260106T080000",
+            "end": "20260106T170000",
+            "location": ""
+        },
+        "A79AD556D6A671A7C1258D3F0038350E@bib.de": {
+            "summary": "TopUp ENG CAM P-266",
+            "start": "20260110T080000",
+            "end": "20260110T130000",
+            "location": "P-266"
+        },
+        "829250238A0636EEC1258D3F0038352B@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20260107T095000",
+            "end": "20260107T112000",
+            "location": "P-165.B"
+        },
+        "FB61879C9162B74CC1258D3F0038353F@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20260107T113000",
+            "end": "20260107T130000",
+            "location": "P-165.B"
+        },
+        "C93758A359850745C1258D3F00383554@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20260107T134500",
+            "end": "20260107T151500",
+            "location": "P-172.M"
+        },
+        "294157E6EFEB2EE5C1258D3F00383563@bib.de": {
+            "summary": "SDP",
+            "start": "20260108T080000",
+            "end": "20260108T093000",
+            "location": ""
+        },
+        "B0118E5C71050F08C1258D3F00383574@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20260108T095000",
+            "end": "20260108T112000",
+            "location": "P-103.P"
+        },
+        "200D94DD5988E56DC1258D3F00383585@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20260108T113000",
+            "end": "20260108T130000",
+            "location": "P-103.P"
+        },
+        "B72C497A178F35FCC1258D3F0038359C@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20260108T134500",
+            "end": "20260108T151500",
+            "location": "P-172.M"
+        },
+        "30F60053F1602C24C1258D3F003835A2@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20260108T153000",
+            "end": "20260108T170000",
+            "location": "P-172.M"
+        },
+        "F0E863D8F9FFA8E8C1258D3F003835BD@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20260109T095000",
+            "end": "20260109T112000",
+            "location": "P-168.E"
+        },
+        "062756607BAFA3E4C1258D3F003835CE@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20260109T113000",
+            "end": "20260109T130000",
+            "location": "P-168.E"
+        },
+        "E711BD116CC31C45C1258D3F003835DC@bib.de": {
+            "summary": "* BED REB P-223",
+            "start": "20260109T134500",
+            "end": "20260109T151500",
+            "location": "P-223"
+        },
+        "BF2AE1FED4F04E39C1258D3F00383614@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20260107T080000",
+            "end": "20260107T093000",
+            "location": "P-168.E"
+        },
+        "23C49B471A65590FC1258D3F0038350A@bib.de": {
+            "summary": "TopUp ENG CAM P-213",
+            "start": "20260113T153000",
+            "end": "20260113T170000",
+            "location": "P-213"
+        },
+        "38C20197AD975A43C1258D3F0038361D@bib.de": {
+            "summary": "SOT PAP P-167.K",
+            "start": "20260112T080000",
+            "end": "20260112T093000",
+            "location": "P-167.K"
+        },
+        "ED0C269E4CBD890CC1258D3F00383632@bib.de": {
+            "summary": "SDP PAP P-167.K",
+            "start": "20260112T095000",
+            "end": "20260112T112000",
+            "location": "P-167.K"
+        },
+        "404FE3953D1E0EC4C1258D3F00383648@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20260112T113000",
+            "end": "20260112T130000",
+            "location": "P-167.K"
+        },
+        "F16EA6176418C5AAC1258D3F00383661@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20260112T134500",
+            "end": "20260112T151500",
+            "location": "P-167.K"
+        },
+        "157AD53E351AB7D7C1258D3F0038366B@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20260116T080000",
+            "end": "20260116T093000",
+            "location": "P-168.E"
+        },
+        "8D3B53E2FCD3E622C1258D3F00383676@bib.de": {
+            "summary": "SDP",
+            "start": "20260113T080000",
+            "end": "20260113T093000",
+            "location": ""
+        },
+        "6DB2F9297E4C2906C1258D3F0038368B@bib.de": {
+            "summary": "SPO STH P-W6.MZH",
+            "start": "20260113T095000",
+            "end": "20260113T112000",
+            "location": "P-W6.MZH"
+        },
+        "BCBC396F81FFE8ACC1258D3F0038369F@bib.de": {
+            "summary": "BED REB P-103.P",
+            "start": "20260113T113000",
+            "end": "20260113T130000",
+            "location": "P-103.P"
+        },
+        "92F82DDF95A63C7AC1258D3F003836B4@bib.de": {
+            "summary": "* DSQ BOC P-103.P",
+            "start": "20260113T134500",
+            "end": "20260113T151500",
+            "location": "P-103.P"
+        },
+        "B0BB5328C52CC462C1258D3F003836D4@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20260114T080000",
+            "end": "20260114T093000",
+            "location": "P-168.E"
+        },
+        "795307861773BCDCC1258D3F003836E1@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20260114T095000",
+            "end": "20260114T112000",
+            "location": "P-165.B"
+        },
+        "4138E454ED11D6FDC1258D3F003836FB@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20260114T113000",
+            "end": "20260114T130000",
+            "location": "P-165.B"
+        },
+        "F5C9B2380659E9EEC1258D3F00383715@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20260114T134500",
+            "end": "20260114T151500",
+            "location": "P-172.M"
+        },
+        "5C9978718C16EF41C1258D3F0038372A@bib.de": {
+            "summary": "SDP",
+            "start": "20260115T080000",
+            "end": "20260115T093000",
+            "location": ""
+        },
+        "2E27B0C0D18E1B40C1258D3F0038373E@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20260115T095000",
+            "end": "20260115T112000",
+            "location": "P-103.P"
+        },
+        "7D080C5F41EC2DB4C1258D3F00383753@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20260115T113000",
+            "end": "20260115T130000",
+            "location": "P-103.P"
+        },
+        "5244B19447FA3541C1258D3F0038376F@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20260115T134500",
+            "end": "20260115T151500",
+            "location": "P-172.M"
+        },
+        "03D2EABA07EA3616C1258D3F00383779@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20260115T153000",
+            "end": "20260115T170000",
+            "location": "P-172.M"
+        },
+        "570C37B8EA45F30CC1258D3F0038379A@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20260116T095000",
+            "end": "20260116T112000",
+            "location": "P-168.E"
+        },
+        "160FE83B447D24F1C1258D3F003837AF@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20260116T113000",
+            "end": "20260116T130000",
+            "location": "P-168.E"
+        },
+        "FC989A530250D4B8C1258D3F003837C2@bib.de": {
+            "summary": "BED REB P-223",
+            "start": "20260116T134500",
+            "end": "20260116T151500",
+            "location": "P-223"
+        },
+        "001C7B1358F3124CC1258D3F0038350B@bib.de": {
+            "summary": "TopUp ENG CAM P-225.GAR",
+            "start": "20260120T153000",
+            "end": "20260120T170000",
+            "location": "P-225.GAR"
+        },
+        "96F47536F7C2E316C1258D3F0038350F@bib.de": {
+            "summary": "TopUp ENG CAM P-266",
+            "start": "20260124T080000",
+            "end": "20260124T130000",
+            "location": "P-266"
+        },
+        "F505BB9F829E4005C1258D3F003837E6@bib.de": {
+            "summary": "SDP  P-167.K",
+            "start": "20260119T095000",
+            "end": "20260119T112000",
+            "location": "P-167.K"
+        },
+        "916DCDB270EAE0A2C1258D3F003837FA@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20260119T113000",
+            "end": "20260119T130000",
+            "location": "P-167.K"
+        },
+        "0B957FFADA56B4FDC1258D3F00383812@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20260119T134500",
+            "end": "20260119T151500",
+            "location": "P-167.K"
+        },
+        "959E3185693CB771C1258D3F0038381B@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20260119T153000",
+            "end": "20260119T170000",
+            "location": "P-168.E"
+        },
+        "414E84851BEE9F54C1258D3F00383826@bib.de": {
+            "summary": "SDP",
+            "start": "20260120T080000",
+            "end": "20260120T093000",
+            "location": ""
+        },
+        "4D9A61E37C7F99B7C1258D3F0038383A@bib.de": {
+            "summary": "SPO STH P-W6.MZH",
+            "start": "20260120T095000",
+            "end": "20260120T112000",
+            "location": "P-W6.MZH"
+        },
+        "EF20B9F3678EF3D8C1258D3F0038384F@bib.de": {
+            "summary": "BED REB P-103.P",
+            "start": "20260120T113000",
+            "end": "20260120T130000",
+            "location": "P-103.P"
+        },
+        "B071619E0977226AC1258D3F00383862@bib.de": {
+            "summary": "DSQ BOC P-103.P",
+            "start": "20260120T134500",
+            "end": "20260120T151500",
+            "location": "P-103.P"
+        },
+        "08FB1FA7FCAC603FC1258D3F0038387F@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20260121T080000",
+            "end": "20260121T093000",
+            "location": "P-168.E"
+        },
+        "0F3333854E5E1722C1258D3F0038388C@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20260121T095000",
+            "end": "20260121T112000",
+            "location": "P-165.B"
+        },
+        "DB8539EB4A43D1C9C1258D3F003838A4@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20260121T113000",
+            "end": "20260121T130000",
+            "location": "P-165.B"
+        },
+        "9909195550E48DA0C1258D3F003838BC@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20260121T134500",
+            "end": "20260121T151500",
+            "location": "P-172.M"
+        },
+        "45F9B5C39D0E51EFC1258D3F003838D1@bib.de": {
+            "summary": "SDP",
+            "start": "20260122T080000",
+            "end": "20260122T093000",
+            "location": ""
+        },
+        "AF36BEDD36DC05AAC1258D3F003838E3@bib.de": {
+            "summary": "* HCI KAZ P-103.P",
+            "start": "20260122T095000",
+            "end": "20260122T112000",
+            "location": "P-103.P"
+        },
+        "8B6E8C17A5E76FA5C1258D3F003838F7@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20260122T113000",
+            "end": "20260122T130000",
+            "location": "P-103.P"
+        },
+        "07D313CD5EF2AAB5C1258D3F00383910@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20260122T134500",
+            "end": "20260122T151500",
+            "location": "P-172.M"
+        },
+        "AE0D44F4F9BBCCA0C1258D3F0038391A@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20260122T153000",
+            "end": "20260122T170000",
+            "location": "P-172.M"
+        },
+        "2E363A2961A84E2DC1258D3F0038393A@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20260123T095000",
+            "end": "20260123T112000",
+            "location": "P-168.E"
+        },
+        "9562D7766C70A6A7C1258D3F0038394E@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20260123T113000",
+            "end": "20260123T130000",
+            "location": "P-168.E"
+        },
+        "6ED9C7ADB60881A7C1258D3F00383960@bib.de": {
+            "summary": "BED REB P-216.217",
+            "start": "20260123T134500",
+            "end": "20260123T151500",
+            "location": "P-216.217"
+        },
+        "900A79B8330EBB7EC1258D3F003848CD@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20260123T080000",
+            "end": "20260123T093000",
+            "location": "P-168.E"
+        },
+        "0C8EC0683CC1D1B9C1258D4F0062B77A@bib.de": {
+            "summary": "Info FHDW Aufbaustudium  P-IMS.Online",
+            "start": "20260121T153000",
+            "end": "20260121T170000",
+            "location": "P-IMS.Online"
+        },
+        "84098F0E43F1A4FAC1258D3F0038350C@bib.de": {
+            "summary": "TopUp ENG CAM P-252",
+            "start": "20260127T153000",
+            "end": "20260127T170000",
+            "location": "P-252"
+        },
+        "873C4C2E03F7FFBFC1258D3F00383983@bib.de": {
+            "summary": "SDP  P-167.K",
+            "start": "20260126T095000",
+            "end": "20260126T112000",
+            "location": "P-167.K"
+        },
+        "29FCDC7BE84C12D1C1258D3F00383999@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20260126T113000",
+            "end": "20260126T130000",
+            "location": "P-167.K"
+        },
+        "2622DBE7BEE27168C1258D3F003839B2@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20260126T134500",
+            "end": "20260126T151500",
+            "location": "P-167.K"
+        },
+        "D5AB2BBDA2ECCC8BC1258D3F003839BC@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20260126T153000",
+            "end": "20260126T170000",
+            "location": "P-168.E"
+        },
+        "C2D29E83B0E39606C1258D3F003839C7@bib.de": {
+            "summary": "SDP  P-103.P",
+            "start": "20260127T080000",
+            "end": "20260127T093000",
+            "location": "P-103.P"
+        },
+        "1F0889E2BA7D2575C1258D3F003839DC@bib.de": {
+            "summary": "SPO STH P-103.P",
+            "start": "20260127T095000",
+            "end": "20260127T112000",
+            "location": "P-103.P"
+        },
+        "A48885D9BFE914C5C1258D3F003839F2@bib.de": {
+            "summary": "BED REB P-103.P",
+            "start": "20260127T113000",
+            "end": "20260127T130000",
+            "location": "P-103.P"
+        },
+        "1C1AFF214E39CC31C1258D3F00383A07@bib.de": {
+            "summary": "DSQ BOC P-103.P",
+            "start": "20260127T134500",
+            "end": "20260127T151500",
+            "location": "P-103.P"
+        },
+        "0DBCE40B9F5FB2BCC1258D3F00383A27@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20260128T080000",
+            "end": "20260128T093000",
+            "location": "P-168.E"
+        },
+        "0F385D11F7726365C1258D3F00383A34@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20260128T095000",
+            "end": "20260128T112000",
+            "location": "P-165.B"
+        },
+        "F24485338F7B3324C1258D3F00383A4E@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20260128T113000",
+            "end": "20260128T130000",
+            "location": "P-165.B"
+        },
+        "B57CC5C5E64801E1C1258D3F00383A68@bib.de": {
+            "summary": "IDE WNS P-165.B",
+            "start": "20260128T134500",
+            "end": "20260128T151500",
+            "location": "P-165.B"
+        },
+        "B6FE4E4433654E50C1258D3F00383A7D@bib.de": {
+            "summary": "SDP  P-167.K",
+            "start": "20260130T080000",
+            "end": "20260130T093000",
+            "location": "P-167.K"
+        },
+        "0F733B193966424DC1258D3F00383A90@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20260129T095000",
+            "end": "20260129T112000",
+            "location": "P-103.P"
+        },
+        "27A748E30E1766E1C1258D3F00383AA5@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20260129T113000",
+            "end": "20260129T130000",
+            "location": "P-103.P"
+        },
+        "5C14786D9FCE92EEC1258D3F00383AC0@bib.de": {
+            "summary": "IDE WNS P-102.D",
+            "start": "20260129T134500",
+            "end": "20260129T151500",
+            "location": "P-102.D"
+        },
+        "7BB2F1AADF81B777C1258D3F00383ACA@bib.de": {
+            "summary": "IDE WNS P-102.D",
+            "start": "20260129T153000",
+            "end": "20260129T170000",
+            "location": "P-102.D"
+        },
+        "878DB878C1D0F1EDC1258D3F00383AEB@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20260130T095000",
+            "end": "20260130T112000",
+            "location": "P-168.E"
+        },
+        "FA8F9FC805C06BE8C1258D3F00383B00@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20260130T113000",
+            "end": "20260130T130000",
+            "location": "P-168.E"
+        },
+        "9478AFC3F13CFBEAC1258D3F00383B13@bib.de": {
+            "summary": "BED REB P-167.K",
+            "start": "20260130T134500",
+            "end": "20260130T151500",
+            "location": "P-167.K"
+        },
+        "28892F839B8DA148C1258D3F00383509@bib.de": {
+            "summary": "IELTS-Prüfung in Bergisch Gladbach",
+            "start": "20260207T080000",
+            "end": "20260207T170000",
+            "location": ""
+        },
+        "7EFCECA809FCBAD9C1258D3F0038350D@bib.de": {
+            "summary": "TopUp ENG CAM P-213",
+            "start": "20260203T153000",
+            "end": "20260203T170000",
+            "location": "P-213"
+        },
+        "2E78733BF421F90EC1258D3F00383B36@bib.de": {
+            "summary": "SDP  P-167.K",
+            "start": "20260202T080000",
+            "end": "20260202T093000",
+            "location": "P-167.K"
+        },
+        "7C213F6A4BF0F0A3C1258D3F00383B4B@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20260202T113000",
+            "end": "20260202T130000",
+            "location": "P-167.K"
+        },
+        "53AD77B977D2CCC3C1258D3F00383B62@bib.de": {
+            "summary": "SSD BMO P-167.K",
+            "start": "20260202T095000",
+            "end": "20260202T112000",
+            "location": "P-167.K"
+        },
+        "5E388972E639304FC1258D3F00383B74@bib.de": {
+            "summary": "SDP PAP\\,REB P-218",
+            "start": "20260206T080000",
+            "end": "20260206T093000",
+            "location": "P-218"
+        },
+        "72864740E7279180C1258D3F00383B89@bib.de": {
+            "summary": "SPO STH P-W6.MZH",
+            "start": "20260203T095000",
+            "end": "20260203T112000",
+            "location": "P-W6.MZH"
+        },
+        "701D5D00A7155809C1258D3F00383B9E@bib.de": {
+            "summary": "BED REB P-103.P",
+            "start": "20260203T113000",
+            "end": "20260203T130000",
+            "location": "P-103.P"
+        },
+        "64498B17B738501FC1258D3F00383BB2@bib.de": {
+            "summary": "DSQ BOC P-103.P",
+            "start": "20260203T134500",
+            "end": "20260203T151500",
+            "location": "P-103.P"
+        },
+        "9C420B8E29041739C1258D3F00383BDA@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20260204T095000",
+            "end": "20260204T112000",
+            "location": "P-165.B"
+        },
+        "96FEEAECD40CB2D4C1258D3F00383BF2@bib.de": {
+            "summary": "ADE DYC P-165.B",
+            "start": "20260204T113000",
+            "end": "20260204T130000",
+            "location": "P-165.B"
+        },
+        "7307D0B90F72B66CC1258D3F00383C09@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20260204T134500",
+            "end": "20260204T151500",
+            "location": "P-172.M"
+        },
+        "DE0A39AAE0D460A5C1258D3F00383C1D@bib.de": {
+            "summary": "SDP PAP\\,REB P-218",
+            "start": "20260206T113000",
+            "end": "20260206T130000",
+            "location": "P-218"
+        },
+        "2DC3029F115B890AC1258D3F00383C30@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20260205T095000",
+            "end": "20260205T112000",
+            "location": "P-103.P"
+        },
+        "B85DA0D7196F2490C1258D3F00383C44@bib.de": {
+            "summary": "HCI KAZ P-103.P",
+            "start": "20260205T113000",
+            "end": "20260205T130000",
+            "location": "P-103.P"
+        },
+        "8EF7DC3C4836D388C1258D3F00383C5D@bib.de": {
+            "summary": "* IDE WNS P-172.M",
+            "start": "20260205T134500",
+            "end": "20260205T151500",
+            "location": "P-172.M"
+        },
+        "6DE5DE7A1B5A9E7EC1258D3F00383C66@bib.de": {
+            "summary": "IDE WNS P-172.M",
+            "start": "20260205T153000",
+            "end": "20260205T170000",
+            "location": "P-172.M"
+        },
+        "DC27677718643A20C1258D3F00383C85@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20260204T153000",
+            "end": "20260204T170000",
+            "location": "P-168.E"
+        },
+        "1CD71DFE984E6C48C1258D3F00383C98@bib.de": {
+            "summary": "DES KUE P-168.E",
+            "start": "20260203T080000",
+            "end": "20260203T093000",
+            "location": "P-168.E"
+        },
+        "30BA285152EBF3BDC1258D3F00383CA7@bib.de": {
+            "summary": "BED REB P-223",
+            "start": "20260204T080000",
+            "end": "20260204T093000",
+            "location": "P-223"
+        },
+        "1040CD63A0844F43C1258D3F003848C1@bib.de": {
+            "summary": "SDP PAP\\,REB P-218",
+            "start": "20260206T095000",
+            "end": "20260206T112000",
+            "location": "P-218"
+        },
+        "364581C69F15A602C1258D3F003848CE@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20260205T080000",
+            "end": "20260205T093000",
+            "location": "P-168.E"
+        },
+        "714319E1221D5FB4C1258D3F003848CF@bib.de": {
+            "summary": "DES  P-168.E",
+            "start": "20260206T134500",
+            "end": "20260206T151500",
+            "location": "P-168.E"
+        },
+        "93A952FA2427220BC1258D0000085A7E@bib.de": {
+            "summary": "Projekt",
+            "start": "20260209T080000",
+            "end": "20260209T170000",
+            "location": ""
+        },
+        "5CC91D0A7C884AFAC1258D0000085A80@bib.de": {
+            "summary": "Projekt",
+            "start": "20260210T080000",
+            "end": "20260210T170000",
+            "location": ""
+        },
+        "988FF4F387D7C20DC1258D0000085A81@bib.de": {
+            "summary": "Projekt",
+            "start": "20260211T080000",
+            "end": "20260211T170000",
+            "location": ""
+        },
+        "78787B9BCB922ECFC1258D0000085A83@bib.de": {
+            "summary": "Projekt",
+            "start": "20260212T080000",
+            "end": "20260212T170000",
+            "location": ""
+        },
+        "2BD4931CD7E5D690C1258D0000085A85@bib.de": {
+            "summary": "Projekt",
+            "start": "20260213T080000",
+            "end": "20260213T170000",
+            "location": ""
+        },
+        "D2D25FEF7C788B9BC1258D0000085A86@bib.de": {
+            "summary": "Projekt",
+            "start": "20260214T080000",
+            "end": "20260214T170000",
+            "location": ""
+        },
+        "9B90659291D575CAC1258D0000085A88@bib.de": {
+            "summary": "Projekt",
+            "start": "20260215T080000",
+            "end": "20260215T170000",
+            "location": ""
+        },
+        "47471D9024F9A1ECC1258D0000085A89@bib.de": {
+            "summary": "Projekt",
+            "start": "20260216T080000",
+            "end": "20260216T170000",
+            "location": ""
+        },
+        "76421FB4CEB06B22C1258D0000085A8B@bib.de": {
+            "summary": "Projekt",
+            "start": "20260217T080000",
+            "end": "20260217T170000",
+            "location": ""
+        },
+        "490C2A054B27A00DC1258D0000085A8C@bib.de": {
+            "summary": "Projekt",
+            "start": "20260218T080000",
+            "end": "20260218T170000",
+            "location": ""
+        },
+        "9444BE326522B6CEC1258D0000085A8E@bib.de": {
+            "summary": "Projekt",
+            "start": "20260219T080000",
+            "end": "20260219T170000",
+            "location": ""
+        },
+        "5B920B5143155D1AC1258D0000085A8F@bib.de": {
+            "summary": "Projekt",
+            "start": "20260220T080000",
+            "end": "20260220T170000",
+            "location": ""
+        },
+        "5DD2BAABB743D1B7C1258D0000085A91@bib.de": {
+            "summary": "Projekt",
+            "start": "20260221T080000",
+            "end": "20260221T170000",
+            "location": ""
+        },
+        "349F3E6955E4EF98C1258D0000085A93@bib.de": {
+            "summary": "Projekt",
+            "start": "20260222T080000",
+            "end": "20260222T170000",
+            "location": ""
+        },
+        "A1F0CE5AFFAE5876C1258D0000085A94@bib.de": {
+            "summary": "Projekt",
+            "start": "20260223T080000",
+            "end": "20260223T170000",
+            "location": ""
+        },
+        "49748E5F103D9F65C1258D0000085A96@bib.de": {
+            "summary": "Projekt",
+            "start": "20260224T080000",
+            "end": "20260224T170000",
+            "location": ""
+        },
+        "B71918A7986E1BB5C1258D0000085A97@bib.de": {
+            "summary": "Projekt",
+            "start": "20260225T080000",
+            "end": "20260225T170000",
+            "location": ""
+        },
+        "89EE88D4C7D20999C1258D0000085A99@bib.de": {
+            "summary": "Projekt",
+            "start": "20260226T080000",
+            "end": "20260226T170000",
+            "location": ""
+        },
+        "5643771AC90EBE5EC1258D0000085A9A@bib.de": {
+            "summary": "Projekt",
+            "start": "20260227T080000",
+            "end": "20260227T170000",
+            "location": ""
+        },
+        "1C3871A198216B3DC1258D0000085A9C@bib.de": {
+            "summary": "Projekt",
+            "start": "20260228T080000",
+            "end": "20260228T170000",
+            "location": ""
+        },
+        "FEA8464E00A86338C1258D0000085A9E@bib.de": {
+            "summary": "Projekt",
+            "start": "20260301T080000",
+            "end": "20260301T170000",
+            "location": ""
+        },
+        "89537B3B1C95F0D5C1258D0000085A9F@bib.de": {
+            "summary": "Projekt",
+            "start": "20260302T080000",
+            "end": "20260302T170000",
+            "location": ""
+        },
+        "D502BAE0F0467A78C1258D0000085AA1@bib.de": {
+            "summary": "Projekt",
+            "start": "20260303T080000",
+            "end": "20260303T170000",
+            "location": ""
+        },
+        "A31961E99522A258C1258D0000085AA2@bib.de": {
+            "summary": "Projekt",
+            "start": "20260304T080000",
+            "end": "20260304T170000",
+            "location": ""
+        },
+        "7BB12E86C5A89E3AC1258D0000085AA4@bib.de": {
+            "summary": "Projekt",
+            "start": "20260305T080000",
+            "end": "20260305T170000",
+            "location": ""
+        },
+        "096946F5A402F1DBC1258D0000085AA5@bib.de": {
+            "summary": "Projekt",
+            "start": "20260306T080000",
+            "end": "20260306T170000",
+            "location": ""
+        },
+        "9B44AEF0F246EB9DC1258D0000085AA7@bib.de": {
+            "summary": "Projekt",
+            "start": "20260307T080000",
+            "end": "20260307T170000",
+            "location": ""
+        },
+        "8993026A3D7260A2C1258D0000085AA8@bib.de": {
+            "summary": "Projekt",
+            "start": "20260308T080000",
+            "end": "20260308T170000",
+            "location": ""
+        },
+        "E5B4509A35874E1AC1258D4F0062676A@bib.de": {
+            "summary": "Info FHDW Aufbaustudium  P-212",
+            "start": "20260304T153000",
+            "end": "20260304T170000",
+            "location": "P-212"
+        },
+        "698D45F0A101ABEDC1258D0000085AAA@bib.de": {
+            "summary": "Projekt",
+            "start": "20260309T080000",
+            "end": "20260309T170000",
+            "location": ""
+        },
+        "1F4EF7901ED9312AC1258D0000085AAC@bib.de": {
+            "summary": "Projekt",
+            "start": "20260310T080000",
+            "end": "20260310T170000",
+            "location": ""
+        },
+        "C398E817F678BC5CC1258D0000085AAD@bib.de": {
+            "summary": "Projekt",
+            "start": "20260311T080000",
+            "end": "20260311T170000",
+            "location": ""
+        },
+        "51894A9C310A7642C1258D0000085AAF@bib.de": {
+            "summary": "Projekt",
+            "start": "20260312T080000",
+            "end": "20260312T170000",
+            "location": ""
+        },
+        "EA2C0E432420DD0EC1258D0000085AB0@bib.de": {
+            "summary": "Projekt",
+            "start": "20260313T080000",
+            "end": "20260313T170000",
+            "location": ""
+        },
+        "0D84CBD94CBBBFB9C1258D0000085AB2@bib.de": {
+            "summary": "Projekt",
+            "start": "20260314T080000",
+            "end": "20260314T170000",
+            "location": ""
+        },
+        "B9E69AE2DD2DE076C1258D0000085AB3@bib.de": {
+            "summary": "Projekt",
+            "start": "20260315T080000",
+            "end": "20260315T170000",
+            "location": ""
+        },
+        "88B19662E06BC2A8C1258D0000085AB5@bib.de": {
+            "summary": "Projekt",
+            "start": "20260316T080000",
+            "end": "20260316T170000",
+            "location": ""
+        },
+        "C0C7C10186955875C1258D0000085AB7@bib.de": {
+            "summary": "Projekt",
+            "start": "20260317T080000",
+            "end": "20260317T170000",
+            "location": ""
+        },
+        "1E65E9C974E46ABBC1258D0000085AB8@bib.de": {
+            "summary": "Projekt",
+            "start": "20260318T080000",
+            "end": "20260318T170000",
+            "location": ""
+        },
+        "F3D281F1D6D6028DC1258D0000085ABA@bib.de": {
+            "summary": "Projekt",
+            "start": "20260319T080000",
+            "end": "20260319T170000",
+            "location": ""
+        },
+        "D741685CF98D15F8C1258D0000085ABB@bib.de": {
+            "summary": "Projekt",
+            "start": "20260320T080000",
+            "end": "20260320T170000",
+            "location": ""
+        },
+        "494EA8B89FC07633C1258D0000085ABD@bib.de": {
+            "summary": "Projekt",
+            "start": "20260321T080000",
+            "end": "20260321T170000",
+            "location": ""
+        },
+        "64EEDAA73E132BECC1258D0000085ABE@bib.de": {
+            "summary": "Projekt",
+            "start": "20260322T080000",
+            "end": "20260322T170000",
+            "location": ""
+        },
+        "986FB126D22E1DE4C1258D0000085AC0@bib.de": {
+            "summary": "Projekt",
+            "start": "20260323T080000",
+            "end": "20260323T170000",
+            "location": ""
+        },
+        "3E7461C6F8B6B87CC1258D0000085AC1@bib.de": {
+            "summary": "Projekt",
+            "start": "20260324T080000",
+            "end": "20260324T170000",
+            "location": ""
+        },
+        "66E6CC8F08A7D4CEC1258D0000085AC3@bib.de": {
+            "summary": "Projekt",
+            "start": "20260325T080000",
+            "end": "20260325T170000",
+            "location": ""
+        },
+        "55BED565E3A4B85DC1258D0000085AC5@bib.de": {
+            "summary": "Projekt",
+            "start": "20260326T080000",
+            "end": "20260326T170000",
+            "location": ""
+        },
+        "AC54C48382F252F1C1258D0000085AC6@bib.de": {
+            "summary": "Projekt",
+            "start": "20260327T080000",
+            "end": "20260327T170000",
+            "location": ""
+        },
+        "F46B1B24E1859799C1258D0000085AC8@bib.de": {
+            "summary": "Projekt",
+            "start": "20260328T080000",
+            "end": "20260328T170000",
+            "location": ""
+        },
+        "4657FF6C824F58D4C1258D0000085AC9@bib.de": {
+            "summary": "Projekt",
+            "start": "20260329T080000",
+            "end": "20260329T170000",
+            "location": ""
+        },
+        "4B70A713184913EFC1258D3E000DDA2E@bib.de": {
+            "summary": "Projekt",
+            "start": "20260330T080000",
+            "end": "20260330T170000",
+            "location": ""
+        },
+        "58299B43A8516207C1258D3E000DDA2F@bib.de": {
+            "summary": "Projekt",
+            "start": "20260331T080000",
+            "end": "20260331T170000",
+            "location": ""
+        },
+        "3F6D5DCE8AD943FEC1258D3E000DDA30@bib.de": {
+            "summary": "Projekt",
+            "start": "20260401T080000",
+            "end": "20260401T170000",
+            "location": ""
+        },
+        "BAE2F506DBF3A96DC1258D3E000DDA31@bib.de": {
+            "summary": "Projekt",
+            "start": "20260402T080000",
+            "end": "20260402T170000",
+            "location": ""
+        },
+        "6DCAC0D10CDA06DFC1258D3E000DDA33@bib.de": {
+            "summary": "Ferien",
+            "start": "20260403T080000",
+            "end": "20260403T170000",
+            "location": ""
+        },
+        "9DCF9741C2703966C1258D3E000DDA34@bib.de": {
+            "summary": "Ferien",
+            "start": "20260404T080000",
+            "end": "20260404T170000",
+            "location": ""
+        },
+        "1BBEC7E4436E95ADC1258D3E000DDA35@bib.de": {
+            "summary": "Ferien",
+            "start": "20260405T080000",
+            "end": "20260405T170000",
+            "location": ""
+        },
+        "E2AAB1771DF0527FC1258D42000DDE0C@bib.de": {
+            "summary": "Karfreitag",
+            "start": "20260403T080000",
+            "end": "20260403T170000",
+            "location": ""
+        },
+        "419F83A3FA293CF2C1258D3E000DDA36@bib.de": {
+            "summary": "Ferien",
+            "start": "20260406T080000",
+            "end": "20260406T170000",
+            "location": ""
+        },
+        "CE102CCE97569BC4C1258D3E000DDA37@bib.de": {
+            "summary": "Ferien",
+            "start": "20260407T080000",
+            "end": "20260407T170000",
+            "location": ""
+        },
+        "39F61F8BE21FFF2AC1258D3E000DDA38@bib.de": {
+            "summary": "Ferien",
+            "start": "20260408T080000",
+            "end": "20260408T170000",
+            "location": ""
+        },
+        "37EB0442293F9276C1258D3E000DDA39@bib.de": {
+            "summary": "Ferien",
+            "start": "20260409T080000",
+            "end": "20260409T170000",
+            "location": ""
+        },
+        "4108F969FEE502DEC1258D3E000DDA3A@bib.de": {
+            "summary": "Ferien",
+            "start": "20260410T080000",
+            "end": "20260410T170000",
+            "location": ""
+        },
+        "AC6E952385FAD59FC1258D45000DE063@bib.de": {
+            "summary": "Ostermontag",
+            "start": "20260406T080000",
+            "end": "20260406T170000",
+            "location": ""
+        },
+        "8C20D776747A167BC1258D5E000DE4F6@bib.de": {
+            "summary": "Tag der Arbeit",
+            "start": "20260501T080000",
+            "end": "20260501T170000",
+            "location": ""
+        },
+        "C5834212778AF87FC1258D3E000DDA3B@bib.de": {
+            "summary": "Brückentag",
+            "start": "20260515T080000",
+            "end": "20260515T170000",
+            "location": ""
+        },
+        "CBA4DE5881704D0DC1258D3E000DDA3C@bib.de": {
+            "summary": "Ferien",
+            "start": "20260526T080000",
+            "end": "20260526T170000",
+            "location": ""
+        },
+        "616025BD54A852A1C1258D3E000DDA3D@bib.de": {
+            "summary": "Brückentag",
+            "start": "20260605T080000",
+            "end": "20260605T170000",
+            "location": ""
+        },
+        "EF81C4E43E475DA0C1258D3E000DDA3E@bib.de": {
+            "summary": "Ferien",
+            "start": "20260720T080000",
+            "end": "20260720T170000",
+            "location": ""
+        },
+        "DA2BC12895BB18A1C1258D3E000DDA3F@bib.de": {
+            "summary": "Ferien",
+            "start": "20260721T080000",
+            "end": "20260721T170000",
+            "location": ""
+        },
+        "927DC4A118F17A6FC1258D3E000DDA41@bib.de": {
+            "summary": "Ferien",
+            "start": "20260722T080000",
+            "end": "20260722T170000",
+            "location": ""
+        },
+        "8642A8295A69DC29C1258D3E000DDA43@bib.de": {
+            "summary": "Ferien",
+            "start": "20260723T080000",
+            "end": "20260723T170000",
+            "location": ""
+        },
+        "6ED189BB1C242EA6C1258D3E000DDA44@bib.de": {
+            "summary": "Ferien",
+            "start": "20260724T080000",
+            "end": "20260724T170000",
+            "location": ""
+        },
+        "DC55C74193C53254C1258D3E000DDA46@bib.de": {
+            "summary": "Ferien",
+            "start": "20260725T080000",
+            "end": "20260725T170000",
+            "location": ""
+        },
+        "37DEEA8E82511F14C1258D3E000DDA47@bib.de": {
+            "summary": "Ferien",
+            "start": "20260726T080000",
+            "end": "20260726T170000",
+            "location": ""
+        },
+        "6FBF7DCCEDE936EEC1258D3E000DDA49@bib.de": {
+            "summary": "Ferien",
+            "start": "20260727T080000",
+            "end": "20260727T170000",
+            "location": ""
+        },
+        "6D5B309199D316DAC1258D3E000DDA4A@bib.de": {
+            "summary": "Ferien",
+            "start": "20260728T080000",
+            "end": "20260728T170000",
+            "location": ""
+        },
+        "0B2DFBC3AE82867EC1258D3E000DDA4C@bib.de": {
+            "summary": "Ferien",
+            "start": "20260729T080000",
+            "end": "20260729T170000",
+            "location": ""
+        },
+        "06B93C3F80D4C3E1C1258D3E000DDA4D@bib.de": {
+            "summary": "Ferien",
+            "start": "20260730T080000",
+            "end": "20260730T170000",
+            "location": ""
+        },
+        "1D1DE471D80ED4ABC1258D3E000DDA4F@bib.de": {
+            "summary": "Ferien",
+            "start": "20260731T080000",
+            "end": "20260731T170000",
+            "location": ""
+        },
+        "257E698767FD39C8C1258D3E000DDA51@bib.de": {
+            "summary": "Ferien",
+            "start": "20260801T080000",
+            "end": "20260801T170000",
+            "location": ""
+        },
+        "3DA752945336859FC1258D3E000DDA52@bib.de": {
+            "summary": "Ferien",
+            "start": "20260802T080000",
+            "end": "20260802T170000",
+            "location": ""
+        },
+        "DDE0E26A797ABAE7C1258D3E000DDA54@bib.de": {
+            "summary": "Ferien",
+            "start": "20260803T080000",
+            "end": "20260803T170000",
+            "location": ""
+        },
+        "4A98467A5E8DB747C1258D3E000DDA55@bib.de": {
+            "summary": "Ferien",
+            "start": "20260804T080000",
+            "end": "20260804T170000",
+            "location": ""
+        },
+        "3955E08615376165C1258D3E000DDA57@bib.de": {
+            "summary": "Ferien",
+            "start": "20260805T080000",
+            "end": "20260805T170000",
+            "location": ""
+        },
+        "1BC6C6642F13C9D2C1258D3E000DDA58@bib.de": {
+            "summary": "Ferien",
+            "start": "20260806T080000",
+            "end": "20260806T170000",
+            "location": ""
+        },
+        "CC88C593513922D2C1258D3E000DDA5A@bib.de": {
+            "summary": "Ferien",
+            "start": "20260807T080000",
+            "end": "20260807T170000",
+            "location": ""
+        },
+        "A5197AA3D124596DC1258D3E000DDA5C@bib.de": {
+            "summary": "Ferien",
+            "start": "20260808T080000",
+            "end": "20260808T170000",
+            "location": ""
+        },
+        "4383A6F01A5EBDD7C1258D3E000DDA5D@bib.de": {
+            "summary": "Ferien",
+            "start": "20260809T080000",
+            "end": "20260809T170000",
+            "location": ""
+        },
+        "245EAC5FE3916E8FC1258D3E000DDA5F@bib.de": {
+            "summary": "Ferien",
+            "start": "20260810T080000",
+            "end": "20260810T170000",
+            "location": ""
+        },
+        "07F4D1BC2C8454A4C1258D3E000DDA60@bib.de": {
+            "summary": "Ferien",
+            "start": "20260811T080000",
+            "end": "20260811T170000",
+            "location": ""
+        },
+        "D351FA761E83C9D2C1258D3E000DDA62@bib.de": {
+            "summary": "Ferien",
+            "start": "20260812T080000",
+            "end": "20260812T170000",
+            "location": ""
+        },
+        "856E942EBD4A00C8C1258D3E000DDA63@bib.de": {
+            "summary": "Ferien",
+            "start": "20260813T080000",
+            "end": "20260813T170000",
+            "location": ""
+        },
+        "5ECA0266A72B3CCAC1258D3E000DDA65@bib.de": {
+            "summary": "Ferien",
+            "start": "20260814T080000",
+            "end": "20260814T170000",
+            "location": ""
+        }
+    }
+}
