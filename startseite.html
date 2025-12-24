@@ -2,35 +2,27 @@
 <html lang="de">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Startseite</title>
-    <link rel="stylesheet" href="CSS/layout.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Hauptseite</title>
 </head>
 
-<body class="login-page">
-    <main class="login-form">
-        <div class="card">
-            <header style="text-align: center; margin-bottom: 20px;">
-                <h1>Herzlich Willkommen</h1>
-                <h2 id="name"></h2>
-                <h2 id="klasse"></h2>
-                
-            </header>
 
-            <section id="stundenplanbox" style="text-align: center; margin: 40px 0;">
-                <h2>Stundenplan</h2>
-                <div id="stundenplan" style="border: 1px dashed #ccc; padding: 50px; background-color: #f9f9f9;">
+<body>
+  <header>
+    <h1>Termine <span id="dayLabel"></span></h1>
+    <div>
+      <button id="prevBtn" type="button" aria-label="Vorheriger Tag">← Zurück</button>
+      <button id="todayBtn" type="button" aria-label="Heute anzeigen">Heute</button>
+      <button id="nextBtn" type="button" aria-label="Nächster Tag">Weiter →</button>
+    </div>
+  </header>
 
-                </div>
-            </section>
+  <section id="status">Lade Termine …</section>
+  <section id="list" hidden></section>
 
-            <div class="actions" style="display: flex; justify-content: space-between; margin-top: 20px;">
-                <a href="profil.html" class="btn">Profil bearbeiten</a>
-                <a href="index.html" class="btn">Logout</a>
-            </div>
-        </div>
-    </main>
+
+    <!-- JS separat laden -->
     <script src="js/stundenplan.js"></script>
 </body>
 
