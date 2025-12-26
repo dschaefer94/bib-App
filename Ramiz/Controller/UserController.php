@@ -5,48 +5,76 @@ use ppb\Model\UserModel;
 
 class UserController
 {
-    public function getUser($data = null)
+    private $model;
+
+    public function __construct()
     {
-        $data = $data ?? $_GET;
+        $this->model = new UserModel();
+    }
 
-        $username = $data['username'] ?? '';
-        $password = $data['password'] ?? '';
+    /**
+     * GET /user — список всех пользователей (для теста, можно оставить)
+     */
+    public function getUser()
+    {
+        $rows = $this->model->selectUser();
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($rows, JSON_UNESCAPED_UNICODE);
+    }
 
-        $model = new UserModel();
-        $user = $model->getUserByUsername($username);
+    /**
+     * POST /user — вход пользователя (логин)
+     * ПРЯМОЕ СРАВНЕНИЕ ПАРОЛЯ БЕЗ ХЕШИРОВАНИЯ (только для отладки!)
+     */
+    public function writeUser()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        $data = json_decode(file_get_contents('php://input'), true) ?? [];
+
+        if (empty($data['email']) || empty($data['password'])) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Email und Passwort sind erforderlich'
+            ]);
+            return;
+        }
+
+        $user = $this->model->getUserByEmail($data['email']);
 
         if (!$user) {
+            http_response_code(401);
             echo json_encode([
-                "success" => false,
-                "message" => "User not found"
+                'success' => false,
+                'message' => 'Benutzer nicht gefunden'
             ]);
             return;
         }
 
-        if ($password !== $user['passwort']) {
+ 
+        // ВРЕМЕННОЕ ПРЯМОЕ СРАВНЕНИЕ  ПАРОЛЯ
+        // ───────────────────────────────
+        if ($data['password'] !== $user['passwort']) {
+            http_response_code(401);
             echo json_encode([
-                "success" => false,
-                "message" => "Wrong password"
+                'success' => false,
+                'message' => 'Password falsch '
             ]);
             return;
         }
 
+
+        $_SESSION['user_id'] = $user['benutzer_id'];
+
+        http_response_code(200);
         echo json_encode([
-            "success" => true,
-            "user" => [
-                "id" => $user['benutzer_id'],
-                "email" => $user['email']
+            'success' => true,
+            'message' => 'Es Läuft (Test)',
+            'user' => [
+                'id' => $user['benutzer_id'],
+                'email' => $user['email']
             ]
         ]);
-    }
-
-    public function writeUser($data)
-    {
-        $this->getUser($data);
-    }
-
-    public function login($data = null)
-    {
-        $this->getUser($data);
     }
 }
