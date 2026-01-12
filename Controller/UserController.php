@@ -20,6 +20,7 @@ class UserController
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($rows, JSON_UNESCAPED_UNICODE);
     }
+
     /**
      * Daniel
      * gibt einen Registrierungsvorgang in Auftrag

@@ -26,9 +26,11 @@ class UserModel extends Database
      * Daniel
      * beim Registrieren checkt die DB auf Email-Duplikate und bricht entweder den Registrierungsvorgang ab
      * bzw. legt den Benutzer in den Tabellen "Benutzer" und "persoenliche_daten" an
+     * Außerdem wird ein Ordner für den Benutzer angelegt, in dem gelesene und eigene Events gespeichert werden
+     * @param array $data mit name, vorname, klassenname, email,
      * @return array true: hat geklappt, false: Benutzer bereits vorhanden
      */
-    public function insertUser(array $data):bool
+    public function insertUser(array $data): bool
     {
         $pdo  = $this->linkDB();
         $uuid = $this->createUUID();
@@ -49,7 +51,7 @@ class UserModel extends Database
         if ($stmtUser->rowCount() === 0) {
             //Rollback macht, dass alles während der Transaktion geschehene rückgängig gemacht wird
             $pdo->rollBack();
-            //für JSON im Controller null als UUID zurückgeben, JS wertet dies dann so, dass es den Nutzer schon gibt
+            //für JSON im Controller false als UUID zurückgeben, JS wertet dies dann so, dass es den Nutzer schon gibt
             return false;
         }
 
@@ -69,6 +71,21 @@ class UserModel extends Database
 
         $pdo->commit();
 
+        //Benutzerordner für gelesene und eigene Events anlegen (heißt wie UUID)
+        //Pfad muss beim Porten noch angepasst werden (noch eine Ebene höher (dirname(__DIR__, 2)))
+        //error_log provisorische Fehlerbehandlung (kein echo!!)
+        $ordnerName = $uuid;
+        $ordnerPfad = dirname(__DIR__) . '/Benutzer/' . $ordnerName;
+
+        if (!file_exists($ordnerPfad)) {
+            if (mkdir($ordnerPfad, 0700, true)) {
+                file_put_contents($ordnerPfad . '/geleseneEvents.json', json_encode([]));
+                file_put_contents($ordnerPfad . '/eigeneEvents.json', json_encode([]));
+                error_log("Ordner mit leerer JSON erfolgreich erstellt!");
+            } else {
+                error_log("Fehler beim Erstellen des Ordners.");
+            }
+        }
         return true;
     }
 }

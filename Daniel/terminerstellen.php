@@ -1,6 +1,7 @@
 <?php
 /**
  * Event erstellen und einfügen in die ICS-Datei für Testzwecke
+ * MUSS NOCH AUF NORMALES HTML UND JS UMGEPARSED WERDEN
  */
 // scripts/add_test_event.php
 $icsPath = __DIR__ . '/../data/pbd2h24a.ics'; // Relativer Pfad von scripts/

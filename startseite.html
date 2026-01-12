@@ -1,55 +1,29 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Startseite</title>
-    <link rel="stylesheet" href="CSS/layout.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Hauptseite</title>
 </head>
-<body class="login-page">
-    <main class="login-form">
-        <div class="card">
-            <header style="text-align: center; margin-bottom: 20px;">
-                <h1>Herzlich Willkommen</h1>
-                <p>
-                    <!-- Hier den Benutzernamen dynamisch einfügen -->
-                    <span id="benutzername">[Benutzername]</span>
-                </p>
-                <p>
-                    <!-- Hier die Klasse dynamisch einfügen -->
-                    <span id="klasse">[Klasse]</span>
-                </p>
-            </header>
 
-            <section id="stundenplan-platzhalter" style="text-align: center; margin: 40px 0;">
-                <h2>Stundenplan</h2>
-                <div style="border: 1px dashed #ccc; padding: 50px; background-color: #f9f9f9;">
-                    <p>Hier wird der Stundenplan angezeigt.</p>
-                </div>
-            </section>
 
-            <div class="actions" style="display: flex; justify-content: space-between; margin-top: 20px;">
-                <a href="profil.html" class="btn">Profil bearbeiten</a>
-                <a href="index.html" class="btn">Logout</a>
-            </div>
-        </div>
-    </main>
+<body>
+  <header>
+    <h1>Termine <span id="dayLabel"></span></h1>
+    <div>
+      <button id="prevBtn" type="button" aria-label="Vorheriger Tag">← Zurück</button>
+      <button id="todayBtn" type="button" aria-label="Heute anzeigen">Heute</button>
+      <button id="nextBtn" type="button" aria-label="Nächster Tag">Weiter →</button>
+    </div>
+  </header>
 
-    <script>
-        // Beispiel-Skript, um Benutzerdaten zu laden und anzuzeigen
-        // In einer echten Anwendung würden diese Daten vom Server kommen (z.B. per API)
-        document.addEventListener('DOMContentLoaded', () => {
-            // Annahme: Benutzerdaten sind im sessionStorage gespeichert nach dem Login
-            const benutzername = sessionStorage.getItem('benutzername');
-            const klasse = sessionStorage.getItem('klasse');
+  <section id="status">Lade Termine …</section>
+  <section id="list" hidden></section>
 
-            if (benutzername) {
-                document.getElementById('benutzername').textContent = benutzername;
-            }
-            if (klasse) {
-                document.getElementById('klasse').textContent = klasse;
-            }
-        });
-    </script>
+
+    <!-- JS separat laden -->
+    <script src="js/stundenplan.js"></script>
 </body>
+
 </html>

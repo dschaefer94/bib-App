@@ -10,3 +10,73 @@ Login mit einfacher select email,passwort from benutzer vorerst cheaten
 
 auf Handygröße designen (CSS)
 js für alles außer Registrieren
+
+Pro Klasse 1 Ordner generieren lassen per Shell-Skript
+bekommt als Argumente einmal alle Klassen übergeben fürs Kreieren und Updaten
+Pro Benutzer auch einen Ordner für gelesen.json oder lieber im Frontend?
+
+Terminerstellung: Besondere IDs von eigenen Terminen zum gesammelten Aufruf und zum löschen (in DB speichern?)
+
+Webhook mit CI/CD versuchen zu implementieren -> Database.php mit neuen Daten (oder gitignore),
+Kalenderordner außerhalb des Webroots speichern, geht hier ja nicht
+FEHLERBEHANDLUNG IM BACKEND UND FRONTEND FÜR CI/CD UNBEDINGT EINRICHTEN, SOWIE ZWISCHENECHOS
+ALLE CRUD-OPERATIONEN MAL IM TEST DURCHLAUFEN LASSEN
+
+Stundenplan als JSON komplett rüberschicken und im Frontend auslesen
+beim Terminanlegen/-löschen nach dem POST auch ein GET durchführen
+
+JSON für Termine: 
+
+                                    BEGIN:VEVENT
+ja                                  UID:62F5DEE1D5921C0FC1258D0800343E30@bib.de
+ja, geparsed                        SUMMARY:TopUp ENG CAM P-213
+ja, aber nur manchmal vorhanden:    DESCRIPTION:IELTS-Vorbereitung
+ja                                  LOCATION:P-213
+ja                                  DTSTART;TZID=Europe/Berlin:20250930T153000
+ja                                  DTEND;TZID=Europe/Berlin:20250930T170000
+für Unterscheidung?                 DTSTAMP:20251212T194304Z
+                                    END:VEVENT
+                                    KATEGORIE: neu, geändert, gelöscht, Klausur(*) separat, special Event, TopUp
+
+✅ Optionale, häufig genutzte Felder
+
+SUMMARY – Titel des Events.
+DESCRIPTION – Beschreibung des Events.
+LOCATION – Ort des Events.
+STATUS – Status (z. B. CONFIRMED, TENTATIVE, CANCELLED).
+CLASS – Sichtbarkeit (PUBLIC, PRIVATE, CONFIDENTIAL).
+TRANSP – Transparenz für Kalender (OPAQUE oder TRANSPARENT).
+PRIORITY – Priorität (1 = hoch, 9 = niedrig).
+CATEGORIES – Kategorien oder Tags.
+URL – Link zu weiteren Informationen.
+
+
+✅ Erweiterte Felder
+
+ATTENDEE – Teilnehmer (z. B. mailto:person@example.com).
+ORGANIZER – Organisator des Events.
+SEQUENCE – Versionsnummer des Events (wichtig bei Updates).
+RECURRENCE-ID – Für wiederkehrende Events.
+RRULE – Wiederholungsregel (z. B. FREQ=DAILY;COUNT=10).
+EXDATE – Ausnahmen von Wiederholungen.
+ATTACH – Anhänge (z. B. Dokumente oder Bilder).
+RELATED-TO – Verknüpfung zu anderen Events.
+
+
+Ergänzung beim Registrieren, dass ein Ordner angelegt werden soll für gelesen-Dateien, wie auch Löschungsfunktion
+Administrationsfunktion zum Klasse-Hinzufügen und löschen (Ordner erstellen und so) adden
+
+bei Terminbuchung Raumvalidierung schauen, Hinweis, dass Raum nicht geblockt ist
+Raumplan-png OG & UG, vllt Link zu entsprechendem Raum beim Klick auf Event (Raum)
+
+Klassenname muss auch unique sein
+
+Beim Erstellen der Klassen muss die erste Vergleichsoperation unbedingt ignoriert werden, sonst
+sind alle Events der ics-Datei neu! Vllt schon einmal befüllen für beide Dateien?
+
+#############################################################################################
+Kalenderupdater
+
+Wenn eine gespeicherte Änderung in der Vergangenheit liegt, wird sie beim Einlesen gelöscht.
+Wenn vergangene Events verändert werden, werden sie ignoriert.
+Weit zukünftige und Spamming von Events werden im Frontend ausgewertet ("neuer Semesterplan hinzugefügt" o.ä., nach Menge)
