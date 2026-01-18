@@ -2,6 +2,8 @@
 
 namespace ppb\Model;
 
+use ppb\Library\Msg;
+
 class ClassModel extends Database
 {
   public function __construct() {}
@@ -12,10 +14,15 @@ class ClassModel extends Database
    */
   public function selectClass()
   {
-    $pdo = $this->linkDB();
-    $query = "SELECT klassenname FROM klassen ORDER BY 1 ASC";
-    $stmt = $pdo->query($query);
-    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    try {
+      $pdo = $this->linkDB();
+      $query = "SELECT klassenname FROM klassen ORDER BY 1 ASC";
+      $stmt = $pdo->query($query);
+      return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    } catch (\PDOException $e) {
+      new Msg(true, 'Datenbankfehler in selectClass', $e);
+      return [];
+    }
   }
 
   /**

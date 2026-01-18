@@ -1,5 +1,60 @@
 {
-    "neu": [],
+    "neu": {
+        "C6743250F3E80C43C1258D7D003E97FC@bib.de": {
+            "summary": "SDP PAP P-218",
+            "start": "20260206T134500",
+            "end": "20260206T151500",
+            "location": "P-218"
+        },
+        "BDCE9F2DCCD455D7C1258D6B000DE323@bib.de": {
+            "summary": "Christi Himmelfahrt",
+            "start": "20260514T080000",
+            "end": "20260514T170000",
+            "location": ""
+        },
+        "2107595D15C8E87BC1258D76000DE3C7@bib.de": {
+            "summary": "Pfingstmontag",
+            "start": "20260525T080000",
+            "end": "20260525T170000",
+            "location": ""
+        }
+    },
     "geloescht": [],
-    "geaendert": []
+    "geaendert": {
+        "1C1AFF214E39CC31C1258D3F00383A07@bib.de": {
+            "old": {
+                "summary": "DSQ BOC P-103.P",
+                "start": "20260127T134500",
+                "end": "20260127T151500",
+                "location": "P-103.P"
+            },
+            "new": {
+                "summary": "* DSQ BOC P-103.P",
+                "start": "20260127T134500",
+                "end": "20260127T151500",
+                "location": "P-103.P"
+            },
+            "changed_fields": [
+                "summary"
+            ]
+        },
+        "714319E1221D5FB4C1258D3F003848CF@bib.de": {
+            "old": {
+                "summary": "DES  P-168.E",
+                "start": "20260206T134500",
+                "end": "20260206T151500",
+                "location": "P-168.E"
+            },
+            "new": {
+                "summary": "DES  P-168.E",
+                "start": "20260202T134500",
+                "end": "20260202T151500",
+                "location": "P-168.E"
+            },
+            "changed_fields": [
+                "start",
+                "end"
+            ]
+        }
+    }
 }

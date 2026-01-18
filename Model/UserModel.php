@@ -2,8 +2,6 @@
 
 namespace ppb\Model;
 
-
-
 class UserModel extends Database
 {
 
@@ -30,47 +28,50 @@ class UserModel extends Database
      * @param array $data mit name, vorname, klassenname, email,
      * @return array true: hat geklappt, false: Benutzer bereits vorhanden
      */
-    public function insertUser(array $data): bool
+    public function insertUser(array $data): array
     {
-        $pdo  = $this->linkDB();
-        $uuid = $this->createUUID();
-        //Cooler Befehl, um ähnlich wie bei GitHub Befehle erstmal zu "stagen" und erst beim Commit zu speichern.
-        //Dadurch muss keine Check-Methode im Controller aufgerufen werden, womit die Datenbank zusätzlich vorher
-        //angerufen wird, um zu checken, ob es einen Benutzer bereits gibt.
-        $pdo->beginTransaction();
-        //"INSERT IGNORE" fügt keine Duplikate bei einem Unique Index ein (Email) - ohne eine Exception zu werfen!
-        $query = "INSERT IGNORE INTO benutzer (benutzer_id, passwort, email)
+        try {
+            $pdo  = $this->linkDB();
+            $uuid = $this->createUUID();
+            //Cooler Befehl, um ähnlich wie bei GitHub Befehle erstmal zu "stagen" und erst beim Commit zu speichern.
+            //Dadurch muss keine Check-Methode im Controller aufgerufen werden, womit die Datenbank zusätzlich vorher
+            //angerufen wird, um zu checken, ob es einen Benutzer bereits gibt.
+            $pdo->beginTransaction();
+            //"INSERT IGNORE" fügt keine Duplikate bei einem Unique Index ein (Email) - ohne eine Exception zu werfen!
+            $query = "INSERT IGNORE INTO benutzer (benutzer_id, passwort, email)
               VALUES (:benutzer_id, :passwort, :email)";
-        $stmtUser = $pdo->prepare($query);
-        $stmtUser->bindParam(':benutzer_id', $uuid);
-        $stmtUser->bindParam(':passwort', $data['passwort']);
-        $stmtUser->bindParam(':email', $data['email']);
-        $stmtUser->execute();
+            $stmtUser = $pdo->prepare($query);
+            $stmtUser->bindParam(':benutzer_id', $uuid);
+            $stmtUser->bindParam(':passwort', $data['passwort']);
+            $stmtUser->bindParam(':email', $data['email']);
+            $stmtUser->execute();
 
-        //wenn ein Duplikat via "INSERT IGNORE INTO" ignoriert wird, ist rowCount = 0
-        if ($stmtUser->rowCount() === 0) {
-            //Rollback macht, dass alles während der Transaktion geschehene rückgängig gemacht wird
-            $pdo->rollBack();
-            //für JSON im Controller false als UUID zurückgeben, JS wertet dies dann so, dass es den Nutzer schon gibt
-            return false;
-        }
+            //wenn ein Duplikat via "INSERT IGNORE INTO" ignoriert wird, ist rowCount = 0
+            if ($stmtUser->rowCount() === 0) {
+                //Rollback macht, dass alles während der Transaktion geschehene rückgängig gemacht wird
+                $pdo->rollBack();
+                //für JSON im Controller false als UUID zurückgeben, JS wertet dies dann so, dass es den Nutzer schon gibt
+                return ['benutzerAngelegt' => false, 'grund' => 'Benutzer existiert bereits (Rollback).'];
+            }
 
-        $query = "INSERT INTO persoenliche_daten (benutzer_id, name, vorname, klassen_id)
+            $query = "INSERT INTO persoenliche_daten (benutzer_id, name, vorname, klassen_id)
               VALUES (
                   :benutzer_id,
                   :name,
                   :vorname,
                   (SELECT klassen_id FROM klassen WHERE klassenname = :klassenname)
               )";
-        $stmtPD = $pdo->prepare($query);
-        $stmtPD->bindParam(':benutzer_id', $uuid);
-        $stmtPD->bindParam(':name', $data['name']);
-        $stmtPD->bindParam(':vorname', $data['vorname']);
-        $stmtPD->bindParam(':klassenname', $data['klassenname']);
-        $stmtPD->execute();
+            $stmtPD = $pdo->prepare($query);
+            $stmtPD->bindParam(':benutzer_id', $uuid);
+            $stmtPD->bindParam(':name', $data['name']);
+            $stmtPD->bindParam(':vorname', $data['vorname']);
+            $stmtPD->bindParam(':klassenname', $data['klassenname']);
+            $stmtPD->execute();
 
-        $pdo->commit();
-
+            $pdo->commit();
+        } catch (\PDOException $e) {
+            return ['benutzerAngelegt' => false, 'grund' => 'Datenbankfehler: ' . $e->getMessage()];
+        }
         //Benutzerordner für gelesene und eigene Events anlegen (heißt wie UUID)
         //Pfad muss beim Porten noch angepasst werden (noch eine Ebene höher (dirname(__DIR__, 2)))
         //error_log provisorische Fehlerbehandlung (kein echo!!)
@@ -86,6 +87,6 @@ class UserModel extends Database
                 error_log("Fehler beim Erstellen des Ordners.");
             }
         }
-        return true;
+        return ['benutzerAngelegt' => true];
     }
 }

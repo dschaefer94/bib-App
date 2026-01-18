@@ -1,226 +1,4 @@
 {
-    "9FEECF082A7E9E1EC1258D0000085940@bib.de": {
-        "summary": "Ferien",
-        "start": "20251013T080000",
-        "end": "20251013T170000",
-        "location": ""
-    },
-    "53578DCB14F1215AC1258D0000085941@bib.de": {
-        "summary": "Ferien",
-        "start": "20251014T080000",
-        "end": "20251014T170000",
-        "location": ""
-    },
-    "EA94A9900F2C6612C1258D0000085942@bib.de": {
-        "summary": "Ferien",
-        "start": "20251015T080000",
-        "end": "20251015T170000",
-        "location": ""
-    },
-    "CE2D0A0ADCD04809C1258D0000085943@bib.de": {
-        "summary": "Ferien",
-        "start": "20251016T080000",
-        "end": "20251016T170000",
-        "location": ""
-    },
-    "9E528F310093F9CCC1258D0000085944@bib.de": {
-        "summary": "Ferien",
-        "start": "20251017T080000",
-        "end": "20251017T170000",
-        "location": ""
-    },
-    "901DB5FA930D56FDC1258D0000085946@bib.de": {
-        "summary": "Ferien",
-        "start": "20251018T080000",
-        "end": "20251018T170000",
-        "location": ""
-    },
-    "49A934121F2BF0F0C1258D0000085947@bib.de": {
-        "summary": "Ferien",
-        "start": "20251019T080000",
-        "end": "20251019T170000",
-        "location": ""
-    },
-    "3C918A5A61E2D2CFC1258D0000085949@bib.de": {
-        "summary": "Ferien",
-        "start": "20251020T080000",
-        "end": "20251020T170000",
-        "location": ""
-    },
-    "D37C4919E765C96EC1258D000008594A@bib.de": {
-        "summary": "Ferien",
-        "start": "20251021T080000",
-        "end": "20251021T170000",
-        "location": ""
-    },
-    "4D2E5ADE0B6DF97DC1258D000008594C@bib.de": {
-        "summary": "Ferien",
-        "start": "20251022T080000",
-        "end": "20251022T170000",
-        "location": ""
-    },
-    "DD2CFBB3BBB45DE4C1258D000008594E@bib.de": {
-        "summary": "Ferien",
-        "start": "20251023T080000",
-        "end": "20251023T170000",
-        "location": ""
-    },
-    "D2597DFCF386E6D9C1258D000008594F@bib.de": {
-        "summary": "Ferien",
-        "start": "20251024T080000",
-        "end": "20251024T170000",
-        "location": ""
-    },
-    "8AEAE6C63C2495F6C1258D0000085951@bib.de": {
-        "summary": "Ferien",
-        "start": "20251025T080000",
-        "end": "20251025T170000",
-        "location": ""
-    },
-    "D222420B949BE960C1258CAB00086EAF@bib.de": {
-        "summary": "Allerheiligen",
-        "start": "20251101T080000",
-        "end": "20251101T170000",
-        "location": ""
-    },
-    "C5CAE96633F8413DC1258D0800343E32@bib.de": {
-        "summary": "TopUp ENG CAM P-213",
-        "start": "20251028T153000",
-        "end": "20251028T170000",
-        "location": "P-213"
-    },
-    "F1B209D7B945A512C1258D08003440B8@bib.de": {
-        "summary": "HPM POP P-165.C",
-        "start": "20251027T080000",
-        "end": "20251027T093000",
-        "location": "P-165.C"
-    },
-    "45C063FF09E4AA89C1258D08003440C8@bib.de": {
-        "summary": "HPM POP P-165.C",
-        "start": "20251027T095000",
-        "end": "20251027T112000",
-        "location": "P-165.C"
-    },
-    "E124650586FE3ADAC1258D08003440D7@bib.de": {
-        "summary": "CGD KAZ P-166.A",
-        "start": "20251027T113000",
-        "end": "20251027T130000",
-        "location": "P-166.A"
-    },
-    "83B3E0FB0C0D4930C1258D08003440EE@bib.de": {
-        "summary": "GPR",
-        "start": "20251027T153000",
-        "end": "20251027T170000",
-        "location": ""
-    },
-    "7E18C4F6CAF83604C1258D08003440FB@bib.de": {
-        "summary": "HPM",
-        "start": "20251028T080000",
-        "end": "20251028T093000",
-        "location": ""
-    },
-    "BCB4E529F2CBC6CCC1258D080034410C@bib.de": {
-        "summary": "CPD ERC P-165.G",
-        "start": "20251028T095000",
-        "end": "20251028T112000",
-        "location": "P-165.G"
-    },
-    "B70B5517511DA76AC1258D080034411B@bib.de": {
-        "summary": "CPD ERC P-165.G",
-        "start": "20251028T113000",
-        "end": "20251028T130000",
-        "location": "P-165.G"
-    },
-    "16EE4FCDF4DE78A6C1258D080034412A@bib.de": {
-        "summary": "BMM HER P-265",
-        "start": "20251028T134500",
-        "end": "20251028T151500",
-        "location": "P-265"
-    },
-    "B9EEA725C8AF4DA1C1258D080034414C@bib.de": {
-        "summary": "COD HKE P-259",
-        "start": "20251029T095000",
-        "end": "20251029T112000",
-        "location": "P-259"
-    },
-    "9EF392DD461430E8C1258D0800344160@bib.de": {
-        "summary": "GPR KAZ P-103.P",
-        "start": "20251029T113000",
-        "end": "20251029T130000",
-        "location": "P-103.P"
-    },
-    "B554D5EEB3B10FB2C1258D0800344172@bib.de": {
-        "summary": "POM ERC P-259",
-        "start": "20251029T134500",
-        "end": "20251029T151500",
-        "location": "P-259"
-    },
-    "8AEBE1F1F6FE3196C1258D0800344176@bib.de": {
-        "summary": "GPR",
-        "start": "20251030T153000",
-        "end": "20251030T170000",
-        "location": ""
-    },
-    "18933C4AA71D3B58C1258D08003441B2@bib.de": {
-        "summary": "GPR KAZ P-103.P",
-        "start": "20251030T134500",
-        "end": "20251030T151500",
-        "location": "P-103.P"
-    },
-    "196D8A2F5C3468D0C1258D08003441C4@bib.de": {
-        "summary": "GPR",
-        "start": "20251030T095000",
-        "end": "20251030T112000",
-        "location": ""
-    },
-    "F3017BE3395E8835C1258D08003441D5@bib.de": {
-        "summary": "RLZ",
-        "start": "20251031T095000",
-        "end": "20251031T112000",
-        "location": ""
-    },
-    "59AD3DF8E6EAE299C1258D08003441E4@bib.de": {
-        "summary": "FOT GRR P-172.M",
-        "start": "20251031T113000",
-        "end": "20251031T130000",
-        "location": "P-172.M"
-    },
-    "2EE7A0111FD08CF6C1258D08003441EF@bib.de": {
-        "summary": "MAT DYC P-164.T",
-        "start": "20251031T080000",
-        "end": "20251031T093000",
-        "location": "P-164.T"
-    },
-    "05B29FFD184D412CC1258D08003442FF@bib.de": {
-        "summary": "3DA POP P-165.C",
-        "start": "20251029T080000",
-        "end": "20251029T093000",
-        "location": "P-165.C"
-    },
-    "C60E325117EBAB39C1258D0800344D9A@bib.de": {
-        "summary": "bib -Talk NAK P-220",
-        "start": "20251029T130000",
-        "end": "20251029T134500",
-        "location": "P-220"
-    },
-    "465E8DAAA15321D2C1258D0800344EBD@bib.de": {
-        "summary": "MAT DYC P-164.T",
-        "start": "20251031T134500",
-        "end": "20251031T151500",
-        "location": "P-164.T"
-    },
-    "8691D548D39609DCC1258D1E0033BA0C@bib.de": {
-        "summary": "Programming for Artists (TopUp)  P-IMS.Online",
-        "start": "20251030T153000",
-        "end": "20251030T170000",
-        "location": "P-IMS.Online"
-    },
-    "DA8248D85C74B227C1258D3200334BFC@bib.de": {
-        "summary": "GPR",
-        "start": "20251030T113000",
-        "end": "20251030T130000",
-        "location": ""
-    },
     "953F98CCF6B06541C1258D0800343E33@bib.de": {
         "summary": "TopUp ENG CAM P-225.GAR",
         "start": "20251104T153000",
@@ -1181,104 +959,50 @@
         "end": "20251218T170000",
         "location": ""
     },
-    "29985DCA34654A1AC1258CDF0008675B@bib.de": {
-        "summary": "1. Weihnachtsfeiertag",
-        "start": "20251225T080000",
-        "end": "20251225T170000",
-        "location": ""
-    },
-    "B91679DC60BF31BBC1258CE000086A74@bib.de": {
-        "summary": "2. Weihnachtsfeiertag",
-        "start": "20251226T080000",
-        "end": "20251226T170000",
-        "location": ""
-    },
-    "BB1A598B80EF489EC1258D0000085952@bib.de": {
-        "summary": "Ferien",
-        "start": "20251222T080000",
-        "end": "20251222T170000",
-        "location": ""
-    },
-    "E5A435DA9269B15BC1258D0000085954@bib.de": {
-        "summary": "Ferien",
-        "start": "20251223T080000",
-        "end": "20251223T170000",
-        "location": ""
-    },
-    "3EABAF51EDC735ADC1258D0000085955@bib.de": {
-        "summary": "Ferien",
-        "start": "20251224T080000",
-        "end": "20251224T170000",
-        "location": ""
-    },
-    "BDD5590D716C09DBC1258D0000085957@bib.de": {
-        "summary": "Ferien",
-        "start": "20251225T080000",
-        "end": "20251225T170000",
-        "location": ""
-    },
-    "F381F809D86B94C8C1258D0000085959@bib.de": {
-        "summary": "Ferien",
-        "start": "20251226T080000",
-        "end": "20251226T170000",
-        "location": ""
-    },
-    "2C09C2D4EC78794CC1258D000008595A@bib.de": {
-        "summary": "Ferien",
-        "start": "20251227T080000",
-        "end": "20251227T170000",
-        "location": ""
-    },
-    "2E0E91A8DC520F5BC1258D000008595F@bib.de": {
-        "summary": "Ferien",
-        "start": "20251228T080000",
-        "end": "20251228T170000",
-        "location": ""
-    },
     "F4DFA9E117050DA9C1258CE600085C71@bib.de": {
-        "summary": "Neujahr (Agent)",
+        "summary": "Neujahr",
         "start": "20260101T080000",
         "end": "20260101T170000",
         "location": ""
     },
     "632165F4E6F78AC9C1258D0000085960@bib.de": {
-        "summary": "Ferien (Agent)",
+        "summary": "Ferien",
         "start": "20251229T080000",
         "end": "20251229T170000",
         "location": ""
     },
     "39D2F2EA5A462170C1258D0000085962@bib.de": {
-        "summary": "Ferien (Agent)",
+        "summary": "Ferien",
         "start": "20251230T080000",
         "end": "20251230T170000",
         "location": ""
     },
     "A4005D6EE562FEBEC1258D0000085963@bib.de": {
-        "summary": "Ferien (Agent)",
+        "summary": "Ferien",
         "start": "20251231T080000",
         "end": "20251231T170000",
         "location": ""
     },
     "0BC831DBD806ED60C1258D0000085965@bib.de": {
-        "summary": "Ferien (Agent)",
+        "summary": "Ferien",
         "start": "20260101T080000",
         "end": "20260101T170000",
         "location": ""
     },
     "180DD019D7BC7883C1258D0000085967@bib.de": {
-        "summary": "Ferien (Agent)",
+        "summary": "Ferien",
         "start": "20260102T080000",
         "end": "20260102T170000",
         "location": ""
     },
     "486BB0BC704A7F48C1258D0000085968@bib.de": {
-        "summary": "Ferien (Agent)",
+        "summary": "Ferien",
         "start": "20260103T080000",
         "end": "20260103T170000",
         "location": ""
     },
     "3A36A95E70553B7CC1258D000008596A@bib.de": {
-        "summary": "Ferien (Agent)",
+        "summary": "Ferien",
         "start": "20260104T080000",
         "end": "20260104T170000",
         "location": ""
@@ -1416,13 +1140,13 @@
         "location": ""
     },
     "DCD7DAB282B4B44DC1258D3F0038368C@bib.de": {
-        "summary": "CPD ERC P-165.G",
+        "summary": "CPD  P-165.G",
         "start": "20260113T095000",
         "end": "20260113T112000",
         "location": "P-165.G"
     },
     "A01E9BF5B46D682AC1258D3F003836A0@bib.de": {
-        "summary": "CPD ERC P-165.G",
+        "summary": "CPD  P-165.G",
         "start": "20260113T113000",
         "end": "20260113T130000",
         "location": "P-165.G"
@@ -1452,7 +1176,7 @@
         "location": "P-103.P"
     },
     "F7F883E97BB78128C1258D3F00383712@bib.de": {
-        "summary": "POM ERC P-259",
+        "summary": "POM  P-259",
         "start": "20260114T134500",
         "end": "20260114T151500",
         "location": "P-259"
@@ -2297,10 +2021,22 @@
         "end": "20260515T170000",
         "location": ""
     },
+    "BDCE9F2DCCD455D7C1258D6B000DE323@bib.de": {
+        "summary": "Christi Himmelfahrt",
+        "start": "20260514T080000",
+        "end": "20260514T170000",
+        "location": ""
+    },
     "B3F4EA9ED35117EAC1258D3E000DD9BE@bib.de": {
         "summary": "Ferien",
         "start": "20260526T080000",
         "end": "20260526T170000",
+        "location": ""
+    },
+    "2107595D15C8E87BC1258D76000DE3C7@bib.de": {
+        "summary": "Pfingstmontag",
+        "start": "20260525T080000",
+        "end": "20260525T170000",
         "location": ""
     },
     "B9DF6113201B1F0DC1258D3E000DD9BF@bib.de": {

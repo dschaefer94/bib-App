@@ -254,3 +254,14 @@ body.login-page {
 .item{
   color:black;
 }
+#registrierungsFeedback {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
