@@ -26,17 +26,19 @@ document.querySelector("#userForm").addEventListener("submit", async (e) => {
   const payload = { email, passwort: password, name, vorname, klassenname };
 
   //erwartete Rückgabe: JSON mit benutzer_ID und email
-  const created = await createUser(payload);
+  const [{ benutzerAngelegt, grund }] = await createUser(payload);
 
   //Auswertung der benutzer_ID
   const registrierungsFeedback = document.querySelector("#registrierungsFeedback");
 
-  if (!created.benutzerAngelegt) { // null oder falsy
-    registrierungsFeedback.textContent = "Den Benutzer gibt es bereits.";
+  if (!benutzerAngelegt) { 
+    registrierungsFeedback.textContent = grund;
     registrierungsFeedback.style.color = "red";
+    registrierungsFeedback.style.display = "block";
   } else {
     registrierungsFeedback.textContent = "Benutzer erfolgreich angelegt!";
     registrierungsFeedback.style.color = "green";
+    registrierungsFeedback.style.display = "block";
   }
   // Formular zurücksetzen
   e.target.reset();

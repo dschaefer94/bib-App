@@ -22,11 +22,6 @@ class ClassController
 
   public function writeClass($data)
   {
-    $model = new ClassModel();
-    $klasseAngelegt = $model->insertClass($data);
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode([
-      'klasseAngelegt' => $klasseAngelegt
-    ], JSON_UNESCAPED_UNICODE);
+    echo json_encode((new ClassModel())->insertClass($data), JSON_PRETTY_PRINT);
   }
 }

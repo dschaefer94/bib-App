@@ -1,7 +1,7 @@
 <?php
 namespace ppb\Controller;
 
-use ppb\Library\Msg; // falls du die Msg-Klasse nutzt
+use ppb\Library\Msg;
 
 class AuthController
 {
