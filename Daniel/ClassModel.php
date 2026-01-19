@@ -35,7 +35,7 @@ class ClassModel extends Database
   {
     try {
       $pdo = $this->linkDB();
-
+      
       // Prüfe ob Klasse bereits existiert
       $checkQuery = "SELECT klassenname FROM klassen WHERE klassenname = :klassenname";
       $checkStmt = $pdo->prepare($checkQuery);
@@ -44,7 +44,7 @@ class ClassModel extends Database
       if ($checkStmt->rowCount() > 0) {
         return ['erfolg' => false, 'grund' => 'Klasse bereits vorhanden'];
       }
-
+      
       $pdo->beginTransaction();
       $query = "INSERT INTO klassen (klassenname, ical_link)
       VALUES (:klassenname, :ical_link)";
@@ -52,9 +52,7 @@ class ClassModel extends Database
       $stmt->bindParam(':klassenname', $data['klassenname']);
       $stmt->bindParam(':ical_link', $data['ical_link']);
       $stmt->execute();
-      $pdo->commit();
-      //ab hier wird alles autocommittet.
-      //pro Klasse dynamisch je fünf Tabellen anlegen (AUSSERHALB Transaction!)
+      //pro Klasse dynamisch je fünf Tabellen anlegen
       $alter_stundenplan = "{$data['klassenname']}_alter_stundenplan";
       $neuer_stundenplan = "{$data['klassenname']}_neuer_stundenplan";
       $pending = "{$data['klassenname']}_pending";
@@ -83,6 +81,18 @@ class ClassModel extends Database
       $stmt = $pdo->prepare($query);
       $stmt->execute();
 
+      $query = "CREATE TABLE `{$pending}` (
+      `termin_id` VARCHAR(255) NOT NULL,
+      `summary` VARCHAR(255) NOT NULL,
+      `start` DATETIME NOT NULL,
+      `end` DATETIME NOT NULL,
+      `location` VARCHAR(255) NOT NULL,
+      PRIMARY KEY (`termin_id`)
+    ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+      $stmt = $pdo->prepare($query);
+      $stmt->execute();
+
+
       $query = "CREATE TABLE `{$aenderungen}` (
       `termin_id` VARCHAR(255) NOT NULL,
       `label` ENUM('gelöscht', 'neu', 'geändert') NOT NULL,
@@ -101,34 +111,13 @@ class ClassModel extends Database
     ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
       $stmt = $pdo->prepare($query);
       $stmt->execute();
+
+      $pdo->commit();
     } catch (\PDOException $e) {
       if ($pdo->inTransaction()) {
         $pdo->rollBack();
       }
-      return ['erfolg' => false, 'grund' => 'Fehler beim Datenbankzugriff:' . $e->getMessage()];
-    }
-    $ordnerName = $data['klassenname'];
-    try {
-      $ordnerPfad = dirname(__DIR__) . '/Kalender/Kalenderdateien/' . $ordnerName;
-      mkdir($ordnerPfad, 0755, true);
-    } catch (\Exception $e) {
-      return ['erfolg' => false, 'grund' => 'Fehler beim Erstellen des Ordners: ' . $e->getMessage()];
-    }
-    try {
-      $kalenderdatei = file_get_contents($data['ical_link']);
-      if ($kalenderdatei === false) {
-        return ['erfolg' => false, 'grund' => 'Fehler: Kalenderdatei URL ist nicht erreichbar'];
-      }
-    } catch (\Exception $e) {
-      return ['erfolg' => false, 'grund' => 'Fehler beim Laden der Kalenderdatei: ' . $e->getMessage()];
-    }
-    try {
-      $result = file_put_contents($ordnerPfad . '/stundenplan.ics', $kalenderdatei);
-      if ($result === false) {
-        return ['erfolg' => false, 'grund' => 'Fehler: Keine Schreibrechte im Ordner ' . $ordnerPfad];
-      }
-    } catch (\Exception $e) {
-      return ['erfolg' => false, 'grund' => 'Fehler beim Speichern der Kalenderdatei: ' . $e->getMessage()];
+      return ['erfolg' => false, 'grund' => 'Fehler beim Datenbankzugriff'];
     }
     return ['erfolg' => true];
   }
