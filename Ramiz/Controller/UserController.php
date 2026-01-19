@@ -70,7 +70,7 @@ class UserController
         http_response_code(200);
         echo json_encode([
             'success' => true,
-            'message' => 'Es Läuft (Test)',
+            'message' => 'Es läuft (Test)',
             'user' => [
                 'id' => $user['benutzer_id'],
                 'email' => $user['email']
