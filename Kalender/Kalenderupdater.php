@@ -1,6 +1,6 @@
 <?php
 
-namespace ppb\Updater;
+namespace SDP\Updater;
 
 // Daniel
 // Runner für die Kalender-Updates aller Klassen (./Kalenderdateien/*)

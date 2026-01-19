@@ -2,14 +2,17 @@
 define('API', 'restAPI.php');
 $url = "http://localhost/bibapp_xampp/" . API;
 
-//lege D-Klasse an
-$klassenname = 'pbd2h24a';
-$ical_link = 'https://intranet.bib.de/ical/d819a07653892b46b6e4d2765246b7ab';
-// $ical_link = 'https://intranet.bib.de/ical/fad4c7872fcb7c42517c495fd83d99d6';
+//D-Klasse
+// $klassenname = 'pbd2h24a';
+// $ical_link = 'https://intranet.bib.de/ical/d819a07653892b46b6e4d2765246b7ab';
+
 //S-Klasse
-// $klassenname = 'pbs2h24s';
-// $ical_link = 'https://intranet.bib.de/ical/1e2f4d3b4c5d6e7f8091a2b3c4d5e6f7';
-// &$ical_link = 'https://intranet.bib.de/ical/9f8e7d6c5b4a3b2c1d0e9f8e7d6c5b4a';
+$klassenname = 'pbs2h24s';
+$ical_link = 'https://intranet.bib.de/ical/fad4c7872fcb7c42517c495fd83d99d6';
+
+//M(D)-Klasse
+// $klassenname = 'pbm2h24d';
+// $ical_link = 'https://intranet.bib.de/ical/d9c4b07d09be9d16214a9c1de6601139';
 
 $params = json_encode(array(
   "klassenname" => $klassenname,
