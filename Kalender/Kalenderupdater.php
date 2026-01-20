@@ -1,6 +1,6 @@
 <?php
 
-namespace ppb\Updater;
+namespace SDP\Updater;
 
 // Daniel
 // Runner für die Kalender-Updates aller Klassen (./Kalenderdateien/*)
@@ -65,6 +65,7 @@ function kalenderupdater(string $name, string $ordner, $pdo)
         echo "Fehler bei der Datenbankverbindung: " . $e->getMessage() . "\n";
         return;
     }
+    echo "ical-Link aus DB extrahieren...\n";
 
     // Neue Datei von der URL herunterladen und speichern
     $download = file_get_contents($ical_link);
@@ -72,12 +73,13 @@ function kalenderupdater(string $name, string $ordner, $pdo)
         echo "Fehler: Kalender-URL '$ical_link' nicht erreichbar\n";
         return;
     }
-
+    echo "ical-Datei herunterladen...\n";
     if (file_put_contents($ics, $download) === false) {
         echo "Fehler: Kann nicht in '$ics' schreiben\n";
         return;
     }
     chmod($ics, 0664);
+    echo "ical-Datei speichern...\n";
 
     // Datenbankoperationen
     // Dynamische Tabellennamen basierend auf der Klasse via Einbettung($name)
@@ -193,6 +195,7 @@ function kalenderupdater(string $name, string $ordner, $pdo)
         $pdo->rollBack();
         echo "Fehler bei der Datenbankoperation: " . $e->getMessage() . "\n";
     }
+    echo "Datenbankoperationen erfolgreich!\n";
 }
 
 // Runner: lädt alle Klassen-Kalender aus ./Kalenderdateien/* und aktualisiert sie
@@ -212,7 +215,7 @@ function runAllCalendarUpdates()
 
     foreach (glob(__DIR__ . '/Kalenderdateien/*') as $dir) {
         if (!is_dir($dir)) continue;
-        echo "Updating: " . basename($dir) . "\n";
+        echo "Update " . basename($dir) . "...\n";
         kalenderupdater(basename($dir), $dir, $pdo);
     }
 }

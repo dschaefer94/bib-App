@@ -132,4 +132,60 @@ class ClassModel extends Database
     }
     return ['erfolg' => true];
   }
+
+  public function updateClass($id, $data)
+  {
+    try {
+      $pdo = $this->linkDB();
+      $query = "UPDATE klassen SET klassenname = :klassenname, ical_link = :ical_link WHERE klassen_id = :klassen_id";
+      $stmt = $pdo->prepare($query);
+      $stmt->bindParam(':klassenname', $data['klassenname']);
+      $stmt->bindParam(':ical_link', $data['ical_link']);
+      $stmt->bindParam(':klassen_id', $id);
+      $stmt->execute();
+      return ['erfolg' => true];
+    } catch (\PDOException $e) {
+      return ['erfolg' => false, 'grund' => 'Fehler beim Datenbankzugriff'];
+
+      //wenn der Klassenname geändert wurde, müssen auch die Tabellen umbenannt werden
+      //und der Ordner auf dem Server
+      //wenn der ical_link geändert wurde, muss die ics-Datei neu heruntergeladen werden
+      //und Kalenderrunner.php nochmal ausgeführt werden (Ändeurungen löschen?)
+    }
+  }
+
+  public function deleteClass($id)
+  {
+    try {
+      $pdo = $this->linkDB();
+      $pdo->beginTransaction();
+
+      $query = "SELECT klassenname FROM klassen WHERE klassen_id = :klassen_id";
+      $stmt = $pdo->prepare($query);
+      $stmt->bindParam(':klassen_id', $id);
+      $stmt->execute();
+      $klassenname = $stmt->fetchColumn();
+
+      $query = "DELETE FROM klassen WHERE klassen_id = :klassen_id";
+      $stmt = $pdo->prepare($query);
+      $stmt->bindParam(':klassen_id', $id);
+      $stmt->execute();
+
+      $query = "DROP TABLE IF EXISTS 
+      `{$klassenname['klassenname']}_alter_stundenplan`,
+      `{$klassenname['klassenname']}_neuer_stundenplan`,
+      `{$klassenname['klassenname']}_pending`,
+      `{$klassenname['klassenname']}_aenderungen`,
+      `{$klassenname['klassenname']}_veraenderte_termine`";
+      $stmt = $pdo->prepare($query);
+      $stmt->execute();
+      $pdo->commit();
+    } catch (\PDOException $e) {
+      if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+      }
+      return ['erfolg' => false, 'grund' => 'Fehler beim Datenbankzugriff'];
+    }
+    return ['erfolg' => true];
+  }
 }

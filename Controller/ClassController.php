@@ -24,4 +24,14 @@ class ClassController
   {
     echo json_encode((new ClassModel())->insertClass($data), JSON_PRETTY_PRINT);
   }
+
+  public function updateClass($id, $data)
+  {
+    //noch nicht implementiert
+  }
+
+  public function deleteClass($id)
+  {
+    //noch nicht implementiert
+  }
 }
