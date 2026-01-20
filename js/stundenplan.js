@@ -1,194 +1,303 @@
 
-// === Konfiguration ===
-const EVENTS_URL = "http://localhost/bibapp_xampp/Kalender/Kalenderdateien/pbd2h24a/stundenplan.json"; // <- Pfad zu deiner JSON-Quelle anpassen
+// ======================
+// CONFIG
+// ======================
+const CONFIG = {
+  BASE: 'http://localhost/bibapp_xampp/restapi.php',
+  ENDPOINT_NEU: '/Calendar/getCalendar',
+  ENDPOINT_AENDERUNGEN: '/Calendar/getChanges',
+  USE_QUERY_RANGE: false,
+  DEFAULT_CLASS_NAME: 'PBD2H24A',
+  WEEK_STARTS_MONDAY: true,
+};
 
-
-// === State ===
-let allEvents = []; // flache Liste aller Events
-let dayOffset = 0;  // 0 = heute, >0 = x Tage in der Zukunft, <0 = x Tage in der Vergangenheit
-
-// === Utils ===
-
-/** Parst 'YYYYMMDDTHHMMSS?' als lokale Zeit (z. B. 20251124T080000). */
-function parseCompactLocal(ts) {
-  const m = ts.match(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})?$/);
-  if (!m) return null;
-  const [_, y, mo, d, h, mi, s] = m;
-  return new Date(
-    Number(y),
-    Number(mo) - 1,
-    Number(d),
-    Number(h),
-    Number(mi),
-    s ? Number(s) : 0
-  );
+// ======================
+// Klassennamen beziehen
+// ======================
+function getClassName() {
+  const url = new URL(window.location.href);
+  return url.searchParams.get('klasse') || CONFIG.DEFAULT_CLASS_NAME;
+}
+function buildUrl(path, { start = null, end = null } = {}) {
+  const klasse = getClassName();
+  const url = new URL(CONFIG.BASE + path);
+  url.searchParams.set('klasse', klasse);
+  if (CONFIG.USE_QUERY_RANGE && start && end) {
+    url.searchParams.set('start', start.toISOString().slice(0,10));
+    url.searchParams.set('end', end.toISOString().slice(0,10));
+  }
+  return url.toString();
 }
 
-/** Normalisiert ein Date auf Mitternacht (lokal). */
-function atStartOfDay(d) {
-  const x = new Date(d);
-  x.setHours(0, 0, 0, 0);
-  return x;
+// ======================
+// State
+// ======================
+let RAW_NEU = [];
+let RAW_AEND = [];
+let weekStart = startOfWeek(new Date());
+
+// ======================
+// Utils: Datum/Zeit
+// ======================
+function startOfWeek(date) {
+  const d = new Date(date);
+  d.setHours(0,0,0,0);
+  const day = d.getDay(); // 0=So,1=Mo,...
+  const diff = CONFIG.WEEK_STARTS_MONDAY ? ((day + 6) % 7) : day;
+  d.setDate(d.getDate() - diff);
+  return d;
+}
+function endOfWeek(date) {
+  const s = startOfWeek(date);
+  const e = new Date(s);
+  e.setDate(e.getDate() + 7);
+  return e;
+}
+function fmtTime(dt) {
+  return new Intl.DateTimeFormat('de-DE', { hour: '2-digit', minute: '2-digit' }).format(dt);
+}
+function fmtDate(dt, withWeekday = false) {
+  const opts = withWeekday
+    ? { weekday: 'long', day: '2-digit', month: '2-digit' }
+    : { day: '2-digit', month: '2-digit' };
+  return new Intl.DateTimeFormat('de-DE', opts).format(dt);
+}
+function isoWeekNumber(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return { week: weekNo, year: d.getUTCFullYear() };
+}
+function parseISO(s) { return new Date(s); }
+function overlaps(aStart, aEnd, bStart, bEnd) {
+  return aEnd > bStart && aStart < bEnd;
+}
+function dayIndex(date, weekStartsMonday) {
+  const js = date.getDay();
+  return weekStartsMonday ? ((js + 6) % 7) : js;
 }
 
-/** Formatiert Zeit wie 08:00–09:30. */
-function fmtTimeRange(start, end) {
-  const opts = { hour: '2-digit', minute: '2-digit' };
-  const s = start.toLocaleTimeString(undefined, opts);
-  const e = end.toLocaleTimeString(undefined, opts);
-  return `${s}–${e}`;
+// ======================
+// Daten holen
+// ======================
+async function fetchDataForRange(s, e) {
+  const neuUrl  = buildUrl(CONFIG.ENDPOINT_NEU,        { start: s, end: e });
+  const aendUrl = buildUrl(CONFIG.ENDPOINT_AENDERUNGEN, { start: s, end: e });
+
+  const [neuRes, aendRes] = await Promise.all([ fetch(neuUrl), fetch(aendUrl) ]);
+  if (!neuRes.ok)  throw new Error('Fehler beim Laden von stundenplan_neu');
+  if (!aendRes.ok) throw new Error('Fehler beim Laden von aenderungen');
+
+  const [neu, aend] = await Promise.all([ neuRes.json(), aendRes.json() ]);
+  return { neu, aend };
 }
 
-/** Deutsches Datum: Di, 24.12.2025 */
-function fmtDayLabel(d) {
-  return d.toLocaleDateString('de-DE', {
-    weekday: 'short',
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
+async function ensureDataLoaded() {
+  if (RAW_NEU.length && RAW_AEND.length) return;
+  const s = startOfWeek(new Date());
+  const e = endOfWeek(s);
+  const { neu, aend } = await fetchDataForRange(s, e);
+  RAW_NEU = Array.isArray(neu) ? neu : (neu?.data ?? []);
+  RAW_AEND = Array.isArray(aend) ? aend : (aend?.data ?? []);
+}
+
+// ======================
+// Transformation
+// ======================
+function buildWeekEvents(s, e) {
+  const changesById = new Map();
+  for (const ch of RAW_AEND) changesById.set(ch.termin_id, ch);
+
+  const normalizeEvent = (obj, source = 'neu', change = null) => {
+    const isAlt = source === 'alt';
+    const start = parseISO(isAlt ? obj.start_alt : obj.start);
+    const end   = parseISO(isAlt ? obj.end_alt   : obj.end);
+    return {
+      id: obj.termin_id,
+      summary: isAlt ? obj.summary_alt : obj.summary,
+      location: isAlt ? obj.location_alt : obj.location,
+      start, end,
+      raw: obj,
+      status: change?.label ?? null,
+      change,
+    };
+  };
+
+  const baseEvents = RAW_NEU
+    .map(ev => normalizeEvent(ev, 'neu', changesById.get(ev.termin_id)))
+    .filter(ev => overlaps(ev.start, ev.end, s, e));
+
+  const deletedEvents = RAW_AEND
+    .filter(ch => ch.label === 'gelöscht')
+    .map(ch => normalizeEvent(ch, 'alt', ch))
+    .filter(ev => overlaps(ev.start, ev.end, s, e));
+
+  const all = [...baseEvents, ...deletedEvents];
+  all.sort((a,b) => a.start - b.start || a.end - b.end || a.summary.localeCompare(b.summary));
+
+  const byDay = Array.from({length: 7}, () => []);
+  for (const ev of all) {
+    const idx = dayIndex(ev.start, CONFIG.WEEK_STARTS_MONDAY);
+    byDay[idx].push(ev);
+  }
+
+  for (const day of byDay) {
+    for (const ev of day) {
+      if (ev.status === 'geändert' && ev.change) {
+        const old = {
+          summary: ev.change.summary_alt,
+          start: parseISO(ev.change.start_alt),
+          end: parseISO(ev.change.end_alt),
+          location: ev.change.location_alt,
+        };
+        ev.diff = {
+          summaryChanged: old.summary !== ev.summary,
+          timeChanged: old.start.getTime() !== ev.start.getTime() || old.end.getTime() !== ev.end.getTime(),
+          locationChanged: old.location !== ev.location,
+          old,
+        };
+      }
+    }
+  }
+  return byDay;
+}
+
+// ======================
+// Render
+// ======================
+function renderWeekHeader(s, e) {
+  const titleEl = document.getElementById('weekTitle');
+  const rangeEl = document.getElementById('weekRange');
+  const { week, year } = isoWeekNumber(s);
+  const rangeTxt = `${fmtDate(s)} – ${fmtDate(new Date(e.getTime() - 1))} ${year}`;
+  titleEl.textContent = `KW ${week} · ${year}`;
+  rangeEl.textContent = rangeTxt;
+}
+function renderGrid(byDay, s) {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  for (let i=0;i<7;i++){
+    const dayDate = new Date(s); dayDate.setDate(dayDate.getDate() + i);
+    const col = document.createElement('div');
+    col.className = 'day';
+    col.setAttribute('role','region');
+    col.setAttribute('aria-label', `${fmtDate(dayDate, true)}`);
+
+    const head = document.createElement('header');
+    const weekday = document.createElement('div');
+    weekday.className = 'weekday';
+    weekday.textContent = new Intl.DateTimeFormat('de-DE', { weekday:'long' }).format(dayDate);
+    const dateSpan = document.createElement('div');
+    dateSpan.className = 'date';
+    dateSpan.textContent = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(dayDate);
+    head.append(weekday, dateSpan);
+
+    const list = document.createElement('div');
+    list.className = 'events';
+
+    const events = byDay[i];
+    if (!events.length) {
+      const empty = document.createElement('div');
+      empty.className = 'empty';
+      empty.textContent = 'Keine Termine';
+      list.appendChild(empty);
+    } else {
+      for (const ev of events) {
+        list.appendChild(renderEvent(ev));
+      }
+    }
+    col.append(head, list);
+    grid.appendChild(col);
+  }
+}
+function renderEvent(ev) {
+  const el = document.createElement('article');
+  el.className = 'event';
+  if (ev.status === 'neu') el.classList.add('neu');
+  if (ev.status === 'gelöscht') el.classList.add('geloescht');
+  if (ev.status === 'geändert') el.classList.add('geaendert');
+
+  const label = document.createElement('div');
+  label.className = 'label';
+  label.textContent = ev.status ?? '';
+
+  const summary = document.createElement('div');
+  summary.className = 'summary';
+  summary.textContent = ev.summary || '(ohne Titel)';
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  meta.textContent = `${fmtTime(ev.start)} – ${fmtTime(ev.end)}`;
+
+  const location = document.createElement('div');
+  location.className = 'location';
+  location.textContent = ev.location || '';
+
+  const contentWrap = document.createElement('div');
+  contentWrap.className = 'content';
+  contentWrap.append(summary, meta, location);
+
+  if (ev.status === 'geändert' && ev.diff) {
+    const changes = document.createElement('div');
+    changes.className = 'changes';
+    if (ev.diff.summaryChanged) {
+      const line = document.createElement('div');
+      line.innerHTML = `<del>${escapeHtml(ev.diff.old.summary || '(ohne Titel)')}</del> → ${escapeHtml(ev.summary || '(ohne Titel)')}`;
+      changes.appendChild(line);
+    }
+    if (ev.diff.timeChanged) {
+      const line = document.createElement('div');
+      line.innerHTML = `<del>${fmtTime(ev.diff.old.start)}–${fmtTime(ev.diff.old.end)}</del> → ${fmtTime(ev.start)}–${fmtTime(ev.end)}`;
+      changes.appendChild(line);
+    }
+    if (ev.diff.locationChanged) {
+      const line = document.createElement('div');
+      line.innerHTML = `<del>${escapeHtml(ev.diff.old.location || '')}</del> → ${escapeHtml(ev.location || '')}`;
+      changes.appendChild(line);
+    }
+    if (changes.childElementCount) contentWrap.appendChild(changes);
+  }
+
+  el.append(contentWrap);
+  if (ev.status) el.append(label);
+  return el;
+}
+function escapeHtml(s) {
+  return String(s ?? '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+// ======================
+// Controller
+// ======================
+async function render() {
+  await ensureDataLoaded();
+  const s = weekStart;
+  const e = endOfWeek(s);
+  renderWeekHeader(s,e);
+  const byDay = buildWeekEvents(s,e);
+  renderGrid(byDay, s);
+}
+function hookButtons() {
+  document.getElementById('prevWeekBtn').addEventListener('click', () => {
+    weekStart.setDate(weekStart.getDate() - 7);
+    render();
+  });
+  document.getElementById('nextWeekBtn').addEventListener('click', () => {
+    weekStart.setDate(weekStart.getDate() + 7);
+    render();
+  });
+  document.getElementById('todayBtn').addEventListener('click', () => {
+    weekStart = startOfWeek(new Date());
+    render();
   });
 }
-
-/** Filtert Events für das Datum (lokal) und sortiert nach Startzeit. */
-function eventsForDay(date) {
-  const dayStart = atStartOfDay(date).getTime();
-  const dayEnd = dayStart + 24 * 60 * 60 * 1000;
-  return allEvents
-    .filter(ev => {
-      const s = ev.start.getTime();
-      return s >= dayStart && s < dayEnd;
-    })
-    .sort((a, b) => a.start - b.start);
-}
-
-// === DOM Referenzen ===
-const listEl = document.getElementById('list');
-const statusEl = document.getElementById('status');
-const dayLabelEl = document.getElementById('dayLabel');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const todayBtn = document.getElementById('todayBtn');
-
-// === Rendering ===
-function render() {
-  const base = new Date();            // heute (lokal)
-  const target = new Date(base);
-  target.setDate(base.getDate() + dayOffset);
-
-  // Label dynamisch
-  let label;
-  if (dayOffset === 0) {
-    label = '(heute)';
-  } else if (dayOffset === 1) {
-    label = `(morgen, ${fmtDayLabel(target)})`;
-  } else if (dayOffset === -1) {
-    label = `(gestern, ${fmtDayLabel(target)})`;
-  } else {
-    label = `(${fmtDayLabel(target)})`;
-  }
-  dayLabelEl.textContent = ` ${label}`;
-
-  // Liste aufbauen
-  const todays = eventsForDay(target);
-  listEl.innerHTML = '';
-
-  if (todays.length === 0) {
-    listEl.hidden = false;
-    statusEl.textContent = 'Keine Termine für diesen Tag.';
-    return;
-  }
-
-  statusEl.textContent = '';
-  listEl.hidden = false;
-
-  for (const ev of todays) {
-    const article = document.createElement('article');
-
-    const title = document.createElement('div');
-    title.textContent = ev.summary || '(Ohne Titel)';
-    article.appendChild(title);
-
-    const meta = document.createElement('div');
-    const time = fmtTimeRange(ev.start, ev.end);
-    const loc = ev.location ? ` • ${ev.location}` : '';
-    meta.textContent = `${time}${loc}`;
-    article.appendChild(meta);
-
-    // einfache Trennlinie
-    const hr = document.createElement('hr');
-    article.appendChild(hr);
-
-    listEl.appendChild(article);
-  }
-}
-
-// === Interaktionen ===
-prevBtn.addEventListener('click', () => {
-  dayOffset -= 1; // einen Tag zurück
-  render();
+hookButtons();
+render().catch(err => {
+  console.error(err);
+  const grid = document.getElementById('grid');
+  grid.innerHTML = `<div class="empty">Fehler beim Laden: ${escapeHtml(err.message)}</div>`;
 });
-
-nextBtn.addEventListener('click', () => {
-  dayOffset += 1; // einen Tag weiter
-  render();
-});
-
-todayBtn.addEventListener('click', () => {
-  dayOffset = 0; // zurück auf heute
-  render();
-});
-
-// Bonus: Tastatursteuerung mit Pfeiltasten/0
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft') {
-    dayOffset -= 1;
-    render();
-  } else if (e.key === 'ArrowRight') {
-    dayOffset += 1;
-    render();
-  } else if (e.key === '0') {
-    dayOffset = 0;
-    render();
-  }
-});
-
-// === Daten laden ===
-async function loadEvents() {
-  try {
-    const res = await fetch(EVENTS_URL, { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const raw = await res.json();
-    //##################################################################################
-    //hier kommt noch die andere JSON rein und die Termine werden aufeinander aufgewogen
-    //zuerst gelesen.json von aenderungen.json subtrahieren und dann auf stundenplan.json ersetzen/ergänzen
-    //##################################################################################
-    const items = [];
-    for (const [id, v] of Object.entries(raw)) {
-      const start = parseCompactLocal(v.start);
-      const end = parseCompactLocal(v.end);
-      if (!start || !end) continue;
-      items.push({
-        id,
-        summary: v.summary || '',
-        start,
-        end,
-        location: v.location || ''
-      });
-    }
-
-    allEvents = items;
-    statusEl.textContent = '';
-    render();
-  } catch (err) {
-    console.error(err);
-    statusEl.textContent = 'Fehler beim Laden der Termine.';
-  }
-}
-
-loadEvents();
-
-// Optional: nach Mitternacht automatisch aktualisieren,
-// wenn "heute" aktiv ist, damit die Ansicht korrekt bleibt.
-setInterval(() => {
-  if (dayOffset === 0) render();
-}, 60_000);

@@ -10,7 +10,7 @@ class CalendarModel extends Database
   {
     try {
       $pdo = $this->linkDB();
-      $query = "SELECT * FROM `{$klassenname}`_stundenplan ORDER BY start ASC";
+      $query = "SELECT * FROM `{$klassenname}_neuer_stundenplan`";
       $stmt = $pdo->query($query);
       return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     } catch (\PDOException $e) {
@@ -22,12 +22,12 @@ class CalendarModel extends Database
   {
     try {
       $pdo = $this->linkDB();
-      $query = "SELECT * FROM `{$klassenname}`_aenderungen ORDER BY start ASC";
+      $query = "SELECT * FROM `{$klassenname}_aenderungen`";
       $stmt = $pdo->query($query);
-      return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     } catch (\PDOException $e) {
       return [];
     }
+    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
   }
 
   public function selectDetails($klassenname)
