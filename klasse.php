@@ -30,4 +30,3 @@ curl_exec($ch);
 if (curl_error($ch)) {
   print(curl_error($ch));
 }
-curl_close($ch);
