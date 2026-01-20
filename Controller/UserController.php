@@ -23,18 +23,16 @@ class UserController
 
     /**
      * Daniel
-     * gibt einen Registrierungsvorgang in Auftrag
-     * @param mixed $data: alle Registrierdaten
-     * @return void, JSON mit Info, ob Benutzer angelegt wurde oder bereits existiert
+     * gibt nach Vollständigkeitsprüfung einen Registrierungsvorgang in Auftrag
+     * @param mixed $data: alle übergebenen Registrierdaten
+     * @return void, JSON mit Info, ob Benutzer angelegt wurde oder nicht
      */
     public function writeUser($data)
     {
-        $model = new UserModel();
-        $benutzerAngelegt = $model->insertUser($data);
-
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([
-            $benutzerAngelegt
-        ], JSON_UNESCAPED_UNICODE);
+        if (isset($data['benutzer_id']) && isset($data['passwort']) && isset($data['email']) && isset($data['name']) && isset($data['vorname']) && isset($data['klassenname'])) {
+            echo json_encode((new UserModel())->insertUser($data), JSON_UNESCAPED_UNICODE);
+        } else {
+            echo json_encode(['benutzerAngelegt' => false,'grund' => 'Fehlende Registrierungsdaten'], JSON_UNESCAPED_UNICODE);
+        }
     }
 }

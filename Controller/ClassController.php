@@ -9,7 +9,7 @@ class ClassController
   public function __construct() {}
   /**
    * Daniel
-   * gibt alle gespeicherten Klassennamen für das Dropdown-Menü der Registrierung aus
+   * gibt alle gespeicherten Klassennamen für das Dropdown-Menü der Registrierung/Benutzerverwaltung aus
    * @return void, JSON mit Klassennamen-Array
    */
   public function getClass()

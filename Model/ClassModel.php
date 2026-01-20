@@ -3,13 +3,14 @@
 namespace ppb\Model;
 
 use ppb\Library\Msg;
+require_once __DIR__ . '/../Kalender/Kalenderupdater.php';
 
 class ClassModel extends Database
 {
   public function __construct() {}
   /**
-   * Daniel
-   * ruft alle Klassennamen auf
+   * Daniel & Florian
+   * ruft alle Klassennamen auf für das Dropdownmenü in der Stundenplanansicht und bei der Profilverwaltung
    * @return array mit Klassennamen
    */
   public function selectClass()
@@ -27,16 +28,20 @@ class ClassModel extends Database
 
   /**
    * Daniel
-   * lege Klasse an, mit Ordnerstruktur und ics-Platzhaltern, Details genau wie bei insertUser
-   * @param mixed $data mit klassenname, ical_link, json_link
-   * @return bool true: hat geklappt, false: Klasse bereits vorhanden
+   * legt Klasse in der DB an:
+   * 1) Duplikatsprüfung und Einfügen in Tabelle klassen
+   * 2) dynamische Erstellung von drei Tabellen pro Klasse für den die von der ics-Datei geparseten Termine
+   *   und die Auswertung der Änderungen
+   * 3) initiales Befüllen der Tabellen über ../Kalender/kalenderupdater.php
+   * 4) Leeren der Änderungstabelle (alle Termine sind ja neu)
+   * @param mixed $data Array mit klassenname und ical_link
+   * @return array{erfolg: bool, grund: string|array{erfolg: bool}} Erfolgsmeldung oder Fehlergrund
    */
   public function insertClass($data): array
   {
     try {
       $pdo = $this->linkDB();
 
-      // Prüfe ob Klasse bereits existiert
       $checkQuery = "SELECT klassenname FROM klassen WHERE klassenname = :klassenname";
       $checkStmt = $pdo->prepare($checkQuery);
       $checkStmt->bindParam(':klassenname', $data['klassenname']);
@@ -53,13 +58,10 @@ class ClassModel extends Database
       $stmt->bindParam(':ical_link', $data['ical_link']);
       $stmt->execute();
       $pdo->commit();
-      //ab hier wird alles autocommittet.
-      //pro Klasse dynamisch je fünf Tabellen anlegen (AUSSERHALB Transaction!)
+
       $alter_stundenplan = "{$data['klassenname']}_alter_stundenplan";
       $neuer_stundenplan = "{$data['klassenname']}_neuer_stundenplan";
-      $pending = "{$data['klassenname']}_pending";
       $aenderungen = "{$data['klassenname']}_aenderungen";
-      $veraenderte_termine = "{$data['klassenname']}_veraenderte_termine";
 
       $query = "CREATE TABLE `{$alter_stundenplan}` (
       `termin_id` VARCHAR(255) NOT NULL,
@@ -82,28 +84,22 @@ class ClassModel extends Database
     ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
       $stmt = $pdo->prepare($query);
       $stmt->execute();
-      ##################################################################################
-      //hier müssen noch die alten termine mit eingefügt werden,
-      //aber null wird erlaubt bei neuen oder unveränderten Terminen
-      ##################################################################################
+      
       $query = "CREATE TABLE `{$aenderungen}` (
       `termin_id` VARCHAR(255) NOT NULL,
       `label` ENUM('gelöscht', 'neu', 'geändert') NOT NULL,
+      `summary_alt` VARCHAR(255),
+      `start_alt` DATETIME,
+      `end_alt` DATETIME,
+      `location_alt` VARCHAR(255),
       PRIMARY KEY (`termin_id`)
     ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
       $stmt = $pdo->prepare($query);
       $stmt->execute();
-      ###########################################################################
-      //weg damit!!!!
-      ###########################################################################
-      $query = "CREATE TABLE `{$veraenderte_termine}` (
-      `termin_id` VARCHAR(255) NOT NULL,
-      `summary` VARCHAR(255) NOT NULL,
-      `start` DATETIME NOT NULL,
-      `end` DATETIME NOT NULL,
-      `location` VARCHAR(255) NOT NULL,
-      PRIMARY KEY (`termin_id`)
-    ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+
+      \SDP\Updater\kalenderupdater($data['klassenname'], $pdo);
+
+      $query = "TRUNCATE TABLE `{$aenderungen}`";
       $stmt = $pdo->prepare($query);
       $stmt->execute();
 
@@ -131,9 +127,6 @@ class ClassModel extends Database
       return ['erfolg' => false, 'grund' => 'Fehler beim Datenbankzugriff'];
 
       //wenn der Klassenname geändert wurde, müssen auch die Tabellen umbenannt werden
-      //und der Ordner auf dem Server
-      //wenn der ical_link geändert wurde, muss die ics-Datei neu heruntergeladen werden
-      //und Kalenderrunner.php nochmal ausgeführt werden (Ändeurungen löschen?)
     }
   }
 
