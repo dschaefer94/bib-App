@@ -82,7 +82,10 @@ class ClassModel extends Database
     ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
       $stmt = $pdo->prepare($query);
       $stmt->execute();
-
+      ##################################################################################
+      //hier müssen noch die alten termine mit eingefügt werden,
+      //aber null wird erlaubt bei neuen oder unveränderten Terminen
+      ##################################################################################
       $query = "CREATE TABLE `{$aenderungen}` (
       `termin_id` VARCHAR(255) NOT NULL,
       `label` ENUM('gelöscht', 'neu', 'geändert') NOT NULL,
@@ -90,7 +93,9 @@ class ClassModel extends Database
     ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
       $stmt = $pdo->prepare($query);
       $stmt->execute();
-
+      ###########################################################################
+      //weg damit!!!!
+      ###########################################################################
       $query = "CREATE TABLE `{$veraenderte_termine}` (
       `termin_id` VARCHAR(255) NOT NULL,
       `summary` VARCHAR(255) NOT NULL,
@@ -101,34 +106,12 @@ class ClassModel extends Database
     ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
       $stmt = $pdo->prepare($query);
       $stmt->execute();
+
     } catch (\PDOException $e) {
       if ($pdo->inTransaction()) {
         $pdo->rollBack();
       }
       return ['erfolg' => false, 'grund' => 'Fehler beim Datenbankzugriff:' . $e->getMessage()];
-    }
-    $ordnerName = $data['klassenname'];
-    try {
-      $ordnerPfad = dirname(__DIR__) . '/Kalender/Kalenderdateien/' . $ordnerName;
-      mkdir($ordnerPfad, 0755, true);
-    } catch (\Exception $e) {
-      return ['erfolg' => false, 'grund' => 'Fehler beim Erstellen des Ordners: ' . $e->getMessage()];
-    }
-    try {
-      $kalenderdatei = file_get_contents($data['ical_link']);
-      if ($kalenderdatei === false) {
-        return ['erfolg' => false, 'grund' => 'Fehler: Kalenderdatei URL ist nicht erreichbar'];
-      }
-    } catch (\Exception $e) {
-      return ['erfolg' => false, 'grund' => 'Fehler beim Laden der Kalenderdatei: ' . $e->getMessage()];
-    }
-    try {
-      $result = file_put_contents($ordnerPfad . '/stundenplan.ics', $kalenderdatei);
-      if ($result === false) {
-        return ['erfolg' => false, 'grund' => 'Fehler: Keine Schreibrechte im Ordner ' . $ordnerPfad];
-      }
-    } catch (\Exception $e) {
-      return ['erfolg' => false, 'grund' => 'Fehler beim Speichern der Kalenderdatei: ' . $e->getMessage()];
     }
     return ['erfolg' => true];
   }
@@ -173,8 +156,7 @@ class ClassModel extends Database
 
       $query = "DROP TABLE IF EXISTS 
       `{$klassenname['klassenname']}_alter_stundenplan`,
-      `{$klassenname['klassenname']}_neuer_stundenplan`,
-      `{$klassenname['klassenname']}_pending`,
+      `{$klassenname['klassenname']}_wartezimmer`,
       `{$klassenname['klassenname']}_aenderungen`,
       `{$klassenname['klassenname']}_veraenderte_termine`";
       $stmt = $pdo->prepare($query);

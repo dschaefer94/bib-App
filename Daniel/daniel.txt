@@ -65,10 +65,13 @@ Raumplan-png OG & UG, vllt Link zu entsprechendem Raum beim Klick auf Event (Rau
 
 #############################################################################################
 Kalenderupdater
+DB-Login auslagern
 
-Wenn eine gespeicherte Änderung in der Vergangenheit liegt, wird sie beim Einlesen gelöscht.
+Wenn eine gespeicherte Änderung in der Vergangenheit liegt, wird sie beim Einlesen ignoriert.
 Wenn vergangene Events verändert werden, werden sie ignoriert.
 Weit zukünftige und Spamming von Events werden im Frontend ausgewertet ("neuer Semesterplan hinzugefügt" o.ä., nach Menge)
+Alte Termine müssen auch bei Gelöscht mitkommen
+Einte Tabelle dann besser, null bei neuen Terminen
 
 
 Kalenderupdater.php beim Erstellen einer Klasse einmal runnen und sofort die Änderungen truncen, da ja alles neu ist
