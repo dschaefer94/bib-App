@@ -12,21 +12,8 @@ class UserController
         $this->model = new UserModel();
     }
 
-    /**
-     * GET /user — список всех пользователей (для теста, можно оставить)
-     */
-    public function getUser()
-    {
-        $rows = $this->model->selectUser();
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($rows, JSON_UNESCAPED_UNICODE);
-    }
-
-    /**
-     * POST /user — вход пользователя (логин)
-     * ПРЯМОЕ СРАВНЕНИЕ ПАРОЛЯ БЕЗ ХЕШИРОВАНИЯ (только для отладки!)
-     */
-    public function writeUser()
+    
+    public function login()
     {
         header('Content-Type: application/json; charset=utf-8');
 
@@ -53,7 +40,7 @@ class UserController
         }
 
  
-        // ВРЕМЕННОЕ ПРЯМОЕ СРАВНЕНИЕ  ПАРОЛЯ
+        // Kurze Lösung. Verglecih direkt den Password ohne HASH
         // ───────────────────────────────
         if ($data['password'] !== $user['passwort']) {
             http_response_code(401);
@@ -64,7 +51,7 @@ class UserController
             return;
         }
 
-
+        //Session
         $_SESSION['user_id'] = $user['benutzer_id'];
 
         http_response_code(200);
