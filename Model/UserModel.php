@@ -21,11 +21,29 @@ class UserModel extends Database
         }
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Ramiz
+     * @param string $email
+     */
+    public function getUserByEmail(string $email): ?array
+    {
+        try {
+            $pdo = $this->linkDB();
+            $stmt = $pdo->prepare("SELECT * FROM benutzer WHERE email = :email");
+            $stmt->execute(['email' => $email]);
+        } catch (\PDOException $e) {
+            return null;
+        }
+        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $user ?: null;
+    }
+
     /**
      * Daniel
      * Benutzer anlegen:
      * 1) Duplikatsprüfung (unique email)
-     * 2) Benutzer in die Tabellen benutzer und persoenliche_daten einfügen
+     * 2) Benutzer mit gehashetem Passwort in die Tabellen benutzer und persoenliche_daten einfügen
      * @param array $data Array mit benutzerbezogenen Daten aus dem Frontend-Formular
      * @return array{benutzerAngelegt: bool, grund: string|array{benutzerAngelegt: bool}} Erfolgsmeldung oder Fehlergrund
      */
@@ -34,13 +52,14 @@ class UserModel extends Database
         try {
             $pdo  = $this->linkDB();
             $uuid = $this->createUUID();
+            $passwort = password_hash($data['passwort'], PASSWORD_BCRYPT);
             $pdo->beginTransaction();
 
             $query = "INSERT IGNORE INTO benutzer (benutzer_id, passwort, email)
             VALUES (:benutzer_id, :passwort, :email)";
             $stmtUser = $pdo->prepare($query);
             $stmtUser->bindParam(':benutzer_id', $uuid);
-            $stmtUser->bindParam(':passwort', $data['passwort']);
+            $stmtUser->bindParam(':passwort', $passwort);
             $stmtUser->bindParam(':email', $data['email']);
             $stmtUser->execute();
 

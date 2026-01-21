@@ -3,6 +3,7 @@
 namespace ppb\Model;
 
 use ppb\Library\Msg;
+
 require_once __DIR__ . '/../Kalender/Kalenderupdater.php';
 
 class ClassModel extends Database
@@ -13,12 +14,35 @@ class ClassModel extends Database
    * ruft alle Klassennamen auf für das Dropdownmenü in der Stundenplanansicht und bei der Profilverwaltung
    * @return array mit Klassennamen
    */
-  public function selectClass()
+  public function selectClass($benutzer_id = null)
   {
     try {
       $pdo = $this->linkDB();
-      $query = "SELECT klassenname FROM klassen ORDER BY 1 ASC";
-      $stmt = $pdo->query($query);
+
+      $where = '';
+      $params = [];
+
+      if ($benutzer_id !== null) {
+        $where = "
+                WHERE klassen_id = (
+                    SELECT klassen_id
+                    FROM persoenliche_daten
+                    WHERE benutzer_id = :benutzer_id
+                )
+            ";
+        $params[':benutzer_id'] = $benutzer_id;
+      }
+
+      $query = "
+            SELECT klassenname
+            FROM klassen
+            $where
+            ORDER BY klassenname ASC
+        ";
+
+      $stmt = $pdo->prepare($query);
+      $stmt->execute($params);
+
       return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     } catch (\PDOException $e) {
       new Msg(true, 'Datenbankfehler in selectClass', $e);
@@ -84,7 +108,7 @@ class ClassModel extends Database
     ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
       $stmt = $pdo->prepare($query);
       $stmt->execute();
-      
+
       $query = "CREATE TABLE `{$aenderungen}` (
       `termin_id` VARCHAR(255) NOT NULL,
       `label` ENUM('gelöscht', 'neu', 'geändert') NOT NULL,
@@ -102,7 +126,6 @@ class ClassModel extends Database
       $query = "TRUNCATE TABLE `{$aenderungen}`";
       $stmt = $pdo->prepare($query);
       $stmt->execute();
-
     } catch (\PDOException $e) {
       if ($pdo->inTransaction()) {
         $pdo->rollBack();

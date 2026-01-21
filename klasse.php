@@ -7,12 +7,12 @@ $url = "http://localhost/bibapp_xampp/" . API;
 // $ical_link = 'https://intranet.bib.de/ical/d819a07653892b46b6e4d2765246b7ab';
 
 //S-Klasse
-// $klassenname = 'pbs2h24s';
-// $ical_link = 'https://intranet.bib.de/ical/fad4c7872fcb7c42517c495fd83d99d6';
+$klassenname = 'pbs2h24a';
+$ical_link = 'https://intranet.bib.de/ical/fad4c7872fcb7c42517c495fd83d99d6';
 
 //M(D)-Klasse
-$klassenname = 'pbm2h24d';
-$ical_link = 'https://intranet.bib.de/ical/d9c4b07d09be9d16214a9c1de6601139';
+// $klassenname = 'pbm2h24d';
+// $ical_link = 'https://intranet.bib.de/ical/d9c4b07d09be9d16214a9c1de6601139';
 
 $params = json_encode(array(
   "klassenname" => $klassenname,

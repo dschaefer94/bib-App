@@ -8,7 +8,7 @@ class ClassController
 {
   public function __construct() {}
   /**
-   * Daniel
+   * Daniel und Florian
    * gibt alle gespeicherten Klassennamen für das Dropdown-Menü der Registrierung/Benutzerverwaltung aus
    * @return void, JSON mit Klassennamen-Array
    */
@@ -16,6 +16,18 @@ class ClassController
   {
     $model = new ClassModel();
     $rows  = $model->selectClass();
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($rows, JSON_UNESCAPED_UNICODE);
+  }
+  /**
+   * Daniel und Florian
+   * gibt den Klassennamen des eingeloggten Benutzers aus
+   * @return void
+   */
+  public function getClassById()
+  {
+    $model = new ClassModel();
+    $rows  = $model->selectClass($_SESSION['user_id']);
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode($rows, JSON_UNESCAPED_UNICODE);
   }
