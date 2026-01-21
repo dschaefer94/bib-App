@@ -5,7 +5,7 @@ document.getElementById("login-btn").addEventListener("click", async (event) => 
     const resultEl = document.getElementById("result");
 
     if (!email || !password) {
-        resultEl.textContent = "Введите email и пароль!";
+        resultEl.textContent = "Email und passwort eingeben!";
         resultEl.style.color = "red";
         return;
     }
@@ -14,6 +14,8 @@ document.getElementById("login-btn").addEventListener("click", async (event) => 
     const url = "http://localhost/bib-App/restapi.php/user/login";
 
     try {
+
+        // session 
         const response = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
