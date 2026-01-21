@@ -1,9 +1,16 @@
 <?php
 
 namespace SDP\Updater;
-function parseIcsEvents($icsContent): array
+
+/**
+ * Daniel
+ * parset ICS-Events nach einer Vorvalidierung der jeweiligen Parameter in ein assoziatives Array zum Weiterarbeiten in der DB
+ * @param mixed $icsString Inhalt der ICS-Datei als String
+ * @return array{end: string, location: string, start: string, summary: string[]} Array mit den geparsten Events und deren Parametern
+ */
+function parseIcsEvents($icsString): array
 {
-    preg_match_all('/BEGIN:VEVENT(.*?)END:VEVENT/s', $icsContent, $matches);
+    preg_match_all('/BEGIN:VEVENT(.*?)END:VEVENT/s', $icsString, $matches);
     $events = [];
     foreach ($matches[1] as $event) {
         preg_match('/UID:(.*)/', $event, $uid);
@@ -21,35 +28,37 @@ function parseIcsEvents($icsContent): array
     }
     return $events;
 }
-
+/**
+ * Daniel
+ * ICS-Downloader, der die ics-Datei der jeweiligen Klasse von der in der DB hinterlegten URL herunterlädt
+ * @param string $name jeweiliger Klassenname
+ * @param mixed $pdo PDO-Datenbankverbindungsobjekt
+ * @throws \RuntimeException bei ungültigem Klassennamen
+ * @return string Inhalt der ics-Datei als String
+ */
 function icsDownloader(string $name, $pdo)
 {
     // SQL-Injection verhindern
     if (!preg_match('/^[a-zA-Z0-9_]+$/', $name)) {
         throw new \RuntimeException("Ungültiger Klassenname");
     }
-
-    // rufe die individuelle ical_url der jeweiligen Klasse von der DB ab
+    echo "ical-Link aus DB extrahieren ->\n";
     try {
         $query = "SELECT ical_link FROM klassen WHERE klassenname = :name";
         $stmt = $pdo->prepare($query);
         $stmt->execute([':name' => $name]);
         $ical_link = $stmt->fetchColumn();
-
-        if (!$ical_link) {
-            echo "Fehler: Klasse '$name' nicht in DB gefunden\n";
-            return;
-        }
     } catch (\PDOException $e) {
         echo "Fehler bei der Datenbankverbindung: " . $e->getMessage() . "\n";
-        return;
+        return "";
     }
-    echo "ical-Link aus DB extrahieren...\n";
-
-    // Neue Datei von der URL herunterladen und speichern
+    echo "ICS-Datei herunterladen ->\n";
     $download = file_get_contents($ical_link);
+    //manipulierte Testdateien, um gelöschte Termine zu simulieren
+    // $download = file_get_contents(__DIR__ . '/Testdateien/'.$name.'.ics');
     if ($download === false) {
         echo "Fehler: Kalender-URL '$ical_link' nicht erreichbar\n";
+        return "";
     }
     return $download;
 }

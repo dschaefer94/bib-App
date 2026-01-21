@@ -1,6 +1,7 @@
 <?php
 
 namespace SDP\Updater;
+
 require_once __DIR__ . '/icsWorker.php';
 require_once __DIR__ . '/Kalenderlogik.php';
 
@@ -17,6 +18,10 @@ require_once __DIR__ . '/Kalenderlogik.php';
 function kalenderupdater(string $name, $pdo)
 {
     $download = icsDownloader($name, $pdo);
+    if ($download === "") {
+        echo "Fehler beim Herunterladen der ICS-Datei für Klasse '$name'. Update abgebrochen.\n";
+        return;
+    }
     $alter_stundenplan = "{$name}_alter_stundenplan";
     $neuer_stundenplan = "{$name}_neuer_stundenplan";
     $wartezimmer = "{$name}_wartezimmer";
@@ -34,11 +39,11 @@ function updateAlleKalendare()
 {
     try {
         $pdo = new \PDO(
-            "mysql:dbname=stundenplan_db;host=localhost",
+            "mysql:dbname=pbd2h24asc_stundenplan_db;host=localhost",
             "root",
             "root",
-            []
- );
+            array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION)
+        );
         $query = "SELECT klassenname FROM klassen ORDER BY 1 ASC";
         $stmt = $pdo->query($query);
         $klassennamen = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -47,6 +52,7 @@ function updateAlleKalendare()
         return;
     }
     foreach ($klassennamen as $klassenname) {
+        echo "Starte Kalender-Update für Klasse: " . $klassenname['klassenname'] . " ->\n";
         kalenderupdater($klassenname['klassenname'], $pdo);
     }
 }

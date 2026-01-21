@@ -1,6 +1,7 @@
 <?php
 
 namespace SDP\Updater;
+
 /**
  * 
  * Daniel
@@ -65,21 +66,29 @@ function dbMagic($pdo, $alter_stundenplan, $neuer_stundenplan, $name, $events)
             $stmt->execute($params);
         }
         $aenderungen = "{$name}_aenderungen";
-        $veraenderte_termine = "{$name}_veraenderte_termine";
 
-        $query = "INSERT INTO `{$aenderungen}` (termin_id, label)
-        SELECT DISTINCT alt.termin_id, 'gelöscht'
+       
+        $query = "INSERT INTO `{$aenderungen}` (termin_id, label, summary_alt, start_alt, end_alt, location_alt)
+        SELECT DISTINCT 
+        alt.termin_id, 'gelöscht',
+        alt.summary, alt.start, alt.end, alt.location
         FROM `{$alter_stundenplan}` AS alt
-        WHERE NOT EXISTS (
-            SELECT termin_id
-            FROM `{$neuer_stundenplan}` AS neu
-            WHERE neu.termin_id = alt.termin_id
-            )
-        ON DUPLICATE KEY UPDATE label = VALUES(label);
+        LEFT JOIN `{$neuer_stundenplan}` AS neu
+        ON neu.termin_id = alt.termin_id
+        WHERE neu.termin_id IS NULL
+        ON DUPLICATE KEY UPDATE label= VALUES(label);
         ";
         $stmt = $pdo->prepare($query);
         $stmt->execute();
-        //hier muss noch wie bei geändert die alten Termindaten in die aenderungen-Tabelle rein
+
+        $query = "DELETE vorher
+        FROM `{$aenderungen}` AS vorher
+        JOIN `{$neuer_stundenplan}` AS neu
+        ON neu.termin_id = vorher.termin_id
+        WHERE vorher.label = 'gelöscht'
+        ";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
 
         $query = "INSERT INTO `{$aenderungen}` (termin_id, label)
         SELECT neu.termin_id, 'neu'
@@ -87,13 +96,23 @@ function dbMagic($pdo, $alter_stundenplan, $neuer_stundenplan, $name, $events)
         LEFT JOIN `{$alter_stundenplan}` AS alt
         ON alt.termin_id = neu.termin_id
         WHERE alt.termin_id IS NULL
-        ON DUPLICATE KEY UPDATE label = VALUES(label);
+        ON DUPLICATE KEY UPDATE label= VALUES(label);
         ";
         $stmt = $pdo->prepare($query);
         $stmt->execute();
 
-        $query = "INSERT INTO `{$aenderungen}` (termin_id, label)
-        SELECT neu.termin_id, 'geändert'
+        $query = "DELETE vorher
+        FROM `{$aenderungen}` AS vorher
+        LEFT JOIN `{$neuer_stundenplan}` AS neu
+        ON neu.termin_id = vorher.termin_id
+        WHERE vorher.label = 'neu'
+        AND neu.termin_id IS NULL;
+        ";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+
+        $query = "INSERT INTO `{$aenderungen}` (termin_id, label, summary_alt, start_alt, end_alt, location_alt)
+        SELECT neu.termin_id, 'geändert', alt.summary, alt.start, alt.end, alt.location
         FROM `{$neuer_stundenplan}` AS neu
         JOIN `{$alter_stundenplan}` AS alt ON neu.termin_id = alt.termin_id
             WHERE NOT (
@@ -102,29 +121,30 @@ function dbMagic($pdo, $alter_stundenplan, $neuer_stundenplan, $name, $events)
             neu.end       <=> alt.end     AND
             neu.location  <=> alt.location
             )
-        ON DUPLICATE KEY UPDATE label = VALUES(label);
-        ";
+            ON DUPLICATE KEY
+            UPDATE label= VALUES(label),
+            summary_alt= VALUES(summary_alt),
+            start_alt= VALUES(start_alt),
+            end_alt= VALUES(end_alt),
+            location_alt= VALUES(location_alt);
+            ";
         $stmt = $pdo->prepare($query);
         $stmt->execute();
-        //das kommt in die bereits gealterte Tabelle aenderungen in einem GO mit rein
-        $query = "INSERT INTO `{$veraenderte_termine}` (termin_id, summary, start, end, location)
-        SELECT alt.termin_id, alt.summary, alt.start, alt.end, alt.location
-        FROM `{$alter_stundenplan}` AS alt
-        WHERE alt.termin_id IN (
-            SELECT termin_id
-            FROM `{$aenderungen}`
-                WHERE label = 'geändert'
-            )
-        ON DUPLICATE KEY UPDATE
-        summary = VALUES(summary),
-        start   = VALUES(start),
-        end     = VALUES(end),
-        location= VALUES(location);
-        ";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute();
-        $pdo->commit();
 
+        $query = "DELETE vorher
+        FROM `{$aenderungen}` AS vorher
+        JOIN `{$neuer_stundenplan}` AS neu
+        ON neu.termin_id = vorher.termin_id
+        WHERE vorher.label = 'geändert'
+        AND vorher.summary_alt  <=> neu.summary
+        AND vorher.start_alt    <=> neu.start
+        AND vorher.end_alt      <=> neu.end
+        AND vorher.location_alt <=> neu.location;
+        ";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+
+        $pdo->commit();
     } catch (\PDOException $e) {
         $pdo->rollBack();
         echo "Fehler bei der Datenbankoperation: " . $e->getMessage() . "\n";

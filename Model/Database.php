@@ -10,7 +10,7 @@ abstract class Database
 
     // Zugangsdaten für die lokale Datenbank 
 
-    private $dbName = "stundenplan_db"; //Datenbankname
+    private $dbName = "pbd2h24asc_stundenplan_db"; //Datenbankname
     private $linkName = "localhost"; //Datenbank-Server
     private $user = "root"; //Benutzername
     private $pw = "root"; //Passwort
