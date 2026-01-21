@@ -1,47 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <title>Login</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="CSS/layout.css" rel="stylesheet" />
-</head>
-<body class="login-page">
-  <main class="login-form">
-    <div class="card">
-        <h1>Anmelden</h1>
-      <form action="#" method="post">
-        <div class="input-group">
-          <label for="email">E-Mail-Adresse</label>
-          <input type="email" id="email" name="email" required>
-        </div>
-        <div class="input-group">
-          <label for="password">Passwort</label>
-          <input type="password" id="password" name="password" required>
-        </div>
-        <div class="actions">
-            <button type="submit" class="btn">Anmelden</button>
-        </div>
-      </form>
-      <div class="sub-links">
-        <a href="registrieren.html">Noch kein Konto? Registrieren</a>
-        <a href="passwortVergessen.html">Passwort vergessen?</a>
-      </div>
-      <form id="cheater">
-        <div class="input-group">
-            <select id="klasseSelect">
-             <option value="">Bitte wählen…</option>
-            </select>
-        </div>
-        <div class="actions">
-            <button type="submit" id="cheatbutton" class="btn">Als Cheater fortfahren</button>
-        </div>
-      </form>
-    </div>
-  </main>
+    <meta charset="UTF-8">
+    <title>Login PPB</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
 
- <script src="js/cheat.js"></script>
+        input {
+            display: block;
+            margin: 10px 0;
+            padding: 8px;
+            width: 200px;
+        }
+
+        button {
+            padding: 8px 16px;
+        }
+
+        #result {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button id="login-btn">Login</button>
+    <div id="result"></div>
+    <a href="registrieren.html">Noch kein Konto? Registrieren</a>
+    <a href="passwortVergessen.html">Passwort vergessen?</a>
+
+    <script src="JS/login.js"></script>
 </body>
 
 </html>

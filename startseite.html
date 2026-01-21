@@ -1,12 +1,12 @@
-
 <!doctype html>
 <html lang="de">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Stundenplan – Woche</title>
   <style>
-    :root{
+    :root {
       --bg: #0b0d10;
       --panel: #141820;
       --text: #e8ecf1;
@@ -20,125 +20,303 @@
       --yellow-bg: #3d340f;
       --yellow-bd: #ffd166;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica,Arial;
-      background:var(--bg);
-      color:var(--text);
-    }
-    header{
-      position:sticky; top:0; z-index:10;
-      background:linear-gradient(180deg, rgba(20,24,32,0.98), rgba(20,24,32,0.92));
-      border-bottom:1px solid var(--line);
-      backdrop-filter:saturate(120%) blur(6px);
-    }
-    .toolbar{
-      max-width:1200px; margin:0 auto; padding:12px 16px;
-      display:flex; align-items:center; gap:12px; flex-wrap:wrap;
-    }
-    .toolbar .title{
-      font-weight:600; letter-spacing:.2px;
-    }
-    .spacer{flex:1}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:8px; padding:8px 12px; border:1px solid var(--line); border-radius:8px;
-      background:#0f131a; color:var(--text); cursor:pointer;
-      transition:.15s background, .15s transform;
-    }
-    .btn:hover{background:#0c1017}
-    .btn:active{transform:translateY(1px)}
-    .legend{
-      display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:14px; color:var(--muted);
-    }
-    .badge{
-      display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; border:1px solid var(--line);
-      background:#0f131a; color:var(--muted);
-    }
-    .dot{width:10px; height:10px; border-radius:50%}
-    .dot.green{background:var(--green-bd)}
-    .dot.red{background:var(--red-bd)}
-    .dot.yellow{background:var(--yellow-bd)}
 
-    main{max-width:1200px; margin:16px auto 40px; padding:0 16px}
-    .weekbar{
-      display:flex; align-items:center; gap:16px; margin:12px 0 16px 0; color:var(--muted);
+    * {
+      box-sizing: border-box
     }
-    .weekbar .range{font-weight:600; color:var(--text)}
 
-    .grid{
-      display:grid; gap:12px;
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Helvetica, Arial;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: linear-gradient(180deg, rgba(20, 24, 32, 0.98), rgba(20, 24, 32, 0.92));
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: saturate(120%) blur(6px);
+    }
+
+    .toolbar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar .title {
+      font-weight: 600;
+      letter-spacing: .2px;
+    }
+
+    .spacer {
+      flex: 1
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0f131a;
+      color: var(--text);
+      cursor: pointer;
+      transition: .15s background, .15s transform;
+    }
+
+    .btn:hover {
+      background: #0c1017
+    }
+
+    .btn:active {
+      transform: translateY(1px)
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #0f131a;
+      color: var(--muted);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%
+    }
+
+    .dot.green {
+      background: var(--green-bd)
+    }
+
+    .dot.red {
+      background: var(--red-bd)
+    }
+
+    .dot.yellow {
+      background: var(--yellow-bd)
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 16px auto 40px;
+      padding: 0 16px
+    }
+
+    .weekbar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 12px 0 16px 0;
+      color: var(--muted);
+    }
+
+    .weekbar .range {
+      font-weight: 600;
+      color: var(--text)
+    }
+
+    .grid {
+      display: grid;
+      gap: 12px;
       grid-template-columns: repeat(7, minmax(150px, 1fr));
     }
-    @media (max-width: 1000px){
-      .grid{grid-template-columns: repeat(4, 1fr)}
-    }
-    @media (max-width: 720px){
-      .grid{grid-template-columns: repeat(2, 1fr)}
-    }
-    @media (max-width: 480px){
-      .grid{grid-template-columns: 1fr}
+
+    @media (max-width: 1000px) {
+      .grid {
+        grid-template-columns: repeat(4, 1fr)
+      }
     }
 
-    .day{
-      background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden;
-      display:flex; flex-direction:column; min-height:120px;
+    @media (max-width: 720px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
     }
-    .day header{
-      position:static; background:transparent; border:none; backdrop-filter:none;
-      padding:10px 12px; border-bottom:1px solid var(--line);
-      display:flex; align-items:baseline; gap:8px;
-    }
-    .day .weekday{font-weight:700}
-    .day .date{color:var(--muted); font-size:13px}
 
-    .events{display:flex; flex-direction:column; gap:8px; padding:12px}
-    .event{
-      border:1px solid var(--line); border-radius:10px; padding:10px 12px; background:#101622;
-      display:flex; flex-direction:column; gap:6px; position:relative;
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: 1fr
+      }
     }
-    .event .summary{font-weight:600}
-    .event .meta{color:var(--muted); font-size:13px}
-    .event .location{color:#b7c3d4; font-size:13px}
-    .event .label{
-      position:absolute; top:6px; right:8px; font-size:11px; color:var(--muted);
-      background:#0f131a; border:1px solid var(--line); border-radius:6px; padding:2px 6px;
+
+    .day {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 120px;
+    }
+
+    .day header {
+      position: static;
+      background: transparent;
+      border: none;
+      backdrop-filter: none;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .day .weekday {
+      font-weight: 700
+    }
+
+    .day .date {
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    .events {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px
+    }
+
+    .event {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: #101622;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+    }
+
+    .event .summary {
+      font-weight: 600
+    }
+
+    .event .meta {
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    .event .location {
+      color: #b7c3d4;
+      font-size: 13px
+    }
+
+    .event .label {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      font-size: 11px;
+      color: var(--muted);
+      background: #0f131a;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 2px 6px;
     }
 
     /* Statusfarben */
-    .event.neu{
-      background:var(--green-bg); border-color:var(--green-bd);
-      box-shadow:0 0 0 1px color-mix(in hsl, var(--green-bd), transparent 70%);
+    .event.neu {
+      background: var(--green-bg);
+      border-color: var(--green-bd);
+      box-shadow: 0 0 0 1px color-mix(in hsl, var(--green-bd), transparent 70%);
     }
-    .event.geloescht{
-      background:var(--red-bg); border-color:var(--red-bd);
-      opacity:0.95;
+
+    .event.geloescht {
+      background: var(--red-bg);
+      border-color: var(--red-bd);
+      opacity: 0.95;
     }
-    .event.geloescht .content{ text-decoration: line-through; color:#ffb3b3; }
-    .event.geaendert{
-      background:var(--yellow-bg); border-color:var(--yellow-bd);
+
+    .event.geloescht .content {
+      text-decoration: line-through;
+      color: #ffb3b3;
     }
-    .changes{
-      margin-top:4px; font-size:13px; color:#ffe8a3;
+
+    .event.geaendert {
+      background: var(--yellow-bg);
+      border-color: var(--yellow-bd);
     }
-    .changes del{
-      color:#f7c37a;
+
+    .changes {
+      margin-top: 4px;
+      font-size: 13px;
+      color: #ffe8a3;
     }
-    .arrow{font-size:18px; line-height:1}
-    .sr-only{
-      position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0);
-      white-space:nowrap; border:0;
+
+    .changes del {
+      color: #f7c37a;
     }
-    .empty{
-      color:var(--muted); font-size:13px; text-align:center; padding:14px;
-      border:1px dashed var(--line); border-radius:10px; background:#0e1219;
+
+    .arrow {
+      font-size: 18px;
+      line-height: 1
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .empty {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      padding: 14px;
+      border: 1px dashed var(--line);
+      border-radius: 10px;
+      background: #0e1219;
     }
   </style>
 </head>
+
 <body>
   <header>
     <div class="toolbar" role="toolbar" aria-label="Navigation und Legende">
+
+
+      <button id="logout">Logout</button>
+
+      <script>
+        document.getElementById('logout').addEventListener('click', () => {
+          const urlNeuerTab = 'restapi.php/user/Logout';  // Link A (neuer Tab)
+          const urlAktuell = 'index.html';             // Link B (aktuelles Fenster)
+          window.open(urlNeuerTab, '_blank', 'noopener,noreferrer');
+          window.location.replace(urlAktuell);
+        });
+      </script>
+
+
       <button id="prevWeekBtn" class="btn" aria-label="Vorherige Woche">
         <span class="arrow">←</span> Vorherige
       </button>
@@ -166,4 +344,5 @@
 
   <script src="js/stundenplan.js"></script>
 </body>
+
 </html>
