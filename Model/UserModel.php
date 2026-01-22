@@ -7,21 +7,29 @@ class UserModel extends Database
 
     public function __construct() {}
     /**
-     * Daniel
-     * einfache Benutzerabfrage
-     * @return array mit allen benutzer_ids und Emails
+     * Florian
+     * Wählt alle Benutzer mit ihren persönlichen Daten und dem Klassennamen aus.
+     * @return array
      */
-    public function selectUser()
+    public function selectBenutzer(int $benutzer_id): array
     {
         try {
             $pdo = $this->linkDB();
-            $stmt = $pdo->query("SELECT benutzer_id, email FROM benutzer");
+            $sql = "
+        SELECT b.benutzer_id, pd.name, pd.vorname, b.email, k.klassenname
+        FROM BENUTZER b
+        LEFT JOIN PERSOEHNLICHE_DATEN pd ON b.benutzer_id = pd.benutzer_id
+        LEFT JOIN KLASSEN k ON pd.klassen_id = k.klassen_id
+        WHERE b.benutzer_id = :benutzer_id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':benutzer_id' => $benutzer_id
+            ]);
         } catch (\PDOException $e) {
             return [];
         }
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
-
     /**
      * Ramiz
      * @param string $email
@@ -86,30 +94,7 @@ class UserModel extends Database
         }
         return ['benutzerAngelegt' => true];
     }
-    /**
-     * Florian
-     * Wählt alle Benutzer mit ihren persönlichen Daten und dem Klassennamen aus.
-     * @return array
-     */
-    public function selectBenutzer(int $benutzer_id): array
-    {
-        try {
-            $pdo = $this->linkDB();
-            $sql = "
-        SELECT b.benutzer_id, pd.name, pd.vorname, b.email, k.klassenname
-        FROM BENUTZER b
-        LEFT JOIN PERSOEHNLICHE_DATEN pd ON b.benutzer_id = pd.benutzer_id
-        LEFT JOIN KLASSEN k ON pd.klassen_id = k.klassen_id
-        WHERE b.benutzer_id = :benutzer_id";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([
-                ':benutzer_id' => $benutzer_id
-            ]);
-        } catch (\PDOException $e) {
-            return [];
-        }
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
-    }
+
     /**
      * Florian
      * Aktualisiert die E-Mail und optional das Passwort eines Benutzers in der BENUTZER-Tabelle.

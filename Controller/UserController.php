@@ -8,20 +8,7 @@ use ppb\Model\ClassModel;
 class UserController
 {
     public function __construct() {}
-
-    /**
-     * Daniel
-     * Abfrage der benutzer_id und email aller User (zum Testen)
-     * @return void, JSON-echo
-     */
-    public function getUser()
-    {
-        $model = new UserModel();
-        $rows = $model->selectUser();
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($rows, JSON_UNESCAPED_UNICODE);
-    }
-
+    
     /**
      * Daniel
      * gibt nach Vollständigkeitsprüfung einen Registrierungsvorgang in Auftrag

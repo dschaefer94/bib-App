@@ -41,7 +41,7 @@ class CalendarModel extends Database
   }
   /**
    * Daniel
-   * holt sich die Liste aller vom Benutzer notierten Änderungen
+   * holt sich die Liste aller vom Benutzer notierten Änderungen, damit diese Im Frontend nicht angezeigt werden
    * @param mixed $benutzer_id übergebene benutzer_id der Session
    * @return array Array mit den vom Benutzer notierten Änderungen
    */
