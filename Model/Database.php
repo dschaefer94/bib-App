@@ -10,22 +10,22 @@ abstract class Database
 
     // Zugangsdaten für die lokale Datenbank 
 
-    private $dbName = "pbd2h24asc_stundenplan_db"; //Datenbankname
-    private $linkName = "localhost"; //Datenbank-Server
-    private $user = "root"; //Benutzername
-    private $pw = "root"; //Passwort
+    // private $dbName = "pbd2h24asc_stundenplan_db"; //Datenbankname
+    // private $linkName = "localhost"; //Datenbank-Server
+    // private $user = "root"; //Benutzername
+    // private $pw = "root"; //Passwort
 
     // Test-Online-Datenbank
-// $host = "localhost:3306";
-// $dbname = "pbd2h24asc_bibapp";
-// $username = "pbd2h24asc_backendboi";
-// $password = "T3llMeWhy!";
+    // private $linkName = "localhost:3306";
+    // private $dbName = "pbd2h24asc_stundenplan_db";
+    // private $user = "pbd2h24asc_backendboi";
+    // private $pw = "T3llMeWhy!";
     
 //MySQL-Datenbank Zugangsdaten
-    // private $dbName = "pbd2h24asc_stundenplan_db"; //Datenbankname
-    // private $linkName = "mysql.pb.bib.de"; //Datenbank-Server
-    // private $user = "pbd2h24asc"; //Benutzername
-    // private $pw = "8x2uXWAeTEMC"; //Passwort
+    private $dbName = "pbd2h24asc_stundenplan_db"; //Datenbankname
+    private $linkName = "mysql.pb.bib.de"; //Datenbank-Server
+    private $user = "pbd2h24asc"; //Benutzername
+    private $pw = "8x2uXWAeTEMC"; //Passwort
 
 
     /**

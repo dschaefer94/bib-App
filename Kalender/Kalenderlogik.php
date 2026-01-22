@@ -54,7 +54,7 @@ function dbMagic($pdo, $alter_stundenplan, $neuer_stundenplan, $name, $events)
             foreach ($chunk as $uid => $event) {
                 $valueParts[] = "(:termin_id$counter, :summary$counter, :start$counter, :end$counter, :location$counter)";
                 $params[":termin_id$counter"] = $uid;
-                $params[":summary$counter"] = $event['summary'];
+                $params[":summary$counter"] = mb_substr($event['summary'], 0, 255);
                 $params[":start$counter"] = $event['start'];
                 $params[":end$counter"] = $event['end'];
                 $params[":location$counter"] = $event['location'];
