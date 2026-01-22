@@ -64,6 +64,8 @@ class UserController
             'message' => 'Es läuft (Test)',
             'user' => [
                 'id' => $user['benutzer_id'],
+                'vorname' => $user['vorname'],
+                'nachname' => $user['nachname'],
                 'klassenname' => $_SESSION['klassenname'],
             ]
         ]);
@@ -79,5 +81,86 @@ class UserController
         session_destroy();
         http_response_code(200);
         echo json_encode(['success' => true, 'message' => 'Erfolgreich ausgeloggt']);
+    }
+
+    // Florian
+    public function profile() {
+        if (!isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'error' => 'Nicht authentifiziert']);
+            return;
+        }
+
+        $id = $_SESSION['user_id'];
+        $userModel = new UserModel();
+        $classModel = new ClassModel();
+        
+        $userData = $userModel->getUserData($id);
+        $classes = $classModel->getAllClasses();
+
+        if ($userData) {
+            echo json_encode([
+                'success' => true,
+                'userData' => $userData,
+                'klassen' => $classes
+            ]);
+        } else {
+            http_response_code(404);
+            echo json_encode([
+                'success' => false,
+                'error' => 'Benutzer nicht gefunden'
+            ]);
+        }
+    }
+
+    // Florian
+    public function updateProfile($data) {
+        if (!isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'error' => 'Nicht authentifiziert']);
+            return;
+        }
+        
+        $userModel = new UserModel();
+
+        $benutzer_id = $_SESSION['user_id'];
+        $data['benutzer_id'] = $benutzer_id;
+
+        // Validation
+        $errors = [];
+        if (empty($data['benutzer_id']) || empty($data['name']) || empty($data['vorname'])) {
+            $errors[] = 'Alle Pflichtfelder müssen gefüllt sein (Name, Vorname).';
+        }
+        if (!empty($data['passwort']) && $data['passwort'] !== ($data['passwort_confirm'] ?? '')) {
+            $errors[] = 'Die Passwörter stimmen nicht überein.';
+        }
+        if (!empty($errors)) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => implode(' ', $errors)]);
+            return;
+        }
+
+        $name = $data['name'] ?? '';
+        $vorname = $data['vorname'] ?? '';
+        $klassen_id = !empty($data['klassen_id']) ? (int)$data['klassen_id'] : null;
+        $email = trim($data['email'] ?? '');
+        $passwort = !empty($data['passwort']) ? password_hash($data['passwort'], PASSWORD_DEFAULT) : null;
+        
+        $pd_updated = $userModel->updatePersonalData($benutzer_id, $name, $vorname, $klassen_id);
+        $user_updated = $userModel->updateUser($benutzer_id, $email, $passwort);
+
+        if ($pd_updated || $user_updated) {
+            $reloadedUser = $userModel->getUserData($benutzer_id);
+            $classModel = new ClassModel();
+            $classes = $classModel->getAllClasses();
+            echo json_encode([
+                'success' => true, 
+                'message' => 'Daten erfolgreich aktualisiert!',
+                'userData' => $reloadedUser,
+                'klassen' => $classes
+            ]);
+        } else {
+            echo json_encode(['success' => true, 'message' => 'Keine Änderungen vorgenommen.']);
+        }
     }
 }

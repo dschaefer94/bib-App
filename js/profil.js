@@ -1,7 +1,5 @@
-// Florian 
-
+// Florian
 document.addEventListener('DOMContentLoaded', function () {
-    const searchForm = document.getElementById('searchForm');
     const profileSection = document.getElementById('profile-section');
     const profileForm = document.getElementById('profileForm');
     const errorMessage = document.getElementById('error-message');
@@ -19,20 +17,12 @@ document.addEventListener('DOMContentLoaded', function () {
         element.style.display = 'block';
     }
 
-    // Handle the search form submission
-    searchForm.addEventListener('submit', function (e) {
-        e.preventDefault();
+    // Function to load user data
+    function loadUserData() {
         hideMessages();
-        profileSection.style.display = 'none';
-
-        const benutzerId = document.getElementById('benutzer_id').value;
-        if (!benutzerId) {
-            showMessage(errorMessage, 'Bitte geben Sie eine Benutzer-ID ein.');
-            return;
-        }
 
         // Fetch user data
-        fetch(`profil.php?benutzer_id=${benutzerId}`)
+        fetch('restapi.php/user/profile')
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.userData) {
@@ -40,13 +30,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     profileSection.style.display = 'block';
                 } else {
                     showMessage(errorMessage, data.error || 'Benutzer nicht gefunden.');
+                    profileSection.style.display = 'none';
                 }
             })
             .catch(error => {
                 console.error('Error fetching user data:', error);
                 showMessage(errorMessage, 'Ein Fehler ist beim Laden der Daten aufgetreten.');
+                profileSection.style.display = 'none';
             });
-    });
+    }
 
     // Handle the profile update form submission
     profileForm.addEventListener('submit', function(e) {
@@ -62,10 +54,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const formData = new FormData(profileForm);
+        const data = Object.fromEntries(formData.entries());
         
-        fetch('profil.php', {
+        fetch('restapi.php/user/updateProfile', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
         })
         .then(response => response.json())
         .then(data => {
@@ -110,11 +106,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     
-    // Check for benutzer_id in URL on page load
-    const urlParams = new URLSearchParams(window.location.search);
-    const benutzerIdFromUrl = urlParams.get('benutzer_id');
-    if (benutzerIdFromUrl) {
-        document.getElementById('benutzer_id').value = benutzerIdFromUrl;
-        searchForm.dispatchEvent(new Event('submit'));
+    // --- NEW LOGIC ---
+    // Load user data on page load from sessionStorage
+    const storedUser = sessionStorage.getItem('user');
+    if (storedUser) {
+        loadUserData();
+    } else {
+        showMessage(errorMessage, 'Keine Benutzerdaten im Session Storage gefunden. Bitte melde dich an.');
+        profileSection.style.display = 'none';
+        // Optional: redirect to login
+        // window.location.href = 'index.html';
     }
 });

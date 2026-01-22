@@ -5,25 +5,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Hauptseite</title>
+    <link rel="stylesheet" href="../../CSS/layout.css">
 </head>
 
 
 <body>
   <header>
-    <h1>Termine <span id="dayLabel"></span></h1>
-    <div>
-      <button id="prevBtn" type="button" aria-label="Vorheriger Tag">← Zurück</button>
-      <button id="todayBtn" type="button" aria-label="Heute anzeigen">Heute</button>
-      <button id="nextBtn" type="button" aria-label="Nächster Tag">Weiter →</button>
+    <div class="toolbar" role="toolbar" aria-label="Navigation und Legende">
+      <button id="prevBtn" type="button" class="btn" aria-label="Vorheriger Tag">← Zurück</button>
+      <button id="todayBtn" type="button" class="btn" aria-label="Heute anzeigen">Heute</button>
+      <button id="nextBtn" type="button" class="btn" aria-label="Nächster Tag">Weiter →</button>
+      <div class="spacer"></div>
+      <div class="title" id="dayLabel" aria-live="polite"></div>
+      <a href="../../startseite.html" class="btn">Wochenansicht</a>
     </div>
   </header>
 
-  <section id="status">Lade Termine …</section>
-  <section id="list" hidden></section>
-
+  <main>
+    <section id="status">Lade Termine …</section>
+    <section id="list" hidden></section>
+  </main>
 
     <!-- JS separat laden -->
-    <script src="js/stundenplan.js"></script>
+    <script src="../../js/stundenplan.js"></script>
 </body>
 
 </html>
