@@ -10,7 +10,8 @@ use PDOException;
  *
  * Verantwortlich für alle Datenbankoperationen, die die BENUTZER-Tabelle betreffen.
  */
-class Florian_BenutzerModel {
+class Florian_BenutzerModel
+{
 
     /**
      * Liefert einen Benutzer-Datensatz aus der Tabelle BENUTZER anhand der Benutzer-ID.
@@ -28,25 +29,7 @@ class Florian_BenutzerModel {
         return $row ?: null;
     }
 
-    /**
-     * Wählt alle Benutzer mit ihren persönlichen Daten und dem Klassennamen aus.
-     *
-     * @return array
-     * @throws PDOException
-     */
-    public function selectBenutzer(): array
-    {
-        $sql = "
-            SELECT b.benutzer_id, pd.name, pd.vorname, b.email, k.klassenname
-            FROM BENUTZER b
-            LEFT JOIN PERSOEHNLICHE_DATEN pd ON b.benutzer_id = pd.benutzer_id
-            LEFT JOIN KLASSEN k ON pd.klassen_id = k.klassen_id
-            ORDER BY pd.name, pd.vorname
-        ";
-        $pdo = Database::getConnection();
-        $stmt = $pdo->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+   
 
     /**
      * Aktualisiert die E-Mail und optional das Passwort eines Benutzers in der BENUTZER-Tabelle.

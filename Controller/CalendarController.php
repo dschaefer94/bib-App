@@ -36,4 +36,9 @@ class CalendarController
   {
     echo json_encode((new CalendarModel())->selectNotedChanges($_SESSION['user_id']), JSON_UNESCAPED_UNICODE);
   }
+
+  public function writeNotedChanges($data)
+  {
+    echo json_encode((new CalendarModel())->insertNotedChanges($_SESSION['user_id'], $data['termin_id']), JSON_UNESCAPED_UNICODE);
+  }
 }
