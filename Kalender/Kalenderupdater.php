@@ -39,7 +39,7 @@ function updateAlleKalendare()
 {
     try {
         $pdo = new \PDO(
-            "mysql:dbname=pbd2h24asc_stundenplan_db;host=mysql.bib.de",
+            "mysql:dbname=pbd2h24asc_stundenplan_db;host=mysql.pb.bib.de",
             "pbd2h24asc",
             "8x2uXWAeTEMC",
             array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION)
