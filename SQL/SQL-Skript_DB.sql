@@ -24,7 +24,7 @@ create table persoenliche_daten (
 
 create table gelesene_termine (
   benutzer_id char(36),
-  termin_id varchar(100),
+  termin_id varchar(255),
   primary key (benutzer_id, termin_id),
   foreign key (benutzer_id) references benutzer(benutzer_id)
 );

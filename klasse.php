@@ -3,8 +3,8 @@ define('API', 'restAPI.php');
 $url = "http://localhost/bibapp_xampp/" . API;
 
 //D-Klasse
-$klassenname = 'pbd2h24a';
-$ical_link = 'https://intranet.bib.de/ical/d819a07653892b46b6e4d2765246b7ab';
+//$klassenname = 'pbd2h24a';
+//$ical_link = 'https://intranet.bib.de/ical/d819a07653892b46b6e4d2765246b7ab';
 
 //S-Klasse
 // $klassenname = 'pbs2h24a';

@@ -52,7 +52,7 @@ function updateAlleKalendare()
         return;
     }
     foreach ($klassennamen as $klassenname) {
-        echo "Starte Kalender-Update für Klasse: " . $klassenname['klassenname'] . " ->\n";
+        echo "Starte Kalender-Update für Klasse: " . $klassenname['klassenname'] . "\n";
         kalenderupdater($klassenname['klassenname'], $pdo);
     }
 }

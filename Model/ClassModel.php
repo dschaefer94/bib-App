@@ -173,8 +173,7 @@ class ClassModel extends Database
       $query = "DROP TABLE IF EXISTS 
       `{$klassenname['klassenname']}_alter_stundenplan`,
       `{$klassenname['klassenname']}_wartezimmer`,
-      `{$klassenname['klassenname']}_aenderungen`,
-      `{$klassenname['klassenname']}_veraenderte_termine`";
+      `{$klassenname['klassenname']}_aenderungen`";
       $stmt = $pdo->prepare($query);
       $stmt->execute();
       $pdo->commit();

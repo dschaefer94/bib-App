@@ -74,10 +74,3 @@ Alte Termine müssen auch bei Gelöscht mitkommen
 Einte Tabelle dann besser, null bei neuen Terminen
 
 
-Kalenderupdater.php beim Erstellen einer Klasse einmal runnen und sofort die Änderungen truncen, da ja alles neu ist
-vergangene Termine nicht übernehmen
-vergangene Änderungen löschen
-DeleteKlasse
-UpdateKlasse
-
-Benutzermapping in einer Tabelle oder eine Tabelle je Nutzer? für gelesene Änderungen?

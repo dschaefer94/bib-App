@@ -46,6 +46,7 @@ function dbMagic($pdo, $alter_stundenplan, $neuer_stundenplan, $name, $events)
     $chunks = array_chunk($events, $chunkSize, true);
 
     try {
+        echo "Füge Termine in die Datenbank ein...\n";
         foreach ($chunks as $chunk) {
             $valueParts = [];
             $params = [];
@@ -67,7 +68,7 @@ function dbMagic($pdo, $alter_stundenplan, $neuer_stundenplan, $name, $events)
         }
         $aenderungen = "{$name}_aenderungen";
 
-       
+        echo "Führe Vergleichsoperationen durch...\n";
         $query = "INSERT INTO `{$aenderungen}` (termin_id, label, summary_alt, start_alt, end_alt, location_alt)
         SELECT DISTINCT 
         alt.termin_id, 'gelöscht',
@@ -149,5 +150,5 @@ function dbMagic($pdo, $alter_stundenplan, $neuer_stundenplan, $name, $events)
         $pdo->rollBack();
         echo "Fehler bei der Datenbankoperation: " . $e->getMessage() . "\n";
     }
-    echo "Datenbankoperationen erfolgreich!\n";
+    echo "Alle Datenbankoperationen erfolgreich!\n";
 }
