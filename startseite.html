@@ -297,6 +297,90 @@
       border-radius: 10px;
       background: #0e1219;
     }
+
+    /* --- Änderungen-Liste unter dem Raster --- */
+    .changes-list {
+      margin-top: 24px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .changes-list h2 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+    }
+
+    .changes-list .item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px 12px;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .changes-list .item:first-child {
+      border-top: none;
+    }
+
+    .changes-list .meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .label-chip {
+      display: inline-block;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+      color: var(--muted);
+      background: #0f131a;
+      margin-left: 8px;
+    }
+
+    .label-chip.neu {
+      border-color: var(--green-bd);
+      color: var(--green-bd);
+    }
+
+    .label-chip.geaendert {
+      border-color: var(--yellow-bd);
+      color: var(--yellow-bd);
+    }
+
+    .label-chip.geloescht {
+      border-color: var(--red-bd);
+      color: var(--red-bd);
+    }
+
+    .mark-read {
+      justify-self: end;
+      align-self: start;
+      padding: 6px 10px;
+      font-size: 13px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #0f131a;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .mark-read:hover {
+      background: #0c1017;
+    }
+
+    .event .actions {
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .event .actions .mark-read {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
   </style>
 </head>
 
@@ -339,7 +423,13 @@
         <span class="badge"><span class="dot red"></span> gelöscht</span>
       </div>
     </div>
+
     <section id="grid" class="grid" aria-live="polite"></section>
+        <!-- NEU: Übersicht der geänderten/ungelesenen Termine -->
+    <section id="changesList" class="changes-list" aria-live="polite" aria-label="Übersicht geänderter Termine">
+      <!-- wird per JS befüllt -->
+    </section>
+
   </main>
 
   <script src="js/stundenplan.js"></script>

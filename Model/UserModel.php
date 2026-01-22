@@ -86,4 +86,81 @@ class UserModel extends Database
         }
         return ['benutzerAngelegt' => true];
     }
+    /**
+     * Florian
+     * Wählt alle Benutzer mit ihren persönlichen Daten und dem Klassennamen aus.
+     * @return array
+     */
+    public function selectBenutzer(int $benutzer_id): array
+    {
+        try {
+            $pdo = $this->linkDB();
+            $sql = "
+        SELECT b.benutzer_id, pd.name, pd.vorname, b.email, k.klassenname
+        FROM BENUTZER b
+        LEFT JOIN PERSOEHNLICHE_DATEN pd ON b.benutzer_id = pd.benutzer_id
+        LEFT JOIN KLASSEN k ON pd.klassen_id = k.klassen_id
+        WHERE b.benutzer_id = :benutzer_id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':benutzer_id' => $benutzer_id
+            ]);
+        } catch (\PDOException $e) {
+            return [];
+        }
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+    /**
+     * Florian
+     * Aktualisiert die E-Mail und optional das Passwort eines Benutzers in der BENUTZER-Tabelle.
+     * @param int $benutzer_id Die ID des zu aktualisierenden Benutzers.
+     * @param string $email Die neue E-Mail-Adresse.
+     * @param string|null $passwort Das neue Passwort. Wenn null, wird es nicht geändert.
+     * @return bool True bei Erfolg.
+     */
+    public function updateUser($benutzer_id, string $email, ?string $passwort = null): bool
+    {
+        $pdo = Database::getConnection();
+
+        if ($passwort) {
+            $stmt = $pdo->prepare("UPDATE BENUTZER SET email = ?, passwort = ? WHERE benutzer_id = ?");
+            $stmt->execute([$email, $passwort, $benutzer_id]);
+        } else {
+            $stmt = $pdo->prepare("UPDATE BENUTZER SET email = ? WHERE benutzer_id = ?");
+            $stmt->execute([$email, $benutzer_id]);
+        }
+
+        return $stmt->rowCount() > 0;
+    }
+    /**
+     * Florian
+     * Löscht einen Benutzer aus der Datenbank.
+     * Dies geschieht in einer Transaktion, um Datenkonsistenz zu gewährleisten.
+     * @param $id
+     * @return bool
+     */
+    public function deleteUser($id): bool
+    {
+        $pdo = Database::getConnection();
+        try {
+            $pdo->beginTransaction();
+            $stmt3 = $pdo->prepare("DELETE FROM gelesene_termine WHERE benutzer_id = ?");
+            $stmt3->execute([$id]);
+            // Zuerst abhängige Daten löschen
+            $stmt1 = $pdo->prepare("DELETE FROM PERSOEHNLICHE_DATEN WHERE benutzer_id = ?");
+            $stmt1->execute([$id]);
+
+            // Dann den Hauptdatensatz löschen
+            $stmt2 = $pdo->prepare("DELETE FROM BENUTZER WHERE benutzer_id = ?");
+            $stmt2->execute([$id]);
+
+            $pdo->commit();
+
+            // Gibt true zurück, wenn der Benutzer-Datensatz gelöscht wurde.
+            return $stmt2->rowCount() > 0;
+        } catch (\PDOException $e) {
+            $pdo->rollBack();
+            throw $e; // Ausnahme weiterleiten, damit der Controller sie behandeln kann.
+        }
+    }
 }

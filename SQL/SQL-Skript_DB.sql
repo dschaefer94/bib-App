@@ -21,3 +21,10 @@ create table persoenliche_daten (
   foreign key (benutzer_id) references benutzer(benutzer_id),
   foreign key (klassen_id) references klassen(klassen_id)
 );
+
+create table gelesene_termine (
+  benutzer_id char(36),
+  termin_id varchar(100),
+  primary key (benutzer_id, termin_id),
+  foreign key (benutzer_id) references benutzer(benutzer_id)
+);
