@@ -34,10 +34,10 @@ class CalendarModel extends Database
       $pdo = $this->linkDB();
       $query = "SELECT * FROM `{$klassenname}_aenderungen`";
       $stmt = $pdo->query($query);
+      return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     } catch (\PDOException $e) {
       return [];
     }
-    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
   }
   /**
    * Daniel

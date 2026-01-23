@@ -4,6 +4,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const profileForm = document.getElementById('profileForm');
     const errorMessage = document.getElementById('error-message');
     const successMessage = document.getElementById('success-message');
+    
+    // Sicherheitsprüfung: Überprüfe, ob alle notwendigen Elemente vorhanden sind
+    if (!profileForm || !errorMessage || !successMessage || !profileSection) {
+        console.error('Erforderliche HTML-Elemente nicht gefunden. Stelle sicher, dass profil.html verwendet wird.');
+        return;
+    }
+    
+    // Dynamische API-Base-URL
+    const apiBase = 'restapi.php';
 
     // Function to hide messages
     function hideMessages() {
@@ -17,27 +26,75 @@ document.addEventListener('DOMContentLoaded', function () {
         element.style.display = 'block';
     }
 
-    // Function to load user data
-    function loadUserData() {
-        hideMessages();
-
-        // Fetch user data
-        fetch('restapi.php/user/profile')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.userData) {
-                    populateProfileForm(data.userData, data.klassen);
-                    profileSection.style.display = 'block';
-                } else {
-                    showMessage(errorMessage, data.error || 'Benutzer nicht gefunden.');
-                    profileSection.style.display = 'none';
+    // Lade nur die Klassen-Liste von der API
+    function loadKlassen() {
+        const klassenUrl = apiBase + '?path=personalData/getAllClasses';
+        console.log('Loading classes from:', klassenUrl);
+        
+        fetch(klassenUrl, {
+            method: 'GET',
+            credentials: 'include'
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Classes data received:', data);
+            
+            if (Array.isArray(data)) {
+                const klassenSelect = document.getElementById('klassen_id');
+                klassenSelect.innerHTML = '<option value="">-- Keine Klasse --</option>';
+                
+                // Hole die aktuelle Klasse des Benutzers aus sessionStorage
+                const storedUser = sessionStorage.getItem('user');
+                let currentClassname = null;
+                if (storedUser) {
+                    try {
+                        const user = JSON.parse(storedUser);
+                        currentClassname = user.klassenname;
+                        console.log('Current user class:', currentClassname);
+                    } catch (e) {
+                        console.error('Error parsing user data:', e);
+                    }
                 }
-            })
-            .catch(error => {
-                console.error('Error fetching user data:', error);
-                showMessage(errorMessage, 'Ein Fehler ist beim Laden der Daten aufgetreten.');
-                profileSection.style.display = 'none';
-            });
+                
+                // Erstelle alle Optionen
+                data.forEach(klasse => {
+                    const option = document.createElement('option');
+                    option.value = klasse.klassen_id;
+                    option.textContent = klasse.klassenname;
+                    
+                    // Markiere die aktuelle Klasse des Benutzers
+                    if (currentClassname && currentClassname === klasse.klassenname) {
+                        option.selected = true;
+                        console.log('Selected class:', klasse.klassenname);
+                    }
+                    
+                    klassenSelect.appendChild(option);
+                });
+                
+                console.log('Classes loaded successfully');
+            } else {
+                console.error('Classes data is not an array:', data);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading classes:', error);
+            showMessage(errorMessage, 'Fehler beim Laden der Klassen.');
+        });
+    }
+
+    // Function to populate the profile form with data
+    function populateProfileForm(userData) {
+        console.log('Populating form with user data:', userData);
+        
+        document.getElementById('profile_benutzer_id').value = userData.id || '';
+        document.getElementById('name').value = userData.nachname || '';
+        document.getElementById('vorname').value = userData.vorname || '';
+        document.getElementById('email').value = userData.email || '';
+        document.getElementById('passwort').value = '';
+        document.getElementById('passwort_confirm').value = '';
     }
 
     // Handle the profile update form submission
@@ -56,20 +113,22 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(profileForm);
         const data = Object.fromEntries(formData.entries());
         
-        fetch('restapi.php/user/updateProfile', {
+        const updateUrl = apiBase + '?path=personalData/updateProfile';
+        fetch(updateUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify(data)
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 showMessage(successMessage, data.message);
-                // Repopulate form with potentially updated data
                 if (data.userData) {
-                    populateProfileForm(data.userData, data.klassen);
+                    populateProfileForm(data.userData);
+                    loadKlassen();
                 }
             } else {
                 showMessage(errorMessage, data.error || 'Fehler beim Speichern.');
@@ -81,40 +140,23 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Function to populate the profile form with data
-    function populateProfileForm(userData, klassen) {
-        document.getElementById('profile_benutzer_id').value = userData.benutzer_id || '';
-        document.getElementById('name').value = userData.name || '';
-        document.getElementById('vorname').value = userData.vorname || '';
-        document.getElementById('email').value = userData.email || '';
-        document.getElementById('passwort').value = ''; // Clear password field
-        document.getElementById('passwort_confirm').value = ''; // Clear password confirmation field
-
-        const klassenSelect = document.getElementById('klassen_id');
-        klassenSelect.innerHTML = '<option value="">-- Keine Klasse --</option>'; // Clear existing options
-
-        if (klassen && klassen.length > 0) {
-            klassen.forEach(klasse => {
-                const option = document.createElement('option');
-                option.value = klasse.klassen_id;
-                option.textContent = klasse.klassenname;
-                if (userData.klassen_id && userData.klassen_id == klasse.klassen_id) {
-                    option.selected = true;
-                }
-                klassenSelect.appendChild(option);
-            });
-        }
-    }
-    
-    // --- NEW LOGIC ---
-    // Load user data on page load from sessionStorage
+    // Lade Benutzerdaten aus sessionStorage (wurden beim Login gespeichert)
     const storedUser = sessionStorage.getItem('user');
     if (storedUser) {
-        loadUserData();
+        try {
+            const user = JSON.parse(storedUser);
+            console.log('User data from sessionStorage:', user);
+            populateProfileForm(user);
+            profileSection.style.display = 'block';
+            loadKlassen();
+        } catch (e) {
+            console.error('Error parsing user data from sessionStorage:', e);
+            showMessage(errorMessage, 'Fehler beim Laden der Benutzerdaten');
+            profileSection.style.display = 'none';
+        }
     } else {
-        showMessage(errorMessage, 'Keine Benutzerdaten im Session Storage gefunden. Bitte melde dich an.');
+        showMessage(errorMessage, 'Keine Benutzerdaten gefunden. Bitte melde dich an.');
         profileSection.style.display = 'none';
-        // Optional: redirect to login
-        // window.location.href = 'index.html';
     }
 });
+

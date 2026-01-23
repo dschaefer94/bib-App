@@ -17,10 +17,16 @@
 
       <script>
         document.getElementById('logout').addEventListener('click', () => {
-          const urlNeuerTab = 'restapi.php/user/Logout';  // Link A (neuer Tab)
-          const urlAktuell = 'index.html';             // Link B (aktuelles Fenster)
-          window.open(urlNeuerTab, '_blank', 'noopener,noreferrer');
-          window.location.replace(urlAktuell);
+          const urlLogout = 'restapi.php/user/Logout';
+          // Logout durchführen und dann zur Index-Seite navigieren
+          fetch(urlLogout)
+            .then(() => {
+              window.location.replace('index.html');
+            })
+            .catch(() => {
+              // Falls der Logout fehlschlägt, trotzdem zur Index-Seite gehen
+              window.location.replace('index.html');
+            });
         });
       </script>
 
@@ -35,7 +41,7 @@
       <div class="spacer"></div>
       <div id="user-info" class="title"></div>
       <div class="title" id="weekTitle" aria-live="polite">Woche …</div>
-      <a href="Florian/profil.php" class="btn">Profil bearbeiten</a>
+      <a href="profil.html" class="btn">Profil bearbeiten</a>
     </div>
   </header>
 

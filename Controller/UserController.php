@@ -55,8 +55,9 @@ class UserController
             return;
         }
 
-        $_SESSION['user_id'] = $user['benutzer_id'];
-        $_SESSION['klassenname'] = (new ClassModel())->selectClass($_SESSION['user_id'])[0]['klassenname'];
+        $_SESSION['benutzer_id'] = $user['benutzer_id'];
+        $_SESSION['user_id'] = $user['benutzer_id'];  // Alias für Kompatibilität
+        $_SESSION['klassenname'] = (new ClassModel())->selectClass($_SESSION['benutzer_id'])[0]['klassenname'];
 
         http_response_code(200);
         echo json_encode([
@@ -66,6 +67,7 @@ class UserController
                 'id' => $user['benutzer_id'],
                 'vorname' => $user['vorname'],
                 'nachname' => $user['nachname'],
+                'email' => $user['email'],
                 'klassenname' => $_SESSION['klassenname'],
             ]
         ]);

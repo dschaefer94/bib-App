@@ -3,12 +3,12 @@
 // CONFIG
 // ======================
 const CONFIG = {
-  BASE: 'http://localhost/bibapp_xampp/restapi.php',
+  BASE: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/restapi.php',
   ENDPOINT_NEU: '/Calendar/getCalendar',
   ENDPOINT_AENDERUNGEN: '/Calendar/getChanges',
   // NEU:
-  ENDPOINT_GELESEN: '/calendar/getnotedchanges',      // GET
-  ENDPOINT_GELESEN_WRITE: '/calendar/writenotedchanges', // POST
+  ENDPOINT_GELESEN: '/Calendar/getNotedChanges',      // GET
+  ENDPOINT_GELESEN_WRITE: '/Calendar/writeNotedChanges', // POST
   USE_QUERY_RANGE: false,
   DEFAULT_CLASS_NAME: 'PBD2H24A',
   WEEK_STARTS_MONDAY: true,
@@ -19,7 +19,26 @@ const CONFIG = {
 // ======================
 function getClassName() {
   const url = new URL(window.location.href);
-  return url.searchParams.get('klasse') ?? CONFIG.DEFAULT_CLASS_NAME;
+  const klassFromUrl = url.searchParams.get('klasse');
+  if (klassFromUrl) {
+    return klassFromUrl;
+  }
+  
+  // Versuche aus sessionStorage zu bekommen
+  const storedUser = sessionStorage.getItem('user');
+  if (storedUser) {
+    try {
+      const user = JSON.parse(storedUser);
+      if (user.klassenname) {
+        return user.klassenname;
+      }
+    } catch (e) {
+      console.error('Failed to parse user from sessionStorage:', e);
+    }
+  }
+  
+  // Fallback auf Default
+  return CONFIG.DEFAULT_CLASS_NAME;
 }
 
 function buildUrl(path, { start = null, end = null } = {}) {
@@ -106,10 +125,15 @@ async function fetchDataForRange(s, e) {
   const neuUrl  = buildUrl(CONFIG.ENDPOINT_NEU,  { start: s, end: e });
   const aendUrl = buildUrl(CONFIG.ENDPOINT_AENDERUNGEN, { start: s, end: e });
   const [neuRes, aendRes] = await Promise.all([ fetch(neuUrl), fetch(aendUrl) ]);
-  if (!neuRes.ok)  throw new Error('Fehler beim Laden von stundenplan_neu');
-  if (!aendRes.ok) throw new Error('Fehler beim Laden von aenderungen');
-  const [neu, aend] = await Promise.all([ neuRes.json(), aendRes.json() ]);
-  return { neu, aend };
+  if (!neuRes.ok)  throw new Error('Fehler beim Laden von stundenplan_neu: ' + neuRes.status);
+  if (!aendRes.ok) throw new Error('Fehler beim Laden von aenderungen: ' + aendRes.status);
+  try {
+    const [neu, aend] = await Promise.all([ neuRes.json(), aendRes.json() ]);
+    return { neu, aend };
+  } catch (e) {
+    console.error('JSON parse error from getCalendar/getChanges:', e);
+    throw new Error('JSON-Parse Fehler beim Laden der Termine: ' + e.message);
+  }
 }
 
 async function ensureDataLoaded() {
@@ -126,14 +150,20 @@ async function ensureDataLoaded() {
 // ======================
 async function fetchReadIds() {
   const url = buildUrl(CONFIG.ENDPOINT_GELESEN);
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('Fehler beim Laden der Gelesen-Liste');
-  const json = await res.json();
-  const arr = Array.isArray(json) ? json : (json?.data ?? []);
-  READ_IDS = new Set(
-    arr.map(x => String(x?.termin_id ?? x)).map(s => s.trim()).filter(Boolean)
-  );
-  READS_LOADED = true;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Fehler beim Laden der Gelesen-Liste: ' + res.status);
+    const json = await res.json();
+    const arr = Array.isArray(json) ? json : (json?.data ?? []);
+    READ_IDS = new Set(
+      arr.map(x => String(x?.termin_id ?? x)).map(s => s.trim()).filter(Boolean)
+    );
+    READS_LOADED = true;
+  } catch (e) {
+    console.error('JSON parse error from getNotedChanges:', e);
+    console.error('URL was:', url);
+    throw new Error('JSON-Parse Fehler beim Laden der Gelesen-Liste: ' + e.message);
+  }
 }
 
 async function ensureReadsLoaded() {
@@ -584,7 +614,7 @@ function hookButtons() {
 
 hookButtons();
 render().catch(err => {
-  console.error(err);
+  console.error('Render error:', err);
   const grid = document.getElementById('grid');
   grid.innerHTML = `<div class="empty">Fehler beim Laden: ${escapeHtml(err.message)}</div>`;
 });
