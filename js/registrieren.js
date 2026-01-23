@@ -1,11 +1,9 @@
-// hier die URL fürs lokale Testen ändern
-//Daniel
-const url = "http://localhost/bibapp_xampp/restAPI.php/";
-//const url = "http://localhost/SDP/bib-App/restAPI.php/";
+// Basis-URL für API
+const url = "./restapi.php";
 
 // POST: neuen Benutzer anlegen
 async function createUser(payload) {
-  const res = await fetch(url + "user", {
+  const res = await fetch(url + "/user", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
@@ -24,24 +22,29 @@ document.querySelector("#userForm").addEventListener("submit", async (e) => {
   const klassenname = document.querySelector("#klasseSelect").value;
 
   const payload = { email, passwort: password, name, vorname, klassenname };
-
-  //erwartete Rückgabe: JSON mit benutzer_ID und email
-  const [{ benutzerAngelegt, grund }] = await createUser(payload);
-
-  //Auswertung der benutzer_ID
   const registrierungsFeedback = document.querySelector("#registrierungsFeedback");
 
-  if (!benutzerAngelegt) { 
-    registrierungsFeedback.textContent = grund;
+  try {
+    //erwartete Rückgabe: JSON mit benutzer_ID und email
+    const response = await createUser(payload);
+    const [{ benutzerAngelegt, grund }] = response;
+
+    if (!benutzerAngelegt) { 
+      registrierungsFeedback.textContent = grund;
+      registrierungsFeedback.style.color = "red";
+      registrierungsFeedback.style.display = "block";
+    } else {
+      registrierungsFeedback.textContent = "Benutzer erfolgreich angelegt!";
+      registrierungsFeedback.style.color = "green";
+      registrierungsFeedback.style.display = "block";
+      e.target.reset();
+    }
+  } catch (err) {
+    console.error("Fehler beim Benutzer anlegen:", err);
+    registrierungsFeedback.textContent = "Fehler: " + err.message;
     registrierungsFeedback.style.color = "red";
     registrierungsFeedback.style.display = "block";
-  } else {
-    registrierungsFeedback.textContent = "Benutzer erfolgreich angelegt!";
-    registrierungsFeedback.style.color = "green";
-    registrierungsFeedback.style.display = "block";
   }
-  // Formular zurücksetzen
-  e.target.reset();
 });
 
 
@@ -49,7 +52,7 @@ document.querySelector("#userForm").addEventListener("submit", async (e) => {
 
 // GET: Klassenliste holen
 async function getKlassen() {
-  const res = await fetch(url + "class"); // ClassController -> getClass()
+  const res = await fetch(url + "/class"); // ClassController -> getClass()
   return res.json(); // erwartet ein Array mit klassen_id, klassenname, ical_link (Json-Link(null)),
   //muss noch alles außer klassenname herausschmeißen
 }
@@ -57,21 +60,26 @@ async function getKlassen() {
 // Dropdown befüllen (nur Name)
 async function fillKlasseSelect() {
   const select = document.querySelector("#klasseSelect");
-  let rows = await getKlassen();
+  try {
+    let rows = await getKlassen();
 
-  // Minimal robust: in Array verwandeln, falls nötig
-  if (!Array.isArray(rows)) {
-    rows = Object.values(rows || {});
+    // Minimal robust: in Array verwandeln, falls nötig
+    if (!Array.isArray(rows)) {
+      rows = Object.values(rows || {});
+    }
+
+    // Platzhalter als echte Option
+    select.innerHTML = '<option value="">Bitte wählen…</option>';
+
+    rows.forEach(k => {
+      const opt = document.createElement("option");
+      opt.textContent = k.klassenname; // Nur Name anzeigen
+      select.appendChild(opt);
+    });
+  } catch (err) {
+    console.error("Fehler beim Laden der Klassen:", err);
+    select.innerHTML = '<option value="">Fehler beim Laden der Klassen</option>';
   }
-
-  // Platzhalter als echte Option
-  select.innerHTML = '<option value="">Bitte wählen…</option>';
-
-  rows.forEach(k => {
-    const opt = document.createElement("option");
-    opt.textContent = k.klassenname; // Nur Name anzeigen
-    select.appendChild(opt);
-  });
 }
 
 // Beim Laden ausführen

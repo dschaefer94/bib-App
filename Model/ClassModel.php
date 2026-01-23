@@ -185,4 +185,12 @@ class ClassModel extends Database
     }
     return ['erfolg' => true];
   }
+
+    // Florian
+    public function getAllClasses(): array
+    {
+        $pdo = $this->linkDB();
+        $stmt = $pdo->query("SELECT klassen_id, klassenname FROM klassen ORDER BY klassenname");
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
