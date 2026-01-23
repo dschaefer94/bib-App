@@ -3,12 +3,12 @@
 // CONFIG
 // ======================
 const CONFIG = {
-  BASE: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/restapi.php',
+  BASE: 'http://localhost/bibapp_xampp/restapi.php',
   ENDPOINT_NEU: '/Calendar/getCalendar',
   ENDPOINT_AENDERUNGEN: '/Calendar/getChanges',
   // NEU:
-  ENDPOINT_GELESEN: '/Calendar/getNotedChanges',      // GET
-  ENDPOINT_GELESEN_WRITE: '/Calendar/writeNotedChanges', // POST
+  ENDPOINT_GELESEN: '/calendar/getnotedchanges',      // GET
+  ENDPOINT_GELESEN_WRITE: '/calendar/writenotedchanges', // POST
   USE_QUERY_RANGE: false,
   DEFAULT_CLASS_NAME: 'PBD2H24A',
   WEEK_STARTS_MONDAY: true,
@@ -19,26 +19,7 @@ const CONFIG = {
 // ======================
 function getClassName() {
   const url = new URL(window.location.href);
-  const klassFromUrl = url.searchParams.get('klasse');
-  if (klassFromUrl) {
-    return klassFromUrl;
-  }
-  
-  // Versuche aus sessionStorage zu bekommen
-  const storedUser = sessionStorage.getItem('user');
-  if (storedUser) {
-    try {
-      const user = JSON.parse(storedUser);
-      if (user.klassenname) {
-        return user.klassenname;
-      }
-    } catch (e) {
-      console.error('Failed to parse user from sessionStorage:', e);
-    }
-  }
-  
-  // Fallback auf Default
-  return CONFIG.DEFAULT_CLASS_NAME;
+  return url.searchParams.get('klasse') ?? CONFIG.DEFAULT_CLASS_NAME;
 }
 
 function buildUrl(path, { start = null, end = null } = {}) {
@@ -47,7 +28,7 @@ function buildUrl(path, { start = null, end = null } = {}) {
   url.searchParams.set('klasse', klasse);
   if (CONFIG.USE_QUERY_RANGE && start && end) {
     url.searchParams.set('start', start.toISOString().slice(0, 10));
-    url.searchParams.set('end',   end.toISOString().slice(0, 10));
+    url.searchParams.set('end', end.toISOString().slice(0, 10));
   }
   return url.toString();
 }
@@ -67,7 +48,7 @@ let weekStart = startOfWeek(new Date());
 // ======================
 function startOfWeek(date) {
   const d = new Date(date);
-  d.setHours(0,0,0,0);
+  d.setHours(0, 0, 0, 0);
   const day = d.getDay(); // 0=So,1=Mo,...
   const diff = CONFIG.WEEK_STARTS_MONDAY ? ((day + 6) % 7) : day;
   d.setDate(d.getDate() - diff);
@@ -122,18 +103,13 @@ function escapeHtml(s) {
 // Daten holen
 // ======================
 async function fetchDataForRange(s, e) {
-  const neuUrl  = buildUrl(CONFIG.ENDPOINT_NEU,  { start: s, end: e });
+  const neuUrl = buildUrl(CONFIG.ENDPOINT_NEU, { start: s, end: e });
   const aendUrl = buildUrl(CONFIG.ENDPOINT_AENDERUNGEN, { start: s, end: e });
-  const [neuRes, aendRes] = await Promise.all([ fetch(neuUrl), fetch(aendUrl) ]);
-  if (!neuRes.ok)  throw new Error('Fehler beim Laden von stundenplan_neu: ' + neuRes.status);
-  if (!aendRes.ok) throw new Error('Fehler beim Laden von aenderungen: ' + aendRes.status);
-  try {
-    const [neu, aend] = await Promise.all([ neuRes.json(), aendRes.json() ]);
-    return { neu, aend };
-  } catch (e) {
-    console.error('JSON parse error from getCalendar/getChanges:', e);
-    throw new Error('JSON-Parse Fehler beim Laden der Termine: ' + e.message);
-  }
+  const [neuRes, aendRes] = await Promise.all([fetch(neuUrl), fetch(aendUrl)]);
+  if (!neuRes.ok) throw new Error('Fehler beim Laden von stundenplan_neu');
+  if (!aendRes.ok) throw new Error('Fehler beim Laden von aenderungen');
+  const [neu, aend] = await Promise.all([neuRes.json(), aendRes.json()]);
+  return { neu, aend };
 }
 
 async function ensureDataLoaded() {
@@ -141,7 +117,7 @@ async function ensureDataLoaded() {
   const s = startOfWeek(new Date());
   const e = endOfWeek(s);
   const { neu, aend } = await fetchDataForRange(s, e);
-  RAW_NEU  = Array.isArray(neu)  ? neu  : (neu?.data  ?? []);
+  RAW_NEU = Array.isArray(neu) ? neu : (neu?.data ?? []);
   RAW_AEND = Array.isArray(aend) ? aend : (aend?.data ?? []);
 }
 
@@ -150,20 +126,14 @@ async function ensureDataLoaded() {
 // ======================
 async function fetchReadIds() {
   const url = buildUrl(CONFIG.ENDPOINT_GELESEN);
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('Fehler beim Laden der Gelesen-Liste: ' + res.status);
-    const json = await res.json();
-    const arr = Array.isArray(json) ? json : (json?.data ?? []);
-    READ_IDS = new Set(
-      arr.map(x => String(x?.termin_id ?? x)).map(s => s.trim()).filter(Boolean)
-    );
-    READS_LOADED = true;
-  } catch (e) {
-    console.error('JSON parse error from getNotedChanges:', e);
-    console.error('URL was:', url);
-    throw new Error('JSON-Parse Fehler beim Laden der Gelesen-Liste: ' + e.message);
-  }
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Fehler beim Laden der Gelesen-Liste');
+  const json = await res.json();
+  const arr = Array.isArray(json) ? json : (json?.data ?? []);
+  READ_IDS = new Set(
+    arr.map(x => String(x?.termin_id ?? x)).map(s => s.trim()).filter(Boolean)
+  );
+  READS_LOADED = true;
 }
 
 async function ensureReadsLoaded() {
@@ -201,10 +171,10 @@ function buildWeekEvents(s, e) {
   const normalizeEvent = (obj, source = 'neu', change = null) => {
     const isAlt = source === 'alt';
     const start = parseISO(isAlt ? obj.start_alt : obj.start);
-    const end   = parseISO(isAlt ? obj.end_alt   : obj.end);
+    const end = parseISO(isAlt ? obj.end_alt : obj.end);
     return {
       id: String(obj.termin_id),
-      summary:  isAlt ? obj.summary_alt  : obj.summary,
+      summary: isAlt ? obj.summary_alt : obj.summary,
       location: isAlt ? obj.location_alt : obj.location,
       start, end,
       raw: obj,
@@ -243,14 +213,14 @@ function buildWeekEvents(s, e) {
     for (const ev of day) {
       if (ev.status === 'geändert' && ev.change) {
         const old = {
-          summary:  ev.change.summary_alt,
-          start:    parseISO(ev.change.start_alt),
-          end:      parseISO(ev.change.end_alt),
+          summary: ev.change.summary_alt,
+          start: parseISO(ev.change.start_alt),
+          end: parseISO(ev.change.end_alt),
           location: ev.change.location_alt,
         };
         ev.diff = {
-          summaryChanged:  old.summary !== ev.summary,
-          timeChanged:     (old.start.getTime() !== ev.start.getTime()) || (old.end.getTime() !== ev.end.getTime()),
+          summaryChanged: old.summary !== ev.summary,
+          timeChanged: (old.start.getTime() !== ev.start.getTime()) || (old.end.getTime() !== ev.end.getTime()),
           locationChanged: old.location !== ev.location,
           old,
         };
@@ -285,16 +255,16 @@ function getGlobalUnreadChanges() {
       status: label,
       // "new" und "old" zur einheitlichen Darstellung
       new: {
-        summary:   neu?.summary   ?? ch.summary,     // für neu/geändert
-        start:     neu ? new Date(neu.start) : (ch.start ? new Date(ch.start) : null),
-        end:       neu ? new Date(neu.end)   : (ch.end   ? new Date(ch.end)   : null),
-        location:  neu?.location  ?? ch.location,
+        summary: neu?.summary ?? ch.summary,     // für neu/geändert
+        start: neu ? new Date(neu.start) : (ch.start ? new Date(ch.start) : null),
+        end: neu ? new Date(neu.end) : (ch.end ? new Date(ch.end) : null),
+        location: neu?.location ?? ch.location,
       },
       old: {
-        summary:   ch.summary_alt     ?? null,
-        start:     ch.start_alt ? new Date(ch.start_alt) : null,
-        end:       ch.end_alt   ? new Date(ch.end_alt)   : null,
-        location:  ch.location_alt    ?? null,
+        summary: ch.summary_alt ?? null,
+        start: ch.start_alt ? new Date(ch.start_alt) : null,
+        end: ch.end_alt ? new Date(ch.end_alt) : null,
+        location: ch.location_alt ?? null,
       }
     };
 
@@ -302,20 +272,20 @@ function getGlobalUnreadChanges() {
     if (label === 'gelöscht') {
       // Fallbacks: falls _alt-Felder fehlen, nutze ch-Felder
       view.display = {
-        date:   view.old.start ?? view.new.start,
-        start:  view.old.start ?? view.new.start,
-        end:    view.old.end   ?? view.new.end,
-        title:  view.old.summary ?? view.new.summary ?? '(ohne Titel)',
-        loc:    view.old.location ?? view.new.location ?? '',
+        date: view.old.start ?? view.new.start,
+        start: view.old.start ?? view.new.start,
+        end: view.old.end ?? view.new.end,
+        title: view.old.summary ?? view.new.summary ?? '(ohne Titel)',
+        loc: view.old.location ?? view.new.location ?? '',
       };
     } else {
       // 'neu' oder 'geändert': zeige "new" (aktueller Zustand)
       view.display = {
-        date:  view.new.start ?? view.old.start,
+        date: view.new.start ?? view.old.start,
         start: view.new.start ?? view.old.start,
-        end:   view.new.end   ?? view.old.end,
+        end: view.new.end ?? view.old.end,
         title: view.new.summary ?? view.old.summary ?? '(ohne Titel)',
-        loc:   view.new.location ?? view.old.location ?? '',
+        loc: view.new.location ?? view.old.location ?? '',
       };
     }
 
@@ -324,7 +294,7 @@ function getGlobalUnreadChanges() {
       view.diff = {
         summaryChanged: (view.old.summary ?? '') !== (view.new.summary ?? ''),
         timeChanged: !!(view.old.start && view.new.start && view.old.start.getTime() !== view.new.start.getTime())
-                  || !!(view.old.end   && view.new.end   && view.old.end.getTime()   !== view.new.end.getTime()),
+          || !!(view.old.end && view.new.end && view.old.end.getTime() !== view.new.end.getTime()),
         locationChanged: (view.old.location ?? '') !== (view.new.location ?? '')
       };
     }
@@ -481,16 +451,16 @@ function renderGrid(byDay, s) {
     const dayDate = new Date(s); dayDate.setDate(dayDate.getDate() + i);
     const col = document.createElement('div');
     col.className = 'day';
-    col.setAttribute('role','region');
+    col.setAttribute('role', 'region');
     col.setAttribute('aria-label', `${fmtDate(dayDate, true)}`);
 
     const head = document.createElement('header');
     const weekday = document.createElement('div');
     weekday.className = 'weekday';
-    weekday.textContent = new Intl.DateTimeFormat('de-DE', { weekday:'long' }).format(dayDate);
+    weekday.textContent = new Intl.DateTimeFormat('de-DE', { weekday: 'long' }).format(dayDate);
     const dateSpan = document.createElement('div');
     dateSpan.className = 'date';
-    dateSpan.textContent = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(dayDate);
+    dateSpan.textContent = new Intl.DateTimeFormat('de-DE', { day: '2-digit', month: '2-digit' }).format(dayDate);
     head.append(weekday, dateSpan);
 
     const list = document.createElement('div');
@@ -513,9 +483,16 @@ function renderGrid(byDay, s) {
 function renderEvent(ev) {
   const el = document.createElement('article');
   el.className = 'event';
-  if (ev.status === 'neu')       el.classList.add('neu');
-  if (ev.status === 'gelöscht')  el.classList.add('geloescht'); // CSS-Klasse ohne Umlaut
-  if (ev.status === 'geändert')  el.classList.add('geaendert'); // CSS-Klasse ohne Umlaut
+
+  // SPECIAL: summary beginnt mit "*"
+  const normalized = String(ev.summary || "").trim();
+  if (normalized.startsWith("*")) {
+    el.classList.add("special");
+  }
+
+  if (ev.status === 'neu') el.classList.add('neu');
+  if (ev.status === 'gelöscht') el.classList.add('geloescht'); // CSS-Klasse ohne Umlaut
+  if (ev.status === 'geändert') el.classList.add('geaendert'); // CSS-Klasse ohne Umlaut
 
   const label = document.createElement('div');
   label.className = 'label';
@@ -581,6 +558,58 @@ function renderEvent(ev) {
   return el;
 }
 
+function renderExamList() {
+  const host = document.getElementById("examList");
+  if (!host) return;
+
+  host.innerHTML = "";
+
+  const h = document.createElement("h2");
+  h.textContent = "Kommende Klausuren";
+  host.appendChild(h);
+
+  // Alle Klausuren aus NEU-Daten
+  const exams = RAW_NEU
+    .filter(ev => String(ev.summary || "").trim().startsWith("*"))
+    .map(ev => ({
+      id: ev.termin_id,
+      summary: ev.summary,
+      start: new Date(ev.start),
+      end: new Date(ev.end),
+      location: ev.location
+    }))
+    .filter(ev => ev.start >= new Date()) // nur zukünftige Klausuren
+    .sort((a, b) => a.start - b.start);
+
+  if (!exams.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "Keine kommenden Klausuren";
+    host.appendChild(empty);
+    return;
+  }
+
+  for (const ex of exams) {
+    const item = document.createElement("div");
+    item.className = "exam-item";
+
+    const title = document.createElement("div");
+    title.className = "summary";
+    title.textContent = ex.summary.replace(/^\*/, ""); // Stern entfernen
+    item.appendChild(title);
+
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.textContent =
+      `${fmtDate(ex.start, true)} · ${fmtTime(ex.start)}–${fmtTime(ex.end)}` +
+      (ex.location ? ` · ${ex.location}` : "");
+    item.appendChild(meta);
+
+    host.appendChild(item);
+  }
+}
+
+
 // ======================
 // Controller
 // ======================
@@ -595,6 +624,7 @@ async function render() {
 
   // Globale Liste – unabhängig von Woche
   renderChangesListGlobal();
+  renderExamList();
 }
 
 function hookButtons() {
@@ -614,7 +644,7 @@ function hookButtons() {
 
 hookButtons();
 render().catch(err => {
-  console.error('Render error:', err);
+  console.error(err);
   const grid = document.getElementById('grid');
   grid.innerHTML = `<div class="empty">Fehler beim Laden: ${escapeHtml(err.message)}</div>`;
 });
