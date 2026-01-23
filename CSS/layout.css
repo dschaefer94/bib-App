@@ -441,3 +441,64 @@ body.login-page {
   padding: 6px 10px;
   font-size: 12px;
 }
+
+/* BLUE/SPECIAL EVENT STYLES */
+:root {
+  --blue-bg: #10253d;
+  --blue-bd: #5ab3ff;
+}
+
+.event.special {
+  background: var(--blue-bg);
+  border-color: var(--blue-bd);
+  box-shadow: 0 0 0 1px color-mix(in hsl, var(--blue-bd), transparent 70%);
+}
+
+.dot.blue {
+  background: var(--blue-bd);
+}
+
+/* LAYOUT FOR TIMETABLE WITH SIDEBAR */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  align-items: start;
+}
+
+.main-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* SIDEBAR FOR EXAMS */
+.exam-list {
+  position: sticky;
+  top: 90px;
+}
+
+.exam-list h2 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+}
+
+.exam-item {
+  border-top: 1px solid var(--line);
+  padding: 10px 0;
+  font-size: 14px;
+}
+
+.exam-item:first-child {
+  border-top: none;
+}
+
+.exam-item .summary {
+  font-weight: 600;
+  color: var(--blue-bd);
+}
+
+.exam-item .meta {
+  color: var(--muted);
+  font-size: 13px;
+}
