@@ -1,9 +1,10 @@
 <?php
 /**
+ * Eric Kleim
  * Test-Datei für Passwort Vergessen Funktion
  * 
- * Diese Datei ermöglicht dir, die Passwort-Vergessen-Funktion zu testen
- * ohne dass du ein echtes Frontend durchlaufen musst.
+ * Diese Datei ermöglicht es, die Passwort-Vergessen-Funktion zu testen
+ * ohne dass man ein echtes Frontend durchlaufen musst.
  */
 
 header('Content-Type: text/html; charset=utf-8');

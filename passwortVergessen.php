@@ -1,5 +1,6 @@
 <?php
 /**
+ * Eric Kleim
  * Passwort Vergessen - Workaround Lösung
  * 
  * GET: Prüft, ob eine Email in der Datenbank existiert

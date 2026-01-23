@@ -11,7 +11,7 @@ class UserModel extends Database
      * einfache Benutzerabfrage
      * @return array mit allen benutzer_ids und Emails
      */
-    public function selectUser()
+    public function selectUser($email = null)
     {
         try {
             $pdo = $this->linkDB();

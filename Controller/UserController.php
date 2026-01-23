@@ -22,6 +22,15 @@ class UserController
         echo json_encode($rows, JSON_UNESCAPED_UNICODE);
     }
 
+    ##############################################################################
+    public function getFilteredUser() {
+        $model = new UserModel();
+        $rows = $model->selectUser($_GET ["email"]);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($rows, JSON_UNESCAPED_UNICODE);
+    }
+    ###############################################################################
+
     /**
      * Daniel
      * gibt nach Vollständigkeitsprüfung einen Registrierungsvorgang in Auftrag
