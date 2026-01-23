@@ -381,6 +381,68 @@
       padding: 6px 10px;
       font-size: 12px;
     }
+
+    :root {
+      --blue-bg: #10253d;
+      --blue-bd: #5ab3ff;
+    }
+
+    .event.special {
+      background: var(--blue-bg);
+      border-color: var(--blue-bd);
+      box-shadow: 0 0 0 1px color-mix(in hsl, var(--blue-bd), transparent 70%);
+    }
+
+    .dot.blue {
+      background: var(--blue-bd);
+    }
+
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .main-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Sidebar bleibt wie gehabt */
+    .exam-list {
+      position: sticky;
+      top: 90px;
+    }
+
+
+    .exam-list h2 {
+      margin: 0 0 12px 0;
+      font-size: 16px;
+    }
+
+    .exam-item {
+      border-top: 1px solid var(--line);
+      padding: 10px 0;
+      font-size: 14px;
+    }
+
+    .exam-item:first-child {
+      border-top: none;
+    }
+
+    .exam-item .summary {
+      font-weight: 600;
+      color: var(--blue-bd);
+      /* gleiche Farbe wie Events */
+    }
+
+    .exam-item .meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
   </style>
 </head>
 
@@ -421,14 +483,20 @@
         <span class="badge"><span class="dot green"></span> neu</span>
         <span class="badge"><span class="dot yellow"></span> geändert</span>
         <span class="badge"><span class="dot red"></span> gelöscht</span>
+        <span class="badge"><span class="dot blue"></span> Klausur</span>
       </div>
     </div>
 
-    <section id="grid" class="grid" aria-live="polite"></section>
-        <!-- NEU: Übersicht der geänderten/ungelesenen Termine -->
-    <section id="changesList" class="changes-list" aria-live="polite" aria-label="Übersicht geänderter Termine">
-      <!-- wird per JS befüllt -->
-    </section>
+
+    <div class="layout">
+      <div class="main-col">
+        <section id="grid" class="grid"></section>
+        <section id="changesList" class="changes-list"></section>
+      </div>
+
+      <aside id="examList" class="exam-list"></aside>
+    </div>
+
 
   </main>
 
