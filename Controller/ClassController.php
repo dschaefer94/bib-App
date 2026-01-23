@@ -31,17 +31,34 @@ class ClassController
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode($rows, JSON_UNESCAPED_UNICODE);
   }
-
+  /**
+   * Daniel
+   * fügt Klasse in entsprechende Tabellen in Datenbank ein
+   * @param mixed $data
+   * @return void
+   */
   public function writeClass($data)
   {
     echo json_encode((new ClassModel())->insertClass($data), JSON_PRETTY_PRINT);
   }
-
+  /**
+   * Daniel
+   * updatet Klasse
+   * @param mixed $id
+   * @param mixed $data
+   * @return void
+   */
   public function updateClass($id, $data)
   {
     //noch nicht implementiert
   }
 
+  /**
+   * Daniel
+   * löscht Klasse
+   * @param mixed $id
+   * @return void
+   */
   public function deleteClass($id)
   {
     //noch nicht implementiert

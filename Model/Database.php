@@ -16,10 +16,11 @@ abstract class Database
     // private $pw = "root"; //Passwort
 
     // Test-Online-Datenbank
-    // private $linkName = "localhost:3306";
+    // private $linkName = "localhost";
+    // private $host = "3306";
     // private $dbName = "pbd2h24asc_stundenplan_db";
     // private $user = "pbd2h24asc_backendboi";
-    // private $pw = "T3llMeWhy!";
+    // private $pw = "T3ll3Why!";
     
 //MySQL-Datenbank Zugangsdaten
     private $dbName = "pbd2h24asc_stundenplan_db"; //Datenbankname
