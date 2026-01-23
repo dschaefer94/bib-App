@@ -4,14 +4,17 @@ document.getElementById("login-btn").addEventListener("click", async (event) => 
     const password = document.getElementById("password").value.trim();
     const resultEl = document.getElementById("result");
 
+    resultEl.textContent = "";
+    resultEl.className = "";
+
     if (!email || !password) {
-        resultEl.textContent = "Введите email и пароль!";
-        resultEl.style.color = "red";
+        resultEl.textContent = "Bitte geben Sie E-Mail und Passwort ein!";
+        resultEl.className = "error-message";
         return;
     }
 
 
-    const url = "http://localhost/bibapp_xampp/restapi.php/user/login";
+   const url = "./restapi.php/user/login";
 
     try {
         const response = await fetch(url, {
@@ -29,17 +32,18 @@ document.getElementById("login-btn").addEventListener("click", async (event) => 
         console.log("Server response:", data);
 
         if (data.success) {
+            sessionStorage.setItem('user', JSON.stringify(data.user));
             resultEl.textContent = `✔ Glückwunsch!, ${data.user.email}`;
-            resultEl.style.color = "green";
+            resultEl.className = "success-message";
             window.location.href = "startseite.html";
 
         } else {
             resultEl.textContent = `❌ ${data.message}`;
-            resultEl.style.color = "red";
+            resultEl.className = "error-message";
         }
     } catch (err) {
         console.error("Fetch error:", err);
         resultEl.textContent = `Fehler: ${err.message}`;
-        resultEl.style.color = "red";
+        resultEl.className = "error-message";
     }
 });

@@ -38,7 +38,12 @@ class UserModel extends Database
     {
         try {
             $pdo = $this->linkDB();
-            $stmt = $pdo->prepare("SELECT * FROM benutzer WHERE email = :email");
+            $stmt = $pdo->prepare("
+                SELECT b.*, pd.vorname, pd.name as nachname
+                FROM benutzer b
+                LEFT JOIN persoenliche_daten pd ON b.benutzer_id = pd.benutzer_id
+                WHERE b.email = :email
+            ");
             $stmt->execute(['email' => $email]);
         } catch (\PDOException $e) {
             return null;
@@ -147,5 +152,38 @@ class UserModel extends Database
             $pdo->rollBack();
             throw $e; // Ausnahme weiterleiten, damit der Controller sie behandeln kann.
         }
+    }
+
+    // Florian
+    public function getUserData(int $benutzer_id): ?array
+    {
+        try {
+            $pdo = $this->linkDB();
+            $sql = "
+                SELECT b.benutzer_id, pd.name, pd.vorname, b.email, k.klassen_id, k.klassenname
+                FROM BENUTZER b
+                LEFT JOIN PERSOEHNLICHE_DATEN pd ON b.benutzer_id = pd.benutzer_id
+                LEFT JOIN KLASSEN k ON pd.klassen_id = k.klassen_id
+                WHERE b.benutzer_id = :benutzer_id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':benutzer_id' => $benutzer_id
+            ]);
+            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $user ?: null;
+        } catch (\PDOException $e) {
+            return null;
+        }
+    }
+
+    // Florian
+    public function updatePersonalData(int $benutzer_id, string $name, string $vorname, ?int $klassen_id = null): bool
+    {
+        $pdo = $this->linkDB();
+        $stmt = $pdo->prepare(
+            "UPDATE PERSOEHNLICHE_DATEN SET name = ?, vorname = ?, klassen_id = ? WHERE benutzer_id = ?"
+        );
+        $stmt->execute([$name, $vorname, $klassen_id, $benutzer_id]);
+        return $stmt->rowCount() > 0;
     }
 }

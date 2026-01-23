@@ -3,21 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Login PPB</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        input { display: block; margin: 10px 0; padding: 8px; width: 200px; }
-        button { padding: 8px 16px; }
-        #result { margin-top: 10px; font-weight: bold; }
-    </style>
+    <link rel="stylesheet" href="../CSS/layout.css">
 </head>
-<body>
-
-    <h2>Login</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button id="login-btn">Login</button>
-    <div id="result"></div>
-
+<body class="login-page">
+    <main class="login-form">
+        <div class="card">
+            <h1>Login</h1>
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Username">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Password">
+            </div>
+            <div class="actions">
+                <button id="login-btn" class="btn">Login</button>
+            </div>
+            <div id="result"></div>
+            <div class="sub-links">
+                <a href="../registrieren.html">Noch kein Konto? Registrieren</a>
+                <a href="../passwortVergessen.html">Passwort vergessen?</a>
+            </div>
+        </div>
+    </main>
     <script src="JS/main.js"></script>
 </body>
 </html>

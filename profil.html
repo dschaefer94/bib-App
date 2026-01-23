@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Profil bearbeiten</title>
-    <link rel="stylesheet" href="CSS/layout.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Profil bearbeiten</title>
+  <link rel="stylesheet" href="CSS/layout.css">
 </head>
 <body class="login-page">
     <main class="login-form">
@@ -12,23 +12,9 @@
             <a href="startseite.html" class="btn">Zurück zur Startseite</a>
         </div>
         <div class="card">
-            <h1>Profil suchen</h1>
-            
-            <form id="searchForm" method="GET" action="">
-                <div class="input-group">
-                    <label for="benutzer_id">Benutzer ID:</label>
-                    <input type="number" id="benutzer_id" name="benutzer_id" min="1" 
-                           placeholder="z.B. 1" required>
-                </div>
-                <div class="actions">
-                    <button type="submit" class="btn">Suchen</button>
-                </div>
-            </form>
-
             <p id="error-message" class="error-message" style="display: none;"></p>
 
-            <div id="profile-section" style="display: none;">
-                <hr>
+            <div id="profile-section">
                 <h1>Profil bearbeiten</h1>
                 <p id="success-message" class="success-message" style="display: none;"></p>
                 
