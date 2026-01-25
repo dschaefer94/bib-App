@@ -2,6 +2,8 @@
 
 namespace SDP\Updater;
 
+use ppb\Database;
+
 require_once __DIR__ . '/icsWorker.php';
 require_once __DIR__ . '/Kalenderlogik.php';
 
@@ -38,12 +40,7 @@ function kalenderupdater(string $name, $pdo)
 function updateAlleKalendare()
 {
     try {
-        $pdo = new \PDO(
-            "mysql:dbname=pbd2h24asc_stundenplan_db;host=mysql.pb.bib.de",
-            "pbd2h24asc",
-            "8x2uXWAeTEMC",
-            array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION)
-        );
+        $pdo = new Database()->linkDB();
         $query = "SELECT klassenname FROM klassen ORDER BY 1 ASC";
         $stmt = $pdo->query($query);
         $klassennamen = $stmt->fetchAll(\PDO::FETCH_ASSOC);
