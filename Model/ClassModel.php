@@ -186,7 +186,10 @@ class ClassModel extends Database
     return ['erfolg' => true];
   }
 
-    // Florian
+    /**
+     * Florian
+     * @return array
+     */
     public function getAllClasses(): array
     {
         $pdo = $this->linkDB();
