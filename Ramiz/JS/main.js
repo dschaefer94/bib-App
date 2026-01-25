@@ -1,10 +1,10 @@
 document.getElementById("login-btn").addEventListener("click", async (event) => {
     event.preventDefault();
     const email = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+    const passwort = document.getElementById("passwort").value.trim();
     const resultEl = document.getElementById("result");
 
-    if (!email || !password) {
+    if (!email || !passwort) {
         resultEl.textContent = "Email und passwort eingeben!";
         resultEl.style.color = "red";
         return;
@@ -19,10 +19,10 @@ document.getElementById("login-btn").addEventListener("click", async (event) => 
         const response = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
             body: JSON.stringify({
                 email: email,   // oder username
-                passwort: password,
-                credentials: "include"
+                passwort: passwort,
             })
 
         });
