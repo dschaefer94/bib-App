@@ -1,5 +1,5 @@
 // Basis-URL für API
-const url = "./restapi.php";
+const url = "./restAPI.php";
 
 // POST: neuen Benutzer anlegen
 async function createUser(payload) {
@@ -27,7 +27,7 @@ document.querySelector("#userForm").addEventListener("submit", async (e) => {
   try {
     //erwartete Rückgabe: JSON mit benutzer_ID und email
     const response = await createUser(payload);
-    const [{ benutzerAngelegt, grund }] = response;
+    const { benutzerAngelegt, grund } = response;
 
     if (!benutzerAngelegt) { 
       registrierungsFeedback.textContent = grund;

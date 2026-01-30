@@ -20,8 +20,14 @@ $url = "http://localhost/bibapp_xampp/" . API;
 // $klassenname = 'pbm2h24d';
 // $ical_link = 'https://intranet.bib.de/ical/d9c4b07d09be9d16214a9c1de6601139';
 
-$klassenname = 'dozreb';
-$ical_link = 'https://intranet.bib.de/ical/97ec74b60c62a26c6835edf17d9241ae';
+// $klassenname = 'dozreb';
+// $ical_link = 'https://intranet.bib.de/ical/97ec74b60c62a26c6835edf17d9241ae';
+
+// $klassenname = 'pboih24b';
+// $ical_link = 'https://intranet.bib.de/ical/3b4fbaa3723ea6ffce78730737d86b30';
+
+$klassenname = 'pbm2h24c';
+$ical_link = 'https://intranet.bib.de/ical/aafe6376c709ca23bce5633065101d3f';
 
 $params = json_encode(array(
   "klassenname" => $klassenname,
