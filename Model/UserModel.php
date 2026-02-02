@@ -95,6 +95,9 @@ class UserModel extends Database
             $stmtPD->execute();
             $pdo->commit();
         } catch (\PDOException $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
             return ['benutzerAngelegt' => false, 'grund' => 'Datenbankfehler: ' . $e->getMessage()];
         }
         return ['benutzerAngelegt' => true];
@@ -110,7 +113,7 @@ class UserModel extends Database
      */
     public function updateUser($benutzer_id, string $email, ?string $passwort = null): bool
     {
-         $pdo  = $this->linkDB();
+        $pdo  = $this->linkDB();
 
         if ($passwort) {
             $stmt = $pdo->prepare("UPDATE BENUTZER SET email = ?, passwort = ? WHERE benutzer_id = ?");
@@ -131,7 +134,7 @@ class UserModel extends Database
      */
     public function deleteUser($id): bool
     {
-         $pdo  = $this->linkDB();
+        $pdo  = $this->linkDB();
         try {
             $pdo->beginTransaction();
             $stmt3 = $pdo->prepare("DELETE FROM gelesene_termine WHERE benutzer_id = ?");
