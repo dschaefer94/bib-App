@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const safeLink = item.ical_link ? item.ical_link.replace(/'/g, "\\'") : '';
                 
                 row.innerHTML = `
-                    <td>${item.klassen_id || '-'}</td>
                     <td>${item.klassenname}</td>
                     <td>
                         <button class="btn btn-edit" onclick="openEditModal(${item.klassen_id}, '${item.klassenname}', '${safeLink}')">Bearbeiten</button>
@@ -50,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch("./restapi.php/class/writeClass", {
+            const response = await fetch("./restapi.php/class", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ klassenname: name, ical_link: ical })
