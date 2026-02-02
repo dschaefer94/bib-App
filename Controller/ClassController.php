@@ -59,7 +59,6 @@ class ClassController
       }
 
       $result = (new ClassModel())->insertClass($data);
-
       http_response_code(201);
       echo json_encode($result, JSON_PRETTY_PRINT);
     } catch (Throwable $e) {

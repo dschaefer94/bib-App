@@ -1,10 +1,10 @@
 /* VARIABLES FROM STARTSEITE.HTML */
 :root {
   --bg: #0b0d10;
-  --panel: #141820;
+  --panel: #1c2537;
   --text: #e8ecf1;
   --muted: #a7b0bd;
-  --line: #263044;
+  --line: #184066;
   --accent: #5aa8ff;
   --green-bg: #103d1d;
   --green-bd: #2fbf71;
@@ -459,17 +459,32 @@ body.login-page {
 }
 
 /* LAYOUT FOR TIMETABLE WITH SIDEBAR */
+
+main {
+  padding: 0 10px; /* Reduziert den äußeren Rand auf ein Minimum */
+  max-width: 100%; /* Erlaubt volle Breite */
+}
+
 .layout {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 20px;
-  align-items: start;
+  display: flex;
+  gap: 20px;       /* Die Lücke zwischen Grid und rechter Sidebar */
+  max-width: 100%;
+  margin: 20px 0;
+  align-items: flex-start;
+  /* Kein justify-content: flex-start mehr nötig */
 }
 
 .main-col {
+  flex: 0 1 auto;  /* Nimmt nur so viel Platz wie nötig ein */
+  min-width: 0;
+  margin-left: auto; /* ZAUBERMITTEL: Schiebt alles nach rechts */
+}
+
+#grid {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  gap: 12px;
+  overflow-x: auto;
+  justify-content: flex-end; /* Inhalt innerhalb des Grids rechts ausrichten */
 }
 
 /* SIDEBAR FOR EXAMS */
