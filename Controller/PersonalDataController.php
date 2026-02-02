@@ -121,7 +121,7 @@ class PersonalDataController
         try {
             ob_clean(); // Clear any output buffer
             $classModel = new ClassModel();
-            $klassen = $classModel->getAllClasses();
+            $klassen = $classModel->selectClass();
             
             if (!is_array($klassen)) {
                 $klassen = [];
