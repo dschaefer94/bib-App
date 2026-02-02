@@ -27,12 +27,15 @@ $id = false;
 $alias = false;
 
 //hier wird geprüft, ob endpoint2 eine UUID ist oder ein Alias
-if ($endpoint2) {
-    if (preg_match('/\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/', $endpoint2)) {
-        $id = $endpoint2;
-    } else {
-        $alias = $endpoint2;
-    }
+if (preg_match('/^\d+$/', $endpoint2)) {
+    // numerische ID
+    $id = (int)$endpoint2;
+} else if (preg_match('/\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/i', $endpoint2)) {
+    // UUID
+    $id = $endpoint2;
+} else {
+    // Alias
+    $alias = $endpoint2;
 }
 
 //endpoint[0], also $controllerName gibt den Controller-Namen vor, z.B. bei /task -> TaskController
@@ -43,7 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] == "DELETE") {
     $methodName = "delete" . ucfirst($controllerName);
 } else if ($_SERVER['REQUEST_METHOD'] == "PUT") {
     //für Aufgabe relevant 11.11.25
-    $methodName = "update" . ucfirst($controllerName);
+    if ($alias) {
+        $methodName = $alias;
+    } else {
+        $methodName = "update" . ucfirst($controllerName);
+    }
 } else if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if ($alias) {
         $methodName = $alias;

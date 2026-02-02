@@ -110,7 +110,7 @@ class UserModel extends Database
      */
     public function updateUser($benutzer_id, string $email, ?string $passwort = null): bool
     {
-        $pdo = Database::getConnection();
+         $pdo  = $this->linkDB();
 
         if ($passwort) {
             $stmt = $pdo->prepare("UPDATE BENUTZER SET email = ?, passwort = ? WHERE benutzer_id = ?");
@@ -131,7 +131,7 @@ class UserModel extends Database
      */
     public function deleteUser($id): bool
     {
-        $pdo = Database::getConnection();
+         $pdo  = $this->linkDB();
         try {
             $pdo->beginTransaction();
             $stmt3 = $pdo->prepare("DELETE FROM gelesene_termine WHERE benutzer_id = ?");

@@ -3,64 +3,129 @@
 namespace ppb\Controller;
 
 use ppb\Model\ClassModel;
+use Throwable;
 
 class ClassController
 {
   public function __construct() {}
   /**
-   * Daniel und Florian
-   * gibt alle gespeicherten Klassennamen für das Dropdown-Menü der Registrierung/Benutzerverwaltung aus
-   * @return void, JSON mit Klassennamen-Array
+   * Daniel & Florian
+   * ruft eine/mehrere Klassen ab
+   * @return void
    */
   public function getClass()
   {
-    $model = new ClassModel();
-    $rows  = $model->selectClass();
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($rows, JSON_UNESCAPED_UNICODE);
+    try {
+      $model = new ClassModel();
+      $rows  = $model->selectClass();
+      header('Content-Type: application/json; charset=utf-8');
+      echo json_encode($rows, JSON_UNESCAPED_UNICODE);
+    } catch (Throwable $e) {
+      $this->sendErrorResponse($e);
+    }
   }
   /**
-   * Daniel und Florian
-   * gibt den Klassennamen des eingeloggten Benutzers aus
+   * Florian
+   * @throws \Exception
    * @return void
    */
   public function getClassById()
   {
-    $model = new ClassModel();
-    $rows  = $model->selectClass($_SESSION['user_id']);
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($rows, JSON_UNESCAPED_UNICODE);
+    try {
+      if (!isset($_SESSION['user_id'])) {
+        throw new \Exception("Nicht autorisiert", 401);
+      }
+      $model = new ClassModel();
+      $rows  = $model->selectClass($_SESSION['user_id']);
+      header('Content-Type: application/json; charset=utf-8');
+      echo json_encode($rows, JSON_UNESCAPED_UNICODE);
+    } catch (Throwable $e) {
+      $this->sendErrorResponse($e);
+    }
   }
   /**
    * Daniel
-   * fügt Klasse in entsprechende Tabellen in Datenbank ein
+   * fügt eine neue Klasse ein, Details siehe Model
    * @param mixed $data
+   * @throws \Exception
    * @return void
    */
   public function writeClass($data)
   {
-    echo json_encode((new ClassModel())->insertClass($data), JSON_PRETTY_PRINT);
-  }
-  /**
-   * Daniel
-   * updatet Klasse
-   * @param mixed $id
-   * @param mixed $data
-   * @return void
-   */
-  public function updateClass($id, $data)
-  {
-    //noch nicht implementiert
-  }
+    try {
+      header('Content-Type: application/json; charset=utf-8');
+      if (empty($data['klassenname'])) {
+        throw new \Exception("Klassenname ist erforderlich", 400);
+      }
 
+      $result = (new ClassModel())->insertClass($data);
+
+      http_response_code(201);
+      echo json_encode($result, JSON_PRETTY_PRINT);
+    } catch (Throwable $e) {
+      $this->sendErrorResponse($e);
+    }
+  }
   /**
    * Daniel
-   * löscht Klasse
-   * @param mixed $id
+   * zum Bearbeiten einer Klasse
+   * @param mixed $id Klassen-ID
+   * @param mixed $data neuer Klassenname und/oder neuer ical-Link
+   * @throws \Exception
    * @return void
    */
-  public function deleteClass($id)
+  public function updateClass($id, $data): void
   {
-    //noch nicht implementiert
+    try {
+      header('Content-Type: application/json; charset=utf-8');
+      if (!$id) {
+        throw new \Exception('ID fehlt', 400);
+      }
+      $data = [
+        'klassenname' => $data['klassenname'] ?? '',
+        'ical_link'   => $data['ical_link'] ?? ''
+      ];
+      $result = (new ClassModel())->updateClass($id, $data);
+      http_response_code(200);
+      echo json_encode($result);
+    } catch (Throwable $e) {
+      $this->sendErrorResponse($e);
+    }
+  }
+  /**
+   * Daniel
+   * löscht eine Klasse und alle Beziehungen
+   * @param mixed $id Klassen-ID
+   * @throws \Exception
+   * @return void
+   */
+  public function deleteClass($id): void
+  {
+    try {
+      header('Content-Type: application/json; charset=utf-8');
+      if (!$id) {
+        throw new \Exception('ID fehlt', 400);
+      }
+      $result = (new ClassModel())->deleteClass($id);
+      http_response_code(200);
+      echo json_encode($result);
+    } catch (Throwable $e) {
+      $this->sendErrorResponse($e);
+    }
+  }
+  /**
+   * Daniel
+   * Hilfsfunktion, um Exceptions einheitlich zu sammeln und mit korrektem Statuscode ans Frontend zu senden
+   * @param Throwable $e PDO, IllegalArgument, etc.
+   * @return void
+   */
+  private function sendErrorResponse(Throwable $e): void
+  {
+    http_response_code($e->getMessage());
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode([
+      'erfolg' => false,
+      'grund'  => $e->getMessage()
+    ], JSON_UNESCAPED_UNICODE);
   }
 }
