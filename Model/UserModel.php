@@ -183,7 +183,7 @@ class UserModel extends Database
     }
 
     // Florian
-    public function updatePersonalData(int $benutzer_id, string $name, string $vorname, ?int $klassen_id = null): bool
+    public function updatePersonalData($benutzer_id, $name, $vorname, $klassen_id = null): bool
     {
         $pdo = $this->linkDB();
         $stmt = $pdo->prepare(
