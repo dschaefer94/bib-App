@@ -1,8 +1,8 @@
 <?php
 
-namespace ppb\Controller;
+namespace SDP\Controller;
 
-use ppb\Model\CalendarModel;
+use SDP\Model\CalendarModel;
 
 class CalendarController
 {

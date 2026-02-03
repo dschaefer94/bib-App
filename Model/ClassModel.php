@@ -1,6 +1,6 @@
 <?php
 
-namespace ppb\Model;
+namespace SDP\Model;
 
 use ppb\Library\Msg;
 

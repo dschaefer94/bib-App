@@ -1,33 +1,17 @@
 <?php
 
-namespace ppb\Model;
+namespace SDP\Model;
 
-use ppb\Library\Msg;
+use SDP\Library\Msg;
 
 abstract class Database
 {
+    private $config;
 
-
-    // Zugangsdaten für die lokale Datenbank 
-
-    // private $dbName = "pbd2h24asc_stundenplan_db"; //Datenbankname
-    // private $linkName = "localhost"; //Datenbank-Server
-    // private $user = "root"; //Benutzername
-    // private $pw = "root"; //Passwort
-
-    // Test-Online-Datenbank
-    // private $linkName = "localhost";
-    // private $host = "3306";
-    // private $dbName = "pbd2h24asc_stundenplan_db";
-    // private $user = "pbd2h24asc_backendboi";
-    // private $pw = "T3ll3Why!";
-    
-//MySQL-Datenbank Zugangsdaten
-    private $dbName = "pbd2h24asc_stundenplan_db"; //Datenbankname
-    private $linkName = "mysql.pb.bib.de"; //Datenbank-Server
-    private $user = "pbd2h24asc"; //Benutzername
-    private $pw = "8x2uXWAeTEMC"; //Passwort
-
+    public function __construct()
+    {
+        $this->config = require __DIR__ . '/../config/config.php';
+    }
 
     /**
      * Stellt eine Verbindung zur Datenbank her
@@ -36,16 +20,22 @@ abstract class Database
      */
     public function linkDB()
     {
+        $db = $this->config['db'];
+
         try {
             $pdo = new \PDO(
-                "mysql:dbname=$this->dbName;host=$this->linkName",
-                $this->user,
-                $this->pw,
-                array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION)
+                "mysql:host={$db['host']};dbname={$db['dbname']};charset={$db['charset']}",
+                $db['user'],
+                $db['password'],
+                array(
+                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
+                )
             );
             return $pdo;
         } catch (\PDOException $e) {
             new Msg(true, null, $e);
+            return;
         }
     }
 

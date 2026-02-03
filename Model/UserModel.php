@@ -1,6 +1,6 @@
 <?php
 
-namespace ppb\Model;
+namespace SDP\Model;
 
 class UserModel extends Database
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace ppb\Controller;
+namespace SDP\Controller;
 
-use ppb\Model\ClassModel;
+use SDP\Model\ClassModel;
 use Throwable;
 
 class ClassController

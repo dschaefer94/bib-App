@@ -1,9 +1,9 @@
 <?php
 
-namespace ppb\Controller;
+namespace SDP\Controller;
 
-use ppb\Model\UserModel;
-use ppb\Model\ClassModel;
+use SDP\Model\UserModel;
+use SDP\Model\ClassModel;
 
 class UserController
 {

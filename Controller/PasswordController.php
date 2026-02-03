@@ -1,6 +1,6 @@
 <?php
 //1:1-Kopie von Erics USerController.php
-namespace ppb\Controller;
+namespace SDP\Controller;
 
 use PDO;
 
