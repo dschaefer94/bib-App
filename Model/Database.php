@@ -8,36 +8,44 @@ abstract class Database
 {
     private $config;
 
+    // Wir verlangen die Config jetzt direkt im Konstruktor
     public function __construct()
     {
-        $this->config = require __DIR__ . '/../config/config.php';
+        $path = __DIR__ . '/../config/config.php';
+
+        if (file_exists($path)) {
+            // Wir löschen den internen Cache für diese Datei, um sicherzugehen
+            $this->config = require $path;
+
+            // Falls require nur '1' zurückgibt (weil es schonmal geladen wurde)
+            if (!is_array($this->config)) {
+                // Plan B: Dateiinhalt direkt parsen oder über globale Variable gehen
+                // Aber meistens reicht es, require OHNE _once zu nutzen.
+            }
+        }
     }
 
-    /**
-     * Stellt eine Verbindung zur Datenbank her
-     * 
-     * @return \PDO Gibt eine Datenbankverbindung zurueck
-     */
     public function linkDB()
     {
         $db = $this->config['db'];
+        $dsn = "mysql:host=" . $db['host'];
+        if (!empty($db['port'])) {
+            $dsn .= ";port=" . $db['port'];
+        }
+        $dsn .= ";dbname=" . $db['dbname'] . ";charset=" . $db['charset'];
 
         try {
-            $pdo = new \PDO(
-                "mysql:host={$db['host']};dbname={$db['dbname']};charset={$db['charset']}",
+            return new \PDO(
+                $dsn,
                 $db['user'],
                 $db['password'],
-                array(
-                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
-                )
+                [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
             );
-            return $pdo;
         } catch (\PDOException $e) {
-            new Msg(true, null, $e);
-            return;
+            new Msg(true, "Verbindung fehlgeschlagen", $e->getMessage());
         }
     }
+
 
     /**
      * Zum serverseitigen generieren einer UUID

@@ -5,7 +5,10 @@ namespace SDP\Model;
 class UserModel extends Database
 {
 
-    public function __construct() {}
+    public function __construct()
+    {
+        parent::__construct();
+    }
     /**
      * Florian
      * Wählt alle Benutzer mit ihren persönlichen Daten und dem Klassennamen aus.

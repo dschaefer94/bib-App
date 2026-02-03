@@ -2,13 +2,13 @@
 
 namespace SDP\Model;
 
-use ppb\Library\Msg;
+use SDP\Library\Msg;
 
 require_once __DIR__ . '/../Kalender/Kalenderupdater.php';
 
 class ClassModel extends Database
 {
-  public function __construct() {}
+  public function __construct() {parent::__construct();}
   /**
    * Daniel & Florian
    * ruft alle Klassennamen auf für das Dropdownmenü in der Stundenplanansicht/Klassenverwaltung

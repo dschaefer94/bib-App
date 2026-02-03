@@ -43,7 +43,11 @@ function updateAlleKalendare()
     try {
         $config = require __DIR__ . '/../config/config.php';
         $db = $config['db'];
-        $dsn = "mysql:host={$db['host']};dbname={$db['dbname']};charset={$db['charset']}";
+        $dsn = "mysql:host={$db['host']}";
+        if (!empty($db['port'])) {
+            $dsn .= ";port={$db['port']}";
+        }
+        $dsn .= ";dbname={$db['dbname']};charset={$db['charset']}";
         $pdo = new \PDO(
             $dsn,
             $db['user'],
@@ -53,11 +57,9 @@ function updateAlleKalendare()
                 \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
             )
         );
-
         $query = "SELECT klassenname FROM klassen ORDER BY 1 ASC";
         $stmt = $pdo->query($query);
         $klassennamen = $stmt->fetchAll();
-
     } catch (\PDOException $e) {
         echo "Fehler bei DB-Verbindung: " . $e->getMessage() . "\n";
         return;
