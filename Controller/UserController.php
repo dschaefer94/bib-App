@@ -8,7 +8,7 @@ use ppb\Model\ClassModel;
 class UserController
 {
     public function __construct() {}
-    
+
     /**
      * Daniel
      * gibt nach Vollständigkeitsprüfung einen Registrierungsvorgang in Auftrag
@@ -88,7 +88,8 @@ class UserController
      * Florian
      * @return void
      */
-    public function profile() {
+    public function profile()
+    {
         if (!isset($_SESSION['benutzer_id'])) {
             http_response_code(401);
             echo json_encode(['success' => false, 'error' => 'Nicht authentifiziert']);
@@ -98,7 +99,7 @@ class UserController
         $id = $_SESSION['benutzer_id'];
         $userModel = new UserModel();
         $classModel = new ClassModel();
-        
+
         $userData = $userModel->getUserData($id);
         $classes = $classModel->selectClass();
 
@@ -121,16 +122,17 @@ class UserController
      * @param mixed $data
      * @return void
      */
-    public function updateProfile($data) {
+    public function updateProfile($data)
+    {
         if (!isset($_SESSION['benutzer_id'])) {
             http_response_code(401);
             echo json_encode(['success' => false, 'error' => 'Nicht authentifiziert']);
             return;
         }
-        
+
         $userModel = new UserModel();
 
-        $benutzer_id = (int)$_SESSION['benutzer_id'];
+        $benutzer_id = $_SESSION['benutzer_id'];
 
         // Validation
         $errors = [];
@@ -151,7 +153,7 @@ class UserController
         $klassen_id = !empty($data['klassen_id']) ? (int)$data['klassen_id'] : null;
         $email = trim($data['email'] ?? '');
         $passwort = !empty($data['passwort']) ? password_hash($data['passwort'], PASSWORD_DEFAULT) : null;
-        
+
         $pd_updated = $userModel->updatePersonalData($benutzer_id, $name, $vorname, $klassen_id);
         $user_updated = $userModel->updateUser($benutzer_id, $email, $passwort);
 
@@ -160,7 +162,7 @@ class UserController
             $classModel = new ClassModel();
             $classes = $classModel->selectClass();
             echo json_encode([
-                'success' => true, 
+                'success' => true,
                 'message' => 'Daten erfolgreich aktualisiert!',
                 'userData' => $reloadedUser,
                 'klassen' => $classes
