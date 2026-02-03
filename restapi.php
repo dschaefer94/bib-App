@@ -84,5 +84,5 @@ if (method_exists($controllerClassName, $methodName)) {
     }
 } else {
     //http_response_code(404);
-    new \ppb\Library\Msg(true, 'Page not found: ' . $controllerClassName . '::' . $methodName);
+    new \SDP\Library\Msg(true, 'Page not found: ' . $controllerClassName . '::' . $methodName);
 }
