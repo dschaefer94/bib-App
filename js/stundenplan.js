@@ -3,7 +3,7 @@
 // CONFIG
 // ======================
 const CONFIG = {
-  BASE: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/restapi.php',
+  BASE: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/restAPI.php',
   ENDPOINT_NEU: '/Calendar/getCalendar',
   ENDPOINT_AENDERUNGEN: '/Calendar/getChanges',
   // NEU:

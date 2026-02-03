@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     // Dynamische API-Base-URL
-    const apiBase = 'restapi.php';
+    const apiBase = 'restAPI.php';
 
     // Function to hide messages
     function hideMessages() {

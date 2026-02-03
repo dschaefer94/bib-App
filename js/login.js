@@ -14,7 +14,7 @@ document.getElementById("login-btn").addEventListener("click", async (event) => 
     }
 
 
-   const url = "./restapi.php/user/login";
+   const url = "./restAPI.php/user/login";
 
     try {
         const response = await fetch(url, {

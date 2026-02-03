@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. READ: Klassen laden
     async function loadClasses() {
         try {
-            const response = await fetch("./restapi.php/class/getClass");
+            const response = await fetch("./restAPI.php/class/getClass");
             if (!response.ok) throw new Error("Server-Antwort war nicht ok");
             
             const classes = await response.json();
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch("./restapi.php/class", {
+            const response = await fetch("./restAPI.php/class", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ klassenname: name, ical_link: ical })
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!confirm("Wirklich löschen? Alle zugehörigen Tabellen werden entfernt!")) return;
 
         try {
-            const response = await fetch(`./restapi.php/class/${id}`, { method: "DELETE" });
+            const response = await fetch(`./restAPI.php/class/${id}`, { method: "DELETE" });
             const result = await response.json();
 
             if (response.ok && result.erfolg) {
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const newIcal = document.getElementById("edit-ical-link").value.trim();
 
         try {
-            const response = await fetch(`./restapi.php/class/${id}`, {
+            const response = await fetch(`./restAPI.php/class/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ klassenname: newName, ical_link: newIcal })
