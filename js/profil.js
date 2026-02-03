@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(profileForm);
         const data = Object.fromEntries(formData.entries());
         
-        const updateUrl = apiBase + '/personalData/updateProfile';
+        const updateUrl = apiBase + '/user/updateProfile';
         fetch(updateUrl, {
             method: 'POST',
             headers: {

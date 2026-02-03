@@ -56,7 +56,6 @@ class UserController
         }
 
         $_SESSION['benutzer_id'] = $user['benutzer_id'];
-        $_SESSION['user_id'] = $user['benutzer_id'];  // Alias für Kompatibilität
         $_SESSION['klassenname'] = (new ClassModel())->selectClass($_SESSION['benutzer_id'])[0]['klassenname'];
 
         http_response_code(200);
@@ -90,18 +89,18 @@ class UserController
      * @return void
      */
     public function profile() {
-        if (!isset($_SESSION['user_id'])) {
+        if (!isset($_SESSION['benutzer_id'])) {
             http_response_code(401);
             echo json_encode(['success' => false, 'error' => 'Nicht authentifiziert']);
             return;
         }
 
-        $id = $_SESSION['user_id'];
+        $id = $_SESSION['benutzer_id'];
         $userModel = new UserModel();
         $classModel = new ClassModel();
         
         $userData = $userModel->getUserData($id);
-        $classes = $classModel->getAllClasses();
+        $classes = $classModel->selectClass();
 
         if ($userData) {
             echo json_encode([
@@ -123,7 +122,7 @@ class UserController
      * @return void
      */
     public function updateProfile($data) {
-        if (!isset($_SESSION['user_id'])) {
+        if (!isset($_SESSION['benutzer_id'])) {
             http_response_code(401);
             echo json_encode(['success' => false, 'error' => 'Nicht authentifiziert']);
             return;
@@ -131,12 +130,11 @@ class UserController
         
         $userModel = new UserModel();
 
-        $benutzer_id = $_SESSION['user_id'];
-        $data['benutzer_id'] = $benutzer_id;
+        $benutzer_id = (int)$_SESSION['benutzer_id'];
 
         // Validation
         $errors = [];
-        if (empty($data['benutzer_id']) || empty($data['name']) || empty($data['vorname'])) {
+        if (empty($data['name']) || empty($data['vorname'])) {
             $errors[] = 'Alle Pflichtfelder müssen gefüllt sein (Name, Vorname).';
         }
         if (!empty($data['passwort']) && $data['passwort'] !== ($data['passwort_confirm'] ?? '')) {
@@ -160,7 +158,7 @@ class UserController
         if ($pd_updated || $user_updated) {
             $reloadedUser = $userModel->getUserData($benutzer_id);
             $classModel = new ClassModel();
-            $classes = $classModel->getAllClasses();
+            $classes = $classModel->selectClass();
             echo json_encode([
                 'success' => true, 
                 'message' => 'Daten erfolgreich aktualisiert!',

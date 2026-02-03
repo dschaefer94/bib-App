@@ -116,10 +116,10 @@ class UserModel extends Database
         $pdo  = $this->linkDB();
 
         if ($passwort) {
-            $stmt = $pdo->prepare("UPDATE BENUTZER SET email = ?, passwort = ? WHERE benutzer_id = ?");
+            $stmt = $pdo->prepare("UPDATE benutzer SET email = ?, passwort = ? WHERE benutzer_id = ?");
             $stmt->execute([$email, $passwort, $benutzer_id]);
         } else {
-            $stmt = $pdo->prepare("UPDATE BENUTZER SET email = ? WHERE benutzer_id = ?");
+            $stmt = $pdo->prepare("UPDATE benutzer SET email = ? WHERE benutzer_id = ?");
             $stmt->execute([$email, $benutzer_id]);
         }
 
@@ -140,11 +140,11 @@ class UserModel extends Database
             $stmt3 = $pdo->prepare("DELETE FROM gelesene_termine WHERE benutzer_id = ?");
             $stmt3->execute([$id]);
             // Zuerst abhängige Daten löschen
-            $stmt1 = $pdo->prepare("DELETE FROM PERSOEHNLICHE_DATEN WHERE benutzer_id = ?");
+            $stmt1 = $pdo->prepare("DELETE FROM persoenliche_daten WHERE benutzer_id = ?");
             $stmt1->execute([$id]);
 
             // Dann den Hauptdatensatz löschen
-            $stmt2 = $pdo->prepare("DELETE FROM BENUTZER WHERE benutzer_id = ?");
+            $stmt2 = $pdo->prepare("DELETE FROM benutzer WHERE benutzer_id = ?");
             $stmt2->execute([$id]);
 
             $pdo->commit();
@@ -184,7 +184,7 @@ class UserModel extends Database
     {
         $pdo = $this->linkDB();
         $stmt = $pdo->prepare(
-            "UPDATE PERSOEHNLICHE_DATEN SET name = ?, vorname = ?, klassen_id = ? WHERE benutzer_id = ?"
+            "UPDATE persoenliche_daten SET name = ?, vorname = ?, klassen_id = ? WHERE benutzer_id = ?"
         );
         $stmt->execute([$name, $vorname, $klassen_id, $benutzer_id]);
         return $stmt->rowCount() > 0;
