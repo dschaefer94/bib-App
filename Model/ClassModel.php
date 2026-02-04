@@ -11,7 +11,8 @@ class ClassModel extends Database
   public function __construct() {}
   /**
    * Daniel & Florian
-   * ruft alle Klassennamen auf für das Dropdownmenü in der Stundenplanansicht und bei der Profilverwaltung
+   * ruft alle Klassennamen auf für das Dropdownmenü in der Stundenplanansicht/Klassenverwaltung
+   * oder eine einzelne via Klassenname für die Profilverwaltung
    * @return array mit Klassennamen
    */
   public function selectClass($benutzer_id = null)
@@ -32,14 +33,12 @@ class ClassModel extends Database
             ";
         $params[':benutzer_id'] = $benutzer_id;
       }
-
       $query = "
-            SELECT klassenname
+            SELECT klassen_id, klassenname
             FROM klassen
             $where
             ORDER BY klassenname ASC
         ";
-
       $stmt = $pdo->prepare($query);
       $stmt->execute($params);
 
@@ -61,7 +60,7 @@ class ClassModel extends Database
    * @param mixed $data Array mit klassenname und ical_link
    * @return array{erfolg: bool, grund: string|array{erfolg: bool}} Erfolgsmeldung oder Fehlergrund
    */
-  public function insertClass($data): array
+  public function insertClass($data)
   {
     try {
       $pdo = $this->linkDB();
@@ -71,7 +70,7 @@ class ClassModel extends Database
       $checkStmt->bindParam(':klassenname', $data['klassenname']);
       $checkStmt->execute();
       if ($checkStmt->rowCount() > 0) {
-        return ['erfolg' => false, 'grund' => 'Klasse bereits vorhanden'];
+        throw new \Exception('Klasse bereits vorhanden', 409);
       }
 
       $pdo->beginTransaction();
@@ -126,71 +125,133 @@ class ClassModel extends Database
       $query = "TRUNCATE TABLE `{$aenderungen}`";
       $stmt = $pdo->prepare($query);
       $stmt->execute();
-    } catch (\PDOException $e) {
-      if ($pdo->inTransaction()) {
+      return ['erfolg' => true, 'klassenname' => $data['klassenname']];
+    } catch (\Throwable $e) {
+      if (isset($pdo) && $pdo->inTransaction()) {
         $pdo->rollBack();
       }
-      return ['erfolg' => false, 'grund' => 'Fehler beim Datenbankzugriff:' . $e->getMessage()];
+      if ($e->getCode() >= 400) {
+        throw $e;
+      }
+      throw new \Exception('Datenbankfehler beim Erstellen: ' . $e->getMessage(), 500);
     }
-    return ['erfolg' => true];
   }
-
+  /**
+   * Daniel
+   * ändert bei Namensänderung des Klassennamens diesen in der Tabelle Klassen
+   * ändert dazu alle korrespondierenden Tabellennamen der Klasse
+   * bei einem neuen Ical-Link wird der neue Stundenplan heruntergeladen und alle Änderungen gelöscht
+   * @param mixed $id Klassen-ID
+   * @param mixed $data neuer Klassenname und/oder Ical-Link
+   * @throws \Exception
+   * @return array{erfolg: bool}
+   */
   public function updateClass($id, $data)
   {
     try {
       $pdo = $this->linkDB();
-      $query = "UPDATE klassen SET klassenname = :klassenname, ical_link = :ical_link WHERE klassen_id = :klassen_id";
-      $stmt = $pdo->prepare($query);
-      $stmt->bindParam(':klassenname', $data['klassenname']);
-      $stmt->bindParam(':ical_link', $data['ical_link']);
-      $stmt->bindParam(':klassen_id', $id);
-      $stmt->execute();
-      return ['erfolg' => true];
-    } catch (\PDOException $e) {
-      return ['erfolg' => false, 'grund' => 'Fehler beim Datenbankzugriff'];
 
-      //wenn der Klassenname geändert wurde, müssen auch die Tabellen umbenannt werden
+      $stmt = $pdo->prepare("SELECT klassenname FROM klassen WHERE klassen_id = :id");
+      $stmt->execute([':id' => $id]);
+      $alterName = $stmt->fetchColumn();
+
+      if (!$alterName) {
+        throw new \Exception('Klasse nicht gefunden', 404);
+      }
+
+      $pdo->beginTransaction();
+
+      if ($alterName !== $data['klassenname']) {
+        $suffixes = ['alter_stundenplan', 'neuer_stundenplan', 'aenderungen'];
+        foreach ($suffixes as $suffix) {
+          $oldTable = "{$alterName}_{$suffix}";
+          $newTable = "{$data['klassenname']}_{$suffix}";
+          $pdo->exec("RENAME TABLE `{$oldTable}` TO `{$newTable}`");
+        }
+      }
+
+      $query = "UPDATE klassen SET klassenname = :klassenname";
+      $params = [':klassenname' => $data['klassenname'], ':id' => $id];
+
+      if (!empty($data['ical_link'])) {
+        $query .= ", ical_link = :ical_link";
+        $params[':ical_link'] = $data['ical_link'];
+      }
+      $query .= " WHERE klassen_id = :id";
+      $pdo->prepare($query)->execute($params);
+
+      if (!empty($data['ical_link'])) {
+        \SDP\Updater\kalenderupdater($data['klassenname'], $pdo);
+        $truncateQuery = "TRUNCATE TABLE `{$data['klassenname']}_aenderungen`";
+        $pdo->exec($truncateQuery);
+      }
+
+      $pdo->commit();
+      return ['erfolg' => true];
+    } catch (\Throwable $e) {
+      if (isset($pdo) && $pdo->inTransaction()) {
+        $pdo->rollBack();
+      }
+      throw $e;
     }
   }
-
-  public function deleteClass($id)
+  /**
+   * Daniel
+   * löscht alle korrespondierenden Klassentabellen
+   * alle Benutzer in dieser Klasse werden auf die Klassen-ID NULL verwiesen
+   * löscht Klasse in der Tabelle Klassen
+   * mögliche gelesene Termine der Klasse werden wegen möglicher Mehrfachverwendung des Termins (n-m-Beziehung) nicht angefasst
+   * @param mixed $id Klassen-ID
+   * @param mixed $data neuer Klassenname und/oder Ical-Link
+   * @throws \Exception
+   * @return array{erfolg: bool}
+   */
+  public function deleteClass($id): array
   {
     try {
       $pdo = $this->linkDB();
-      $pdo->beginTransaction();
 
-      $query = "SELECT klassenname FROM klassen WHERE klassen_id = :klassen_id";
-      $stmt = $pdo->prepare($query);
-      $stmt->bindParam(':klassen_id', $id);
-      $stmt->execute();
+      $stmt = $pdo->prepare("SELECT klassenname FROM klassen WHERE klassen_id = ?");
+      $stmt->execute([$id]);
       $klassenname = $stmt->fetchColumn();
 
-      $query = "DELETE FROM klassen WHERE klassen_id = :klassen_id";
-      $stmt = $pdo->prepare($query);
-      $stmt->bindParam(':klassen_id', $id);
-      $stmt->execute();
+      if (!$klassenname) {
+        throw new \Exception("Klasse mit ID $id existiert nicht.", 404);
+      }
 
-      $query = "DROP TABLE IF EXISTS 
-      `{$klassenname['klassenname']}_alter_stundenplan`,
-      `{$klassenname['klassenname']}_wartezimmer`,
-      `{$klassenname['klassenname']}_aenderungen`";
-      $stmt = $pdo->prepare($query);
-      $stmt->execute();
+      $pdo->beginTransaction();
+
+      $pdo->prepare("UPDATE persoenliche_daten SET klassen_id = NULL WHERE klassen_id = ?")
+        ->execute([$id]);
+
+      $pdo->prepare("DELETE FROM klassen WHERE klassen_id = ?")
+        ->execute([$id]);
+
       $pdo->commit();
-    } catch (\PDOException $e) {
-      if ($pdo->inTransaction()) {
+      $pdo->exec(
+        "DROP TABLE IF EXISTS 
+            `{$klassenname}_alter_stundenplan`, 
+            `{$klassenname}_neuer_stundenplan`, 
+            `{$klassenname}_aenderungen`"
+      );
+
+      return ['erfolg' => true];
+    } catch (\Throwable $e) {
+      if (isset($pdo) && $pdo->inTransaction()) {
         $pdo->rollBack();
       }
-      return ['erfolg' => false, 'grund' => 'Fehler beim Datenbankzugriff'];
+      throw $e;
     }
-    return ['erfolg' => true];
   }
 
-    // Florian
-    public function getAllClasses(): array
-    {
-        $pdo = $this->linkDB();
-        $stmt = $pdo->query("SELECT klassen_id, klassenname FROM klassen ORDER BY klassenname");
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    }
+  /**
+   * Florian
+   * @return array
+   */
+  public function getAllClasses(): array
+  {
+    $pdo = $this->linkDB();
+    $stmt = $pdo->query("SELECT klassen_id, klassenname FROM klassen ORDER BY klassenname");
+    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+  }
 }

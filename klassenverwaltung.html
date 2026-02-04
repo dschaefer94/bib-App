@@ -1,21 +1,123 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Klassenverwaltung</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="CSS/layout.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Klassenverwaltung - PPB</title>
+  <link rel="stylesheet" href="CSS/layout.css">
+  <style>
+    /* Ergänzungen für die Tabelle und Formulare */
+    .admin-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    .crud-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      color: #333;
+    }
+
+    .crud-table th,
+    .crud-table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    .crud-table th {
+      background-color: #f4f4f4;
+    }
+
+    .btn-edit {
+      background-color: #ffc107;
+      color: black;
+      margin-right: 5px;
+    }
+
+    .btn-delete {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background: white;
+      margin: 10% auto;
+      padding: 20px;
+      width: 40%;
+      border-radius: 8px;
+    }
+  </style>
 </head>
-<body class="login-page">
-    <main>
-        <div class="actions">
-            <a href="startseite.html" class="btn">Zurück zur Startseite</a>
+
+<body class="admin-page">
+
+  <div class="admin-container">
+    <div class="card">
+      <h1>Klassenverwaltung</h1>
+
+      <div class="input-group">
+        <label for="new-classname">Neue Klasse hinzufügen</label>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <input type="text" id="new-classname" placeholder="Klassenname (z.B. IT1A)">
+          <input type="text" id="new-ical-link" placeholder="iCal Link URL"> <button id="add-class-btn"
+            class="btn">Hinzufügen</button>
         </div>
-        <div class="card">
-            <h1>Klassenverwaltung</h1>
-            <p style="text-align: center;">Hier wird die Funktionalität zur Klassenverwaltung implementiert.</p>
-        </div>
-    </main>
-    <script src="js/klassenverwaltung.js"></script>
+      </div>
+
+      <div id="msg-box"></div>
+
+      <table class="crud-table" id="class-table">
+        <thead>
+          <tr>
+            <th>Klassenname</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+        <tbody id="class-list">
+        </tbody>
+      </table>
+
+      <div class="sub-links">
+        <a href="startseite.html"> Zurück zur Übersicht</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="editModal" class="modal">
+    <div class="modal-content card">
+      <h2>Klasse bearbeiten</h2>
+      <input type="hidden" id="edit-class-id">
+      <div class="input-group">
+        <label>Neuer Name</label>
+        <input type="text" id="edit-classname">
+        <label>Neuer iCal Link</label>
+        <input type="text" id="edit-ical-link">
+      </div>
+      <div class="actions">
+        <button id="save-edit-btn" class="btn">Speichern</button>
+        <button onclick="document.getElementById('editModal').style.display='none'" class="btn"
+          style="background:#666">Abbrechen</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="JS/klassenverwaltung.js"></script>
 </body>
+
 </html>

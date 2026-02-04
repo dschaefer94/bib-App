@@ -12,14 +12,18 @@ class UserController
         $this->model = new UserModel();
     }
 
-    
     public function login()
     {
         header('Content-Type: application/json; charset=utf-8');
 
-        $data = json_decode(file_get_contents('php://input'), true) ?? [];
+        $data = json_decode(file_get_contents('php://input'), true);
 
-        if (empty($data['email']) || empty($data['password'])) {
+        // если json пустой или неверный — делаем массив
+        if (!is_array($data)) {
+            $data = [];
+        }
+
+        if (empty($data['email']) || empty($data['passwort'])) {
             http_response_code(400);
             echo json_encode([
                 'success' => false,
@@ -39,19 +43,15 @@ class UserController
             return;
         }
 
- 
-        // Kurze Lösung. Verglecih direkt den Password ohne HASH
-        // ───────────────────────────────
-        if ($data['password'] !== $user['passwort']) {
+        if ($data['passwort'] !== $user['passwort']) {
             http_response_code(401);
             echo json_encode([
                 'success' => false,
-                'message' => 'Password falsch '
+                'message' => 'Password falsch'
             ]);
             return;
         }
 
-        //Session
         $_SESSION['user_id'] = $user['benutzer_id'];
 
         http_response_code(200);

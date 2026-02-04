@@ -265,27 +265,35 @@ function buildWeekEvents(s, e) {
 // Global: alle UNGELESENEN Änderungen (ohne Wochenfilter)
 // ======================
 function getGlobalUnreadChanges() {
+  const jetzt = new Date(); // Aktueller Zeitpunkt für den Vergleich
+
   // Map der aktuellen (neuen) Events, um für "neu"/"geändert" die aktuelle Seite zeigen zu können
   const neuById = new Map(RAW_NEU.map(ev => [String(ev.termin_id), ev]));
 
-  // NUR ungelesene Changes
-  const unread = RAW_AEND.filter(ch => !READ_IDS.has(String(ch.termin_id)));
+  // NUR ungelesene Changes, die noch nicht in der Vergangenheit liegen
+  const unread = RAW_AEND.filter(ch => {
+    const istUngelesen = !READ_IDS.has(String(ch.termin_id));
+    
+    // Wir prüfen das Ende des Termins. 
+    // Falls 'end' (neu) nicht da ist (z.B. bei gelöscht), nehmen wir 'end_alt'.
+    const terminEnde = new Date(ch.end || ch.end_alt);
+    const istZukuenftig = terminEnde >= jetzt;
+
+    return istUngelesen && istZukuenftig;
+  });
 
   // Normalisieren: für Anzeige brauchen wir je nach label unterschiedliche Felder
   return unread.map(ch => {
     const id = String(ch.termin_id);
     const label = ch.label; // 'neu' | 'geändert' | 'gelöscht'
 
-    // Versuche, wenn möglich die "neue" Event-Variante aus RAW_NEU zu ziehen (für neu/geändert)
     const neu = neuById.get(id);
 
-    // Anzeige-Objekt
     const view = {
       id,
       status: label,
-      // "new" und "old" zur einheitlichen Darstellung
       new: {
-        summary: neu?.summary ?? ch.summary,     // für neu/geändert
+        summary: neu?.summary ?? ch.summary,
         start: neu ? new Date(neu.start) : (ch.start ? new Date(ch.start) : null),
         end: neu ? new Date(neu.end) : (ch.end ? new Date(ch.end) : null),
         location: neu?.location ?? ch.location,
@@ -298,9 +306,7 @@ function getGlobalUnreadChanges() {
       }
     };
 
-    // Für "gelöscht" gibt es kein "new" – wir zeigen vorrangig "old"
     if (label === 'gelöscht') {
-      // Fallbacks: falls _alt-Felder fehlen, nutze ch-Felder
       view.display = {
         date: view.old.start ?? view.new.start,
         start: view.old.start ?? view.new.start,
@@ -309,7 +315,6 @@ function getGlobalUnreadChanges() {
         loc: view.old.location ?? view.new.location ?? '',
       };
     } else {
-      // 'neu' oder 'geändert': zeige "new" (aktueller Zustand)
       view.display = {
         date: view.new.start ?? view.old.start,
         start: view.new.start ?? view.old.start,
@@ -319,7 +324,6 @@ function getGlobalUnreadChanges() {
       };
     }
 
-    // Diff-Flags nur für "geändert"
     if (label === 'geändert') {
       view.diff = {
         summaryChanged: (view.old.summary ?? '') !== (view.new.summary ?? ''),

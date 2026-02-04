@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Lade nur die Klassen-Liste von der API
     function loadKlassen() {
-        const klassenUrl = apiBase + '?path=personalData/getAllClasses';
+        const klassenUrl = apiBase + '/class';
         console.log('Loading classes from:', klassenUrl);
         
         fetch(klassenUrl, {
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(profileForm);
         const data = Object.fromEntries(formData.entries());
         
-        const updateUrl = apiBase + '?path=personalData/updateProfile';
+        const updateUrl = apiBase + '/personalData/updateProfile';
         fetch(updateUrl, {
             method: 'POST',
             headers: {

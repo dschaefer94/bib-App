@@ -85,7 +85,10 @@ class UserController
         echo json_encode(['success' => true, 'message' => 'Erfolgreich ausgeloggt']);
     }
 
-    // Florian
+    /**
+     * Florian
+     * @return void
+     */
     public function profile() {
         if (!isset($_SESSION['user_id'])) {
             http_response_code(401);
@@ -114,8 +117,11 @@ class UserController
             ]);
         }
     }
-
-    // Florian
+    /**
+     * Florian
+     * @param mixed $data
+     * @return void
+     */
     public function updateProfile($data) {
         if (!isset($_SESSION['user_id'])) {
             http_response_code(401);
