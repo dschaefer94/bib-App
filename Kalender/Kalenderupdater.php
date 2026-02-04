@@ -2,7 +2,7 @@
 
 namespace SDP\Updater;
 
-use ppb\Model\Database;
+use SDP\Model\Database;
 
 require_once __DIR__ . '/../Model/Database.php';
 require_once __DIR__ . '/icsWorker.php';
@@ -41,18 +41,30 @@ function kalenderupdater(string $name, $pdo)
 function updateAlleKalendare()
 {
     try {
+        $config = require __DIR__ . '/../config/config.php';
+        $db = $config['db'];
+        $dsn = "mysql:host={$db['host']}";
+        if (!empty($db['port'])) {
+            $dsn .= ";port={$db['port']}";
+        }
+        $dsn .= ";dbname={$db['dbname']};charset={$db['charset']}";
         $pdo = new \PDO(
-                "mysql:dbname=pbd2h24asc_stundenplan_db;host=mysql.pb.bib.de",
-                'pbd2h24asc',
-                '8x2uXWAeTEMC',
-                array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+            $dsn,
+            $db['user'],
+            $db['password'],
+            array(
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
+            )
+        );
         $query = "SELECT klassenname FROM klassen ORDER BY 1 ASC";
         $stmt = $pdo->query($query);
-        $klassennamen = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $klassennamen = $stmt->fetchAll();
     } catch (\PDOException $e) {
         echo "Fehler bei DB-Verbindung: " . $e->getMessage() . "\n";
         return;
     }
+
     foreach ($klassennamen as $klassenname) {
         echo "Starte Kalender-Update für Klasse: " . $klassenname['klassenname'] . "\n";
         kalenderupdater($klassenname['klassenname'], $pdo);

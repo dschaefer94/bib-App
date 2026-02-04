@@ -1,14 +1,28 @@
 <?php
 
-namespace ppb\Controller;
+namespace SDP\Controller;
 
-use ppb\Model\UserModel;
-use ppb\Model\ClassModel;
+use SDP\Model\UserModel;
+use SDP\Model\ClassModel;
 
 class UserController
 {
     public function __construct() {}
-    
+    /**
+     * Daniel
+     * gibt die Daten eines eingeloggten Users aus, wichtig beim Admin-Check
+     * @return void
+     */
+    public function getUser()
+    {
+        if (isset($_SESSION['benutzer_id'])) {
+            echo json_encode((new UserModel())->selectBenutzer($_SESSION['benutzer_id']), JSON_UNESCAPED_UNICODE);
+        } else {
+            http_response_code(401);
+            echo json_encode(['error' => 'Nicht eingeloggt']);
+        }
+    }
+
     /**
      * Daniel
      * gibt nach Vollständigkeitsprüfung einen Registrierungsvorgang in Auftrag
@@ -56,7 +70,6 @@ class UserController
         }
 
         $_SESSION['benutzer_id'] = $user['benutzer_id'];
-        $_SESSION['user_id'] = $user['benutzer_id'];  // Alias für Kompatibilität
         $_SESSION['klassenname'] = (new ClassModel())->selectClass($_SESSION['benutzer_id'])[0]['klassenname'];
 
         http_response_code(200);
@@ -89,19 +102,20 @@ class UserController
      * Florian
      * @return void
      */
-    public function profile() {
-        if (!isset($_SESSION['user_id'])) {
+    public function profile()
+    {
+        if (!isset($_SESSION['benutzer_id'])) {
             http_response_code(401);
             echo json_encode(['success' => false, 'error' => 'Nicht authentifiziert']);
             return;
         }
 
-        $id = $_SESSION['user_id'];
+        $id = $_SESSION['benutzer_id'];
         $userModel = new UserModel();
         $classModel = new ClassModel();
-        
+
         $userData = $userModel->getUserData($id);
-        $classes = $classModel->getAllClasses();
+        $classes = $classModel->selectClass();
 
         if ($userData) {
             echo json_encode([
@@ -122,21 +136,21 @@ class UserController
      * @param mixed $data
      * @return void
      */
-    public function updateProfile($data) {
-        if (!isset($_SESSION['user_id'])) {
+    public function updateProfile($data)
+    {
+        if (!isset($_SESSION['benutzer_id'])) {
             http_response_code(401);
             echo json_encode(['success' => false, 'error' => 'Nicht authentifiziert']);
             return;
         }
-        
+
         $userModel = new UserModel();
 
-        $benutzer_id = $_SESSION['user_id'];
-        $data['benutzer_id'] = $benutzer_id;
+        $benutzer_id = $_SESSION['benutzer_id'];
 
         // Validation
         $errors = [];
-        if (empty($data['benutzer_id']) || empty($data['name']) || empty($data['vorname'])) {
+        if (empty($data['name']) || empty($data['vorname'])) {
             $errors[] = 'Alle Pflichtfelder müssen gefüllt sein (Name, Vorname).';
         }
         if (!empty($data['passwort']) && $data['passwort'] !== ($data['passwort_confirm'] ?? '')) {
@@ -153,16 +167,16 @@ class UserController
         $klassen_id = !empty($data['klassen_id']) ? (int)$data['klassen_id'] : null;
         $email = trim($data['email'] ?? '');
         $passwort = !empty($data['passwort']) ? password_hash($data['passwort'], PASSWORD_DEFAULT) : null;
-        
+
         $pd_updated = $userModel->updatePersonalData($benutzer_id, $name, $vorname, $klassen_id);
         $user_updated = $userModel->updateUser($benutzer_id, $email, $passwort);
 
         if ($pd_updated || $user_updated) {
             $reloadedUser = $userModel->getUserData($benutzer_id);
             $classModel = new ClassModel();
-            $classes = $classModel->getAllClasses();
+            $classes = $classModel->selectClass();
             echo json_encode([
-                'success' => true, 
+                'success' => true,
                 'message' => 'Daten erfolgreich aktualisiert!',
                 'userData' => $reloadedUser,
                 'klassen' => $classes

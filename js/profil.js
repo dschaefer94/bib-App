@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     // Dynamische API-Base-URL
-    const apiBase = 'restapi.php';
+    const apiBase = 'restAPI.php';
 
     // Function to hide messages
     function hideMessages() {
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(profileForm);
         const data = Object.fromEntries(formData.entries());
         
-        const updateUrl = apiBase + '/personalData/updateProfile';
+        const updateUrl = apiBase + '/user/updateProfile';
         fetch(updateUrl, {
             method: 'POST',
             headers: {

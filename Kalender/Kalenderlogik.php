@@ -151,4 +151,5 @@ function dbMagic($pdo, $alter_stundenplan, $neuer_stundenplan, $name, $events)
         echo "Fehler bei der Datenbankoperation: " . $e->getMessage() . "\n";
     }
     echo "Alle Datenbankoperationen erfolgreich!\n";
+    echo "############################################\n";
 }

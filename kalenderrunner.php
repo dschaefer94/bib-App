@@ -1,41 +1,22 @@
-
 <?php
-/**
- * Daniel
- * Skript (am besten außerhalb vom Webroot im Document Root), per Cronjob alle 10 min
- * Initialisiert Kalenderupdater.php, welches alle Stundenpläne updatet
- * gibt die echo-Meldungen des Prozesses pro Klasseneintrag aus
- */
 require_once 'Kalender/Kalenderupdater.php';
+
 use SDP\Updater;
 
 ob_start();
 Updater\updateAlleKalendare();
-$log = ob_get_clean();
-$lines = preg_split('/\r\n|\r|\n/', $log);
-?>
-<!DOCTYPE html>
-<html lang="de">
-<meta charset="utf-8">
-<body>
+$logContent = ob_get_clean();
 
-<h1>Kalender-Updates</h1>
+$logDir = __DIR__ . '/logs';
+$logFile = $logDir . '/kalender_update_' . date('Y-m-m') . '.log';
 
-<?php
-foreach ($lines as $line) {
-    if (trim($line) === '') continue;
-    if (str_starts_with($line, 'Starte Kalender-Update für Klasse:')) {
-        echo "<h3>" . htmlspecialchars($line) . "</h3>\n";
-        echo "<ol>\n"; 
-        continue;
-    }
-    if (str_starts_with($line, 'Datenbankoperationen erfolgreich')) {
-        echo "<li>" . htmlspecialchars($line) . "</li>\n";
-        echo "</ol>\n";
-        continue;
-    }
-    echo "<li>" . htmlspecialchars($line) . "</li>\n";
+$timestamp = date('Y-m-d H:i:s');
+$formattedLog = "--- UPDATE START: $timestamp ---\n";
+$formattedLog .= $logContent;
+$formattedLog .= "\n--- UPDATE ENDE ---\n\n";
+
+file_put_contents($logFile, $formattedLog, FILE_APPEND);
+
+if (php_sapi_name() !== 'cli') {
+    echo "Update abgeschlossen. Log geschrieben in: $logFile";
 }
-?>
-</body>
-</html>

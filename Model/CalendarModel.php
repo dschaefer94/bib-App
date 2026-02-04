@@ -1,10 +1,13 @@
 <?php
 
-namespace ppb\Model;
+namespace SDP\Model;
 
 class CalendarModel extends Database
 {
-  public function __construct() {}
+  public function __construct()
+  {
+    parent::__construct();
+  }
   /**
    * Daniel
    * holt sich den den jeweiligen aktuellen Stundenplan einer Klasse
@@ -68,7 +71,7 @@ class CalendarModel extends Database
    */
   public function insertNotedChanges($benutzer_id, $termin_id): array
   {
-    try{
+    try {
       $pdo = $this->linkDB();
       $query = "INSERT INTO gelesene_termine (benutzer_id, termin_id) VALUES (:benutzer_id, :termin_id)";
       $stmt = $pdo->prepare($query);

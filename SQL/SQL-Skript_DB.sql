@@ -4,7 +4,8 @@ use pbd2h24asc_stundenplan_db;
 create table benutzer (
   benutzer_id char(36) primary key,
   passwort varchar(255) not null,
-  email varchar(255) not null unique
+  email varchar(255) not null unique,
+  istadmin TINYINT(1) NOT NULL DEFAULT 0
 );
 
 create table klassen (

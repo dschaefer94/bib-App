@@ -1,14 +1,17 @@
 <?php
 
-namespace ppb\Model;
+namespace SDP\Model;
 
-use ppb\Library\Msg;
+use SDP\Library\Msg;
 
 require_once __DIR__ . '/../Kalender/Kalenderupdater.php';
 
 class ClassModel extends Database
 {
-  public function __construct() {}
+  public function __construct()
+  {
+    parent::__construct();
+  }
   /**
    * Daniel & Florian
    * ruft alle Klassennamen auf für das Dropdownmenü in der Stundenplanansicht/Klassenverwaltung
@@ -206,8 +209,13 @@ class ClassModel extends Database
    * @throws \Exception
    * @return array{erfolg: bool}
    */
+
   public function deleteClass($id): array
   {
+    if ((int)$id === 1) {
+      throw new \Exception('Die DummyKlasse darf nicht gelöscht werden!', 403);
+    }
+
     try {
       $pdo = $this->linkDB();
 
@@ -221,7 +229,7 @@ class ClassModel extends Database
 
       $pdo->beginTransaction();
 
-      $pdo->prepare("UPDATE persoenliche_daten SET klassen_id = NULL WHERE klassen_id = ?")
+      $pdo->prepare("UPDATE persoenliche_daten SET klassen_id = 1 WHERE klassen_id = ?")
         ->execute([$id]);
 
       $pdo->prepare("DELETE FROM klassen WHERE klassen_id = ?")
@@ -242,16 +250,5 @@ class ClassModel extends Database
       }
       throw $e;
     }
-  }
-
-  /**
-   * Florian
-   * @return array
-   */
-  public function getAllClasses(): array
-  {
-    $pdo = $this->linkDB();
-    $stmt = $pdo->query("SELECT klassen_id, klassenname FROM klassen ORDER BY klassenname");
-    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
   }
 }

@@ -1,7 +1,32 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const adminContainer = document.querySelector(".admin-container");
     const classList = document.getElementById("class-list");
     const addBtn = document.getElementById("add-class-btn");
     const msgBox = document.getElementById("msg-box");
+
+    // Zuerst alles verstecken
+    adminContainer.style.opacity = "0";
+
+    // Admin-Check Funktion
+    async function checkAdminStatus() {
+        try {
+            const response = await fetch("./restAPI.php/user", { credentials: 'include' });
+            const data = await response.json();
+
+            if (data && data.ist_admin == 1) {
+                // User ist Admin -> Container anzeigen
+                adminContainer.style.opacity = "1";
+                loadClasses(); // Erst jetzt Daten laden
+            } else {
+                // Kein Admin -> Wegschicken
+                window.location.href = "startseite.html";
+            }
+        } catch (err) {
+            window.location.href = "startseite.html";
+        }
+    }
+
+    checkAdminStatus();
 
     // Hilfsfunktion für Nachrichten (jetzt mit Typ-Unterstützung)
     function showMsg(text, type = "error-message") {
@@ -14,18 +39,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. READ: Klassen laden
     async function loadClasses() {
         try {
-            const response = await fetch("./restapi.php/class/getClass");
+            const response = await fetch("./restAPI.php/class/getClass");
             if (!response.ok) throw new Error("Server-Antwort war nicht ok");
-            
+
             const classes = await response.json();
             classList.innerHTML = "";
-            
+
             classes.forEach(item => {
                 const row = document.createElement("tr");
                 const safeLink = item.ical_link ? item.ical_link.replace(/'/g, "\\'") : '';
-                
+
                 row.innerHTML = `
-                    <td>${item.klassen_id || '-'}</td>
                     <td>${item.klassenname}</td>
                     <td>
                         <button class="btn btn-edit" onclick="openEditModal(${item.klassen_id}, '${item.klassenname}', '${safeLink}')">Bearbeiten</button>
@@ -50,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch("./restapi.php/class/writeClass", {
+            const response = await fetch("./restAPI.php/class", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ klassenname: name, ical_link: ical })
@@ -77,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!confirm("Wirklich löschen? Alle zugehörigen Tabellen werden entfernt!")) return;
 
         try {
-            const response = await fetch(`./restapi.php/class/${id}`, { method: "DELETE" });
+            const response = await fetch(`./restAPI.php/class/${id}`, { method: "DELETE" });
             const result = await response.json();
 
             if (response.ok && result.erfolg) {
@@ -105,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const newIcal = document.getElementById("edit-ical-link").value.trim();
 
         try {
-            const response = await fetch(`./restapi.php/class/${id}`, {
+            const response = await fetch(`./restAPI.php/class/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ klassenname: newName, ical_link: newIcal })

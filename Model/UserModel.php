@@ -1,25 +1,28 @@
 <?php
 
-namespace ppb\Model;
+namespace SDP\Model;
 
 class UserModel extends Database
 {
 
-    public function __construct() {}
+    public function __construct()
+    {
+        parent::__construct();
+    }
     /**
      * Florian
      * Wählt alle Benutzer mit ihren persönlichen Daten und dem Klassennamen aus.
      * @return array
      */
-    public function selectBenutzer(int $benutzer_id): array
+    public function selectBenutzer($benutzer_id): array
     {
         try {
             $pdo = $this->linkDB();
             $sql = "
-        SELECT b.benutzer_id, pd.name, pd.vorname, b.email, k.klassenname
-        FROM BENUTZER b
-        LEFT JOIN PERSOEHNLICHE_DATEN pd ON b.benutzer_id = pd.benutzer_id
-        LEFT JOIN KLASSEN k ON pd.klassen_id = k.klassen_id
+        SELECT b.benutzer_id, b.ist_admin, pd.name, pd.vorname, b.email, k.klassenname
+        FROM benutzer b
+        LEFT JOIN persoenliche_daten pd ON b.benutzer_id = pd.benutzer_id
+        LEFT JOIN klassen k ON pd.klassen_id = k.klassen_id
         WHERE b.benutzer_id = :benutzer_id";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
@@ -95,6 +98,9 @@ class UserModel extends Database
             $stmtPD->execute();
             $pdo->commit();
         } catch (\PDOException $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
             return ['benutzerAngelegt' => false, 'grund' => 'Datenbankfehler: ' . $e->getMessage()];
         }
         return ['benutzerAngelegt' => true];
@@ -110,13 +116,13 @@ class UserModel extends Database
      */
     public function updateUser($benutzer_id, string $email, ?string $passwort = null): bool
     {
-         $pdo  = $this->linkDB();
+        $pdo  = $this->linkDB();
 
         if ($passwort) {
-            $stmt = $pdo->prepare("UPDATE BENUTZER SET email = ?, passwort = ? WHERE benutzer_id = ?");
+            $stmt = $pdo->prepare("UPDATE benutzer SET email = ?, passwort = ? WHERE benutzer_id = ?");
             $stmt->execute([$email, $passwort, $benutzer_id]);
         } else {
-            $stmt = $pdo->prepare("UPDATE BENUTZER SET email = ? WHERE benutzer_id = ?");
+            $stmt = $pdo->prepare("UPDATE benutzer SET email = ? WHERE benutzer_id = ?");
             $stmt->execute([$email, $benutzer_id]);
         }
 
@@ -131,17 +137,17 @@ class UserModel extends Database
      */
     public function deleteUser($id): bool
     {
-         $pdo  = $this->linkDB();
+        $pdo  = $this->linkDB();
         try {
             $pdo->beginTransaction();
             $stmt3 = $pdo->prepare("DELETE FROM gelesene_termine WHERE benutzer_id = ?");
             $stmt3->execute([$id]);
             // Zuerst abhängige Daten löschen
-            $stmt1 = $pdo->prepare("DELETE FROM PERSOEHNLICHE_DATEN WHERE benutzer_id = ?");
+            $stmt1 = $pdo->prepare("DELETE FROM persoenliche_daten WHERE benutzer_id = ?");
             $stmt1->execute([$id]);
 
             // Dann den Hauptdatensatz löschen
-            $stmt2 = $pdo->prepare("DELETE FROM BENUTZER WHERE benutzer_id = ?");
+            $stmt2 = $pdo->prepare("DELETE FROM benutzer WHERE benutzer_id = ?");
             $stmt2->execute([$id]);
 
             $pdo->commit();
@@ -177,11 +183,11 @@ class UserModel extends Database
     }
 
     // Florian
-    public function updatePersonalData(int $benutzer_id, string $name, string $vorname, ?int $klassen_id = null): bool
+    public function updatePersonalData($benutzer_id, $name, $vorname, $klassen_id = null): bool
     {
         $pdo = $this->linkDB();
         $stmt = $pdo->prepare(
-            "UPDATE PERSOEHNLICHE_DATEN SET name = ?, vorname = ?, klassen_id = ? WHERE benutzer_id = ?"
+            "UPDATE persoenliche_daten SET name = ?, vorname = ?, klassen_id = ? WHERE benutzer_id = ?"
         );
         $stmt->execute([$name, $vorname, $klassen_id, $benutzer_id]);
         return $stmt->rowCount() > 0;

@@ -1,6 +1,6 @@
 <?php
 
-namespace ppb\Library;
+namespace SDP\Library;
 
 class Msg
 {

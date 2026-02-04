@@ -2,7 +2,7 @@
 session_start();
 
 spl_autoload_register(function ($className) {
-    if (substr($className, 0, 4) !== 'ppb\\') {
+    if (substr($className, 0, 4) !== 'SDP\\') {
         return;
     }
 
@@ -39,7 +39,7 @@ if (preg_match('/^\d+$/', $endpoint2)) {
 }
 
 //endpoint[0], also $controllerName gibt den Controller-Namen vor, z.B. bei /task -> TaskController
-$controllerClassName = 'ppb\\Controller\\' . ucfirst($controllerName) . 'Controller';
+$controllerClassName = 'SDP\\Controller\\' . ucfirst($controllerName) . 'Controller';
 
 //endpoint[0] gibt hier den Methodennamen im Controller vor, je nach HTTP-Request-Methode, z.B./task und GET -> getTask
 if ($_SERVER['REQUEST_METHOD'] == "DELETE") {
@@ -84,5 +84,5 @@ if (method_exists($controllerClassName, $methodName)) {
     }
 } else {
     //http_response_code(404);
-    new \ppb\Library\Msg(true, 'Page not found: ' . $controllerClassName . '::' . $methodName);
+    new \SDP\Library\Msg(true, 'Page not found: ' . $controllerClassName . '::' . $methodName);
 }

@@ -1,53 +1,51 @@
 <?php
 
-namespace ppb\Model;
+namespace SDP\Model;
 
-use ppb\Library\Msg;
+use SDP\Library\Msg;
 
 abstract class Database
 {
+    private $config;
 
-
-    // Zugangsdaten für die lokale Datenbank 
-
-    // private $dbName = "pbd2h24asc_stundenplan_db"; //Datenbankname
-    // private $linkName = "localhost"; //Datenbank-Server
-    // private $user = "root"; //Benutzername
-    // private $pw = "root"; //Passwort
-
-    // Test-Online-Datenbank
-    // private $linkName = "localhost";
-    // private $host = "3306";
-    // private $dbName = "pbd2h24asc_stundenplan_db";
-    // private $user = "pbd2h24asc_backendboi";
-    // private $pw = "T3ll3Why!";
-    
-//MySQL-Datenbank Zugangsdaten
-    private $dbName = "pbd2h24asc_stundenplan_db"; //Datenbankname
-    private $linkName = "mysql.pb.bib.de"; //Datenbank-Server
-    private $user = "pbd2h24asc"; //Benutzername
-    private $pw = "8x2uXWAeTEMC"; //Passwort
-
-
-    /**
-     * Stellt eine Verbindung zur Datenbank her
-     * 
-     * @return \PDO Gibt eine Datenbankverbindung zurueck
-     */
-    public function linkDB()
+    // Wir verlangen die Config jetzt direkt im Konstruktor
+    public function __construct()
     {
-        try {
-            $pdo = new \PDO(
-                "mysql:dbname=$this->dbName;host=$this->linkName",
-                $this->user,
-                $this->pw,
-                array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION)
-            );
-            return $pdo;
-        } catch (\PDOException $e) {
-            new Msg(true, null, $e);
+        $path = __DIR__ . '/../config/config.php';
+
+        if (file_exists($path)) {
+            // Wir löschen den internen Cache für diese Datei, um sicherzugehen
+            $this->config = require $path;
+
+            // Falls require nur '1' zurückgibt (weil es schonmal geladen wurde)
+            if (!is_array($this->config)) {
+                // Plan B: Dateiinhalt direkt parsen oder über globale Variable gehen
+                // Aber meistens reicht es, require OHNE _once zu nutzen.
+            }
         }
     }
+
+    public function linkDB()
+    {
+        $db = $this->config['db'];
+        $dsn = "mysql:host=" . $db['host'];
+        if (!empty($db['port'])) {
+            $dsn .= ";port=" . $db['port'];
+        }
+        $dsn .= ";dbname=" . $db['dbname'] . ";charset=" . $db['charset'];
+
+        try {
+            return new \PDO(
+                $dsn,
+                $db['user'],
+                $db['password'],
+                [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+            );
+        } catch (\PDOException $e) {
+            new Msg(true, "Verbindung fehlgeschlagen", $e->getMessage());
+        }
+    }
+
 
     /**
      * Zum serverseitigen generieren einer UUID

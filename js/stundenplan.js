@@ -3,7 +3,7 @@
 // CONFIG
 // ======================
 const CONFIG = {
-  BASE: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/restapi.php',
+  BASE: window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/restAPI.php',
   ENDPOINT_NEU: '/Calendar/getCalendar',
   ENDPOINT_AENDERUNGEN: '/Calendar/getChanges',
   // NEU:
@@ -14,6 +14,14 @@ const CONFIG = {
   WEEK_STARTS_MONDAY: true,
 };
 
+const TIME_SLOTS = [
+  { start: "08:00", end: "09:30" },
+  { start: "09:50", end: "11:20" },
+  { start: "11:30", end: "13:00" },
+  { start: "13:45", end: "15:15" },
+  { start: "15:30", end: "17:00" }
+];
+
 // ======================
 // Klassennamen beziehen
 // ======================
@@ -23,7 +31,7 @@ function getClassName() {
   if (klassFromUrl) {
     return klassFromUrl;
   }
-  
+
   // Versuche aus sessionStorage zu bekommen
   const storedUser = sessionStorage.getItem('user');
   if (storedUser) {
@@ -36,7 +44,7 @@ function getClassName() {
       console.error('Failed to parse user from sessionStorage:', e);
     }
   }
-  
+
   // Fallback auf Default
   return CONFIG.DEFAULT_CLASS_NAME;
 }
@@ -122,13 +130,13 @@ function escapeHtml(s) {
 // Daten holen
 // ======================
 async function fetchDataForRange(s, e) {
-  const neuUrl  = buildUrl(CONFIG.ENDPOINT_NEU,  { start: s, end: e });
+  const neuUrl = buildUrl(CONFIG.ENDPOINT_NEU, { start: s, end: e });
   const aendUrl = buildUrl(CONFIG.ENDPOINT_AENDERUNGEN, { start: s, end: e });
-  const [neuRes, aendRes] = await Promise.all([ fetch(neuUrl), fetch(aendUrl) ]);
-  if (!neuRes.ok)  throw new Error('Fehler beim Laden von stundenplan_neu: ' + neuRes.status);
+  const [neuRes, aendRes] = await Promise.all([fetch(neuUrl), fetch(aendUrl)]);
+  if (!neuRes.ok) throw new Error('Fehler beim Laden von stundenplan_neu: ' + neuRes.status);
   if (!aendRes.ok) throw new Error('Fehler beim Laden von aenderungen: ' + aendRes.status);
   try {
-    const [neu, aend] = await Promise.all([ neuRes.json(), aendRes.json() ]);
+    const [neu, aend] = await Promise.all([neuRes.json(), aendRes.json()]);
     return { neu, aend };
   } catch (e) {
     console.error('JSON parse error from getCalendar/getChanges:', e);
@@ -273,7 +281,7 @@ function getGlobalUnreadChanges() {
   // NUR ungelesene Changes, die noch nicht in der Vergangenheit liegen
   const unread = RAW_AEND.filter(ch => {
     const istUngelesen = !READ_IDS.has(String(ch.termin_id));
-    
+
     // Wir prüfen das Ende des Termins. 
     // Falls 'end' (neu) nicht da ist (z.B. bei gelöscht), nehmen wir 'end_alt'.
     const terminEnde = new Date(ch.end || ch.end_alt);
@@ -478,35 +486,123 @@ function renderWeekHeader(s, e) {
   rangeEl.textContent = rangeTxt;
 }
 
+// ======================
+// Neuer Render-Controller für feste Slots
+// ======================
+
+function getSlotIndex(date) {
+  const timeStr = fmtTime(date); // HH:MM
+  const [h, m] = timeStr.split(':').map(Number);
+  const totalMinutes = h * 60 + m;
+
+  // Wir ordnen die Termine basierend auf der Startzeit den Slots zu
+  if (totalMinutes < 590) return 0; // 08:00 (bis 09:50 Puffer)
+  if (totalMinutes < 690) return 1; // 09:50
+  if (totalMinutes < 820) return 2; // 11:30
+  if (totalMinutes < 930) return 3; // 13:45
+  return 4; // 15:30
+}
+
 function renderGrid(byDay, s) {
   const grid = document.getElementById('grid');
+  if (!grid) return;
   grid.innerHTML = '';
-  for (let i = 0; i < 7; i++) {
-    const dayDate = new Date(s); dayDate.setDate(dayDate.getDate() + i);
+  
+  // Grid-Container Styling
+  Object.assign(grid.style, {
+    display: 'flex',
+    gap: '12px',
+    overflowX: 'auto',
+    alignItems: 'flex-start',
+    padding: '0',
+    width: '100%'
+  });
+
+  // --- ZEITSPALTE (Ganz links) ---
+  const timeCol = document.createElement('div');
+  Object.assign(timeCol.style, {
+    position: 'sticky',
+    left: '0',
+    zIndex: '20',
+    background: 'var(--bg)',
+    flex: '0 0 50px',
+    marginTop: '45px', 
+    borderRight: '1px solid var(--line)',
+    paddingRight: '8px'
+  });
+  
+  const timeGrid = document.createElement('div');
+  Object.assign(timeGrid.style, {
+    display: 'grid',
+    gridTemplateRows: 'repeat(5, 140px)',
+    gap: '10px',
+    padding: '12px 0'
+  });
+
+  TIME_SLOTS.forEach(slot => {
+    const label = document.createElement('div');
+    label.style.textAlign = 'right';
+    label.innerHTML = `
+      <div style="font-size: 12px; font-weight: 700; color: var(--text);">${slot.start}</div>
+      <div style="font-size: 10px; color: var(--muted);">${slot.end}</div>
+    `;
+    timeGrid.appendChild(label);
+  });
+  timeCol.appendChild(timeGrid);
+  grid.appendChild(timeCol);
+
+  // --- TAGE ---
+  for (let i = 0; i < 5; i++) { 
+    const dayDate = new Date(s); 
+    dayDate.setDate(dayDate.getDate() + i);
+    
     const col = document.createElement('div');
     col.className = 'day';
-    col.setAttribute('role', 'region');
-    col.setAttribute('aria-label', `${fmtDate(dayDate, true)}`);
+    Object.assign(col.style, {
+      flex: '0 0 280px',
+      minWidth: '280px',
+      background: 'var(--panel)',
+      borderRadius: '12px',
+      border: '1px solid var(--line)',
+      display: 'flex',
+      flexDirection: 'column'
+    });
 
     const head = document.createElement('header');
-    const weekday = document.createElement('div');
-    weekday.className = 'weekday';
-    weekday.textContent = new Intl.DateTimeFormat('de-DE', { weekday: 'long' }).format(dayDate);
-    const dateSpan = document.createElement('div');
-    dateSpan.className = 'date';
-    dateSpan.textContent = new Intl.DateTimeFormat('de-DE', { day: '2-digit', month: '2-digit' }).format(dayDate);
-    head.append(weekday, dateSpan);
+    head.style.padding = '10px';
+    head.style.borderBottom = '1px solid var(--line)';
+    head.innerHTML = `
+      <div style="font-weight:700; font-size:14px;">${new Intl.DateTimeFormat('de-DE', { weekday: 'long' }).format(dayDate)}</div>
+      <div style="color:var(--muted); font-size:12px;">${fmtDate(dayDate)}</div>
+    `;
 
     const list = document.createElement('div');
     list.className = 'events';
+    Object.assign(list.style, {
+      display: 'grid',
+      gridTemplateRows: 'repeat(5, 140px)', // Definiert die 5 Zeitfenster
+      gap: '10px',
+      padding: '12px',
+      position: 'relative',
+      minHeight: 'auto' // WICHTIG: Kein extra Platz nach unten
+    });
+
+    // WICHTIG: HIER WURDEN DIE LEEREN BACKGROUND-BLÖCKE ENTFERNT
+
     const events = byDay[i];
-    if (!events.length) {
-      const empty = document.createElement('div');
-      empty.className = 'empty';
-      empty.textContent = 'Keine Termine';
-      list.appendChild(empty);
-    } else {
-      for (const ev of events) list.appendChild(renderEvent(ev));
+    if (events) {
+      for (const ev of events) {
+        const startIdx = getSlotIndex(ev.start);
+        const endIdx = getSlotIndex(ev.end);
+        const el = renderEvent(ev);
+        
+        // Das Event wird exakt in die Reihe des Zeitlots gesetzt
+        const span = (endIdx > startIdx) ? (endIdx - startIdx + 1) : 1;
+        el.style.gridRow = `${startIdx + 1} / span ${span}`;
+        el.style.zIndex = "2";
+        el.style.margin = "0"; 
+        list.appendChild(el);
+      }
     }
 
     col.append(head, list);
@@ -514,79 +610,52 @@ function renderGrid(byDay, s) {
   }
 }
 
+// Deine renderEvent Funktion bleibt fast gleich, wir optimieren nur das CSS etwas
 function renderEvent(ev) {
   const el = document.createElement('article');
   el.className = 'event';
 
-  // SPECIAL: summary beginnt mit "*"
+  // Verhindert, dass die Event-Boxen bei wenig Inhalt schrumpfen
+  el.style.height = '100%';
+  el.style.margin = '0';
+
   const normalized = String(ev.summary || "").trim();
-  if (normalized.startsWith("*")) {
-    el.classList.add("special");
-  }
-
+  if (normalized.startsWith("*")) el.classList.add("special");
   if (ev.status === 'neu') el.classList.add('neu');
-  if (ev.status === 'gelöscht') el.classList.add('geloescht'); // CSS-Klasse ohne Umlaut
-  if (ev.status === 'geändert') el.classList.add('geaendert'); // CSS-Klasse ohne Umlaut
-
-  const label = document.createElement('div');
-  label.className = 'label';
-  label.textContent = ev.status ?? '';
-
-  const summary = document.createElement('div');
-  summary.className = 'summary';
-  summary.textContent = ev.summary || '(ohne Titel)';
-
-  const meta = document.createElement('div');
-  meta.className = 'meta';
-  meta.textContent = `${fmtTime(ev.start)} – ${fmtTime(ev.end)}`;
-
-  const location = document.createElement('div');
-  location.className = 'location';
-  location.textContent = ev.location || '';
+  if (ev.status === 'gelöscht') el.classList.add('geloescht');
+  if (ev.status === 'geändert') el.classList.add('geaendert');
 
   const contentWrap = document.createElement('div');
   contentWrap.className = 'content';
-  contentWrap.append(summary, meta, location);
 
+  contentWrap.innerHTML = `
+    <div class="summary">${ev.summary || '(ohne Titel)'}</div>
+    <div class="meta">${fmtTime(ev.start)} – ${fmtTime(ev.end)}</div>
+    <div class="location">${ev.location || ''}</div>
+  `;
+
+  // Diff-Logik für Änderungen
   if (ev.status === 'geändert' && ev.diff) {
     const changes = document.createElement('div');
     changes.className = 'changes';
-    if (ev.diff.summaryChanged) {
-      const line = document.createElement('div');
-      line.innerHTML = `<del>${escapeHtml(ev.diff.old.summary || '(ohne Titel)')}</del> → ${escapeHtml(ev.summary || '(ohne Titel)')}`;
-      changes.appendChild(line);
-    }
-    if (ev.diff.timeChanged) {
-      const line = document.createElement('div');
-      line.innerHTML = `<del>${fmtTime(ev.diff.old.start)}–${fmtTime(ev.diff.old.end)}</del> → ${fmtTime(ev.start)}–${fmtTime(ev.end)}`;
-      changes.appendChild(line);
-    }
-    if (ev.diff.locationChanged) {
-      const line = document.createElement('div');
-      line.innerHTML = `<del>${escapeHtml(ev.diff.old.location || '')}</del> → ${escapeHtml(ev.location || '')}`;
-      changes.appendChild(line);
-    }
+    if (ev.diff.summaryChanged) changes.innerHTML += `<div><del>${escapeHtml(ev.diff.old.summary)}</del></div>`;
+    if (ev.diff.timeChanged) changes.innerHTML += `<div><del>${fmtTime(ev.diff.old.start)}–${fmtTime(ev.diff.old.end)}</del></div>`;
     if (changes.childElementCount) contentWrap.appendChild(changes);
   }
 
   el.append(contentWrap);
-  if (ev.status) el.append(label);
 
-  // Button nur anzeigen, wenn Änderung existiert und noch UNGELESEN
+  // Mark-as-read Button
   if (ev.status && !READ_IDS.has(String(ev.id))) {
-    const actions = document.createElement('div');
-    actions.className = 'actions';
     const btn = document.createElement('button');
     btn.className = 'mark-read';
-    btn.textContent = 'Als gelesen markieren';
-    btn.addEventListener('click', async (e) => {
+    btn.textContent = 'Gelesen';
+    btn.style.marginTop = '5px';
+    btn.onclick = async (e) => {
       e.stopPropagation();
-      btn.disabled = true;
-      try { await markAsRead(ev.id); }
-      catch (err) { console.error(err); btn.disabled = false; }
-    });
-    actions.appendChild(btn);
-    el.append(actions);
+      await markAsRead(ev.id);
+    };
+    el.append(btn);
   }
 
   return el;
