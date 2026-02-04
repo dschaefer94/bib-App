@@ -8,6 +8,20 @@ use SDP\Model\ClassModel;
 class UserController
 {
     public function __construct() {}
+    /**
+     * Daniel
+     * gibt die Daten eines eingeloggten Users aus, wichtig beim Admin-Check
+     * @return void
+     */
+    public function getUser()
+    {
+        if (isset($_SESSION['benutzer_id'])) {
+            echo json_encode((new UserModel())->selectBenutzer($_SESSION['benutzer_id']), JSON_UNESCAPED_UNICODE);
+        } else {
+            http_response_code(401);
+            echo json_encode(['error' => 'Nicht eingeloggt']);
+        }
+    }
 
     /**
      * Daniel

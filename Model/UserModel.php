@@ -14,15 +14,15 @@ class UserModel extends Database
      * Wählt alle Benutzer mit ihren persönlichen Daten und dem Klassennamen aus.
      * @return array
      */
-    public function selectBenutzer(int $benutzer_id): array
+    public function selectBenutzer($benutzer_id): array
     {
         try {
             $pdo = $this->linkDB();
             $sql = "
-        SELECT b.benutzer_id, pd.name, pd.vorname, b.email, k.klassenname
-        FROM BENUTZER b
-        LEFT JOIN PERSOEHNLICHE_DATEN pd ON b.benutzer_id = pd.benutzer_id
-        LEFT JOIN KLASSEN k ON pd.klassen_id = k.klassen_id
+        SELECT b.benutzer_id, b.ist_admin, pd.name, pd.vorname, b.email, k.klassenname
+        FROM benutzer b
+        LEFT JOIN persoenliche_daten pd ON b.benutzer_id = pd.benutzer_id
+        LEFT JOIN klassen k ON pd.klassen_id = k.klassen_id
         WHERE b.benutzer_id = :benutzer_id";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([

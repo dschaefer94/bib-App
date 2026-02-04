@@ -1,7 +1,32 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const adminContainer = document.querySelector(".admin-container");
     const classList = document.getElementById("class-list");
     const addBtn = document.getElementById("add-class-btn");
     const msgBox = document.getElementById("msg-box");
+
+    // Zuerst alles verstecken
+    adminContainer.style.opacity = "0";
+
+    // Admin-Check Funktion
+    async function checkAdminStatus() {
+        try {
+            const response = await fetch("./restAPI.php/user", { credentials: 'include' });
+            const data = await response.json();
+
+            if (data && data.ist_admin == 1) {
+                // User ist Admin -> Container anzeigen
+                adminContainer.style.opacity = "1";
+                loadClasses(); // Erst jetzt Daten laden
+            } else {
+                // Kein Admin -> Wegschicken
+                window.location.href = "startseite.html";
+            }
+        } catch (err) {
+            window.location.href = "startseite.html";
+        }
+    }
+
+    checkAdminStatus();
 
     // Hilfsfunktion für Nachrichten (jetzt mit Typ-Unterstützung)
     function showMsg(text, type = "error-message") {
@@ -16,14 +41,14 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const response = await fetch("./restAPI.php/class/getClass");
             if (!response.ok) throw new Error("Server-Antwort war nicht ok");
-            
+
             const classes = await response.json();
             classList.innerHTML = "";
-            
+
             classes.forEach(item => {
                 const row = document.createElement("tr");
                 const safeLink = item.ical_link ? item.ical_link.replace(/'/g, "\\'") : '';
-                
+
                 row.innerHTML = `
                     <td>${item.klassenname}</td>
                     <td>

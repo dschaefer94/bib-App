@@ -36,7 +36,12 @@ class CalendarController
   {
     echo json_encode((new CalendarModel())->selectNotedChanges($_SESSION['benutzer_id']), JSON_UNESCAPED_UNICODE);
   }
-
+  /**
+   * Daniel
+   * zum Ergänzen eines gelesenen Events, Mapping in der DB
+   * @param mixed $data Termin_UID
+   * @return void
+   */
   public function writeNotedChanges($data)
   {
     echo json_encode((new CalendarModel())->insertNotedChanges($_SESSION['benutzer_id'], $data['termin_id']), JSON_UNESCAPED_UNICODE);
