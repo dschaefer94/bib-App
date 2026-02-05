@@ -3,6 +3,7 @@
 namespace SDP\Model;
 
 use SDP\Library\Msg;
+use SDP\Model\UserModel;
 
 require_once __DIR__ . '/../Kalender/Kalenderupdater.php';
 
@@ -212,6 +213,9 @@ class ClassModel extends Database
 
   public function deleteClass($id): array
   {
+    if (!isset($_SESSION['benutzer_id']) || (new UserModel())->selectBenutzer($_SESSION['benutzer_id'])['ist_admin'] != 1) {
+      throw new \Exception('Du Schlingel bist nicht als Admin eingeloggt!', 403);
+    }
     if ((int)$id === 1) {
       throw new \Exception('Die DummyKlasse darf nicht gelöscht werden!', 403);
     }
