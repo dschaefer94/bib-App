@@ -14,18 +14,14 @@ namespace SDP\Updater;
  */
 function tabellenAufraeumen($pdo, $alter_stundenplan, $neuer_stundenplan, $wartezimmer)
 {
-    $query = "TRUNCATE TABLE `{$alter_stundenplan}`;";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    $query = "RENAME TABLE `{$alter_stundenplan}` TO `{$wartezimmer}`;";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    $query = "RENAME TABLE `{$neuer_stundenplan}` TO `{$alter_stundenplan}`;";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    $query = "RENAME TABLE `{$wartezimmer}` TO `{$neuer_stundenplan}`;";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
+    try {
+        $pdo->exec("TRUNCATE TABLE `{$alter_stundenplan}`");
+        $pdo->exec("RENAME TABLE `{$alter_stundenplan}` TO `{$wartezimmer}`");
+        $pdo->exec("RENAME TABLE `{$neuer_stundenplan}` TO `{$alter_stundenplan}`");
+        $pdo->exec("RENAME TABLE `{$wartezimmer}` TO `{$neuer_stundenplan}`");
+    } catch (\PDOException $e) {
+        throw new \Exception("Tabellen-Cleanup fehlgeschlagen: " . $e->getMessage());
+    }
 }
 /**
  * Daniel
@@ -46,7 +42,6 @@ function dbMagic($pdo, $alter_stundenplan, $neuer_stundenplan, $name, $events)
     $chunks = array_chunk($events, $chunkSize, true);
 
     try {
-        echo "Füge Termine in die Datenbank ein...\n";
         foreach ($chunks as $chunk) {
             $valueParts = [];
             $params = [];
@@ -68,7 +63,6 @@ function dbMagic($pdo, $alter_stundenplan, $neuer_stundenplan, $name, $events)
         }
         $aenderungen = "{$name}_aenderungen";
 
-        echo "Führe Vergleichsoperationen durch...\n";
         $query = "INSERT INTO `{$aenderungen}` (termin_id, label, summary_alt, start_alt, end_alt, location_alt)
         SELECT DISTINCT 
         alt.termin_id, 'gelöscht',
@@ -150,6 +144,5 @@ function dbMagic($pdo, $alter_stundenplan, $neuer_stundenplan, $name, $events)
         $pdo->rollBack();
         echo "Fehler bei der Datenbankoperation: " . $e->getMessage() . "\n";
     }
-    echo "Alle Datenbankoperationen erfolgreich!\n";
-    echo "############################################\n";
+
 }

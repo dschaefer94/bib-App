@@ -16,11 +16,15 @@ class UserController
      */
     public function getUser()
     {
-        if (isset($_SESSION['benutzer_id'])) {
-            echo json_encode((new UserModel())->selectBenutzer($_SESSION['benutzer_id']), JSON_UNESCAPED_UNICODE);
-        } else {
-            http_response_code(401);
-            echo json_encode(['error' => 'Nicht eingeloggt']);
+        try {
+            if (isset($_SESSION['benutzer_id'])) {
+                echo json_encode((new UserModel())->selectUser($_SESSION['benutzer_id']), JSON_UNESCAPED_UNICODE);
+            } else {
+                http_response_code(401);
+                echo json_encode(['error' => 'Nicht eingeloggt']);
+            }
+        } catch (Throwable $e) {
+            $this->sendErrorResponse($e);
         }
     }
 
@@ -32,14 +36,19 @@ class UserController
      */
     public function writeUser($data)
     {
-        if (!empty($data['passwort']) && !empty($data['email']) && !empty($data['name']) && !empty($data['vorname']) && !empty($data['klassenname'])) {
-            echo json_encode((new UserModel())->insertUser($data), JSON_UNESCAPED_UNICODE);
-        } else {
-            echo json_encode(['benutzerAngelegt' => false, 'grund' => 'Fehlende Registrierungsdaten'], JSON_UNESCAPED_UNICODE);
+        try {
+            if (!empty($data['passwort']) && !empty($data['email']) && !empty($data['name']) && !empty($data['vorname']) && !empty($data['klassenname'])) {
+                echo json_encode((new UserModel())->insertUser($data), JSON_UNESCAPED_UNICODE);
+            } else {
+                echo json_encode(['benutzerAngelegt' => false, 'grund' => 'Fehlende Registrierungsdaten'], JSON_UNESCAPED_UNICODE);
+            }
+        } catch (Throwable $e) {
+            $this->sendErrorResponse($e);
         }
     }
     /**
      * Ramiz & Daniel
+     * Login via Passwortvergleich, Session-Variable wird definiert
      * @return void
      */
     public function login($data)
@@ -93,10 +102,14 @@ class UserController
      */
     public function logout()
     {
-        session_unset();
-        session_destroy();
-        http_response_code(200);
-        echo json_encode(['success' => true, 'message' => 'Erfolgreich ausgeloggt']);
+        try {
+            session_unset();
+            session_destroy();
+            http_response_code(200);
+            echo json_encode(['success' => true, 'message' => 'Erfolgreich ausgeloggt']);
+        } catch (Throwable $e) {
+            $this->sendErrorResponse($e);
+        }
     }
 
     /**
@@ -186,9 +199,16 @@ class UserController
             echo json_encode(['success' => true, 'message' => 'Keine Änderungen vorgenommen.']);
         }
     }
+    /**
+     * Daniel
+     * Hilfsfunktion für Exceptions
+     * @param Throwable $e
+     * @return void
+     */
     private function sendErrorResponse(Throwable $e): void
     {
-        http_response_code($e->getMessage());
+        $code = is_numeric($e->getCode()) && $e->getCode() >= 400 ? $e->getCode() : 500;
+        http_response_code($code);
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode([
             'erfolg' => false,

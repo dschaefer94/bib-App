@@ -14,7 +14,7 @@ class UserModel extends Database
      * Wählt alle Benutzer mit ihren persönlichen Daten und dem Klassennamen aus.
      * @return array
      */
-    public function selectBenutzer($benutzer_id): array
+    public function selectUser($benutzer_id): array
     {
         try {
             $pdo = $this->linkDB();
@@ -28,10 +28,10 @@ class UserModel extends Database
             $stmt->execute([
                 ':benutzer_id' => $benutzer_id
             ]);
+            return $stmt->fetch(\PDO::FETCH_ASSOC) ?: [];
         } catch (\PDOException $e) {
-            return [];
+            throw $e;
         }
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
     /**
      * Ramiz
@@ -101,7 +101,7 @@ class UserModel extends Database
             if ($pdo->inTransaction()) {
                 $pdo->rollBack();
             }
-            return ['benutzerAngelegt' => false, 'grund' => 'Datenbankfehler: ' . $e->getMessage()];
+            throw $e;
         }
         return ['benutzerAngelegt' => true];
     }
@@ -161,7 +161,7 @@ class UserModel extends Database
     }
 
     // Florian
-    public function getUserData(int $benutzer_id): ?array
+    public function getUserData($benutzer_id): ?array
     {
         try {
             $pdo = $this->linkDB();

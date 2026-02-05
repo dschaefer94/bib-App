@@ -2,8 +2,6 @@
 
 namespace SDP\Updater;
 
-use SDP\Model\Database;
-
 require_once __DIR__ . '/../Model/Database.php';
 require_once __DIR__ . '/icsWorker.php';
 require_once __DIR__ . '/Kalenderlogik.php';
@@ -22,8 +20,7 @@ function kalenderupdater(string $name, $pdo)
 {
     $download = icsDownloader($name, $pdo);
     if ($download === "") {
-        echo "Fehler beim Herunterladen der ICS-Datei für Klasse '$name'. Update abgebrochen.\n";
-        return;
+        throw new \Exception("Fehler beim Herunterladen der ICS-Datei für Klasse '$name'.");
     }
     $alter_stundenplan = "{$name}_alter_stundenplan";
     $neuer_stundenplan = "{$name}_neuer_stundenplan";
@@ -43,30 +40,24 @@ function updateAlleKalendare()
     try {
         $config = require __DIR__ . '/../config/config.php';
         $db = $config['db'];
-        $dsn = "mysql:host={$db['host']}";
-        if (!empty($db['port'])) {
-            $dsn .= ";port={$db['port']}";
-        }
-        $dsn .= ";dbname={$db['dbname']};charset={$db['charset']}";
-        $pdo = new \PDO(
-            $dsn,
-            $db['user'],
-            $db['password'],
-            array(
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
-            )
-        );
-        $query = "SELECT klassenname FROM klassen ORDER BY 1 ASC";
-        $stmt = $pdo->query($query);
+        $dsn = "mysql:host={$db['host']};dbname={$db['dbname']};charset={$db['charset']}";
+        $pdo = new \PDO($dsn, $db['user'], $db['password'], [
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
+        ]);
+        $stmt = $pdo->query("SELECT klassenname FROM klassen ORDER BY 1 ASC");
         $klassennamen = $stmt->fetchAll();
     } catch (\PDOException $e) {
-        echo "Fehler bei DB-Verbindung: " . $e->getMessage() . "\n";
-        return;
+        throw new \Exception("Datenbank-Verbindungsfehler: " . $e->getMessage());
     }
 
     foreach ($klassennamen as $klassenname) {
-        echo "Starte Kalender-Update für Klasse: " . $klassenname['klassenname'] . "\n";
-        kalenderupdater($klassenname['klassenname'], $pdo);
+        echo "Starte Update für: " . $klassenname['klassenname'] . "\n";
+        try {
+            kalenderupdater($klassenname['klassenname'], $pdo);
+        } catch (\Exception $e) {
+            echo "FEHLER bei {$klassenname['klassenname']}: " . $e->getMessage() . "\n";
+        }
     }
 }
+

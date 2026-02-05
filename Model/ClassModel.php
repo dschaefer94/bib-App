@@ -213,7 +213,7 @@ class ClassModel extends Database
 
   public function deleteClass($id): array
   {
-    if (!isset($_SESSION['benutzer_id']) || (new UserModel())->selectBenutzer($_SESSION['benutzer_id'])['ist_admin'] != 1) {
+    if (!isset($_SESSION['benutzer_id']) || (new UserModel())->selectUser($_SESSION['benutzer_id'])['ist_admin'] != 1) {
       throw new \Exception('Du Schlingel bist nicht als Admin eingeloggt!', 403);
     }
     if ((int)$id === 1) {

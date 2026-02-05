@@ -38,11 +38,9 @@ function parseIcsEvents($icsString): array
  */
 function icsDownloader(string $name, $pdo)
 {
-    // SQL-Injection verhindern
     if (!preg_match('/^[a-zA-Z0-9_]+$/', $name)) {
         throw new \RuntimeException("Ungültiger Klassenname");
     }
-    echo "ical-Link aus DB extrahieren...\n";
     try {
         $query = "SELECT ical_link FROM klassen WHERE klassenname = :name";
         $stmt = $pdo->prepare($query);
@@ -52,10 +50,7 @@ function icsDownloader(string $name, $pdo)
         echo "Fehler bei der Datenbankverbindung: " . $e->getMessage() . "\n";
         return "";
     }
-    echo "ICS-Datei herunterladen...\n";
     $download = file_get_contents($ical_link);
-    //manipulierte Testdateien, um gelöschte Termine zu simulieren
-    // $download = file_get_contents(__DIR__ . '/Testdateien/'.$name.'.ics');
     if ($download === false) {
         echo "Fehler: Kalender-URL '$ical_link' nicht erreichbar\n";
         return "";
