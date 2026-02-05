@@ -15,17 +15,39 @@ async function createUser(payload) {
 document.querySelector("#userForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  // Felder auslesen
   const email = document.querySelector("#email").value;
   const password = document.querySelector("#password").value;
+  const passwordConfirm = document.querySelector("#passwordConfirm").value; // NEU
   const name = document.querySelector("#name").value;
   const vorname = document.querySelector("#vorname").value;
   const klassenname = document.querySelector("#klasseSelect").value;
 
-  const payload = { email, passwort: password, name, vorname, klassenname };
   const registrierungsFeedback = document.querySelector("#registrierungsFeedback");
 
+  // --- VALIDIERUNG START ---
+  
+  // 1. Check: E-Mail Endung @bib.de
+  if (!email.toLowerCase().endsWith("@bib.de")) {
+    registrierungsFeedback.textContent = "Fehler: Nur E-Mail-Adressen mit @bib.de sind erlaubt.";
+    registrierungsFeedback.style.color = "red";
+    registrierungsFeedback.style.display = "block";
+    return; // Stoppt die Funktion hier
+  }
+
+  // 2. Check: Passwörter identisch
+  if (password !== passwordConfirm) {
+    registrierungsFeedback.textContent = "Fehler: Die Passwörter stimmen nicht überein.";
+    registrierungsFeedback.style.color = "red";
+    registrierungsFeedback.style.display = "block";
+    return; // Stoppt die Funktion hier
+  }
+
+  // --- VALIDIERUNG ENDE ---
+
+  const payload = { email, passwort: password, name, vorname, klassenname };
+
   try {
-    //erwartete Rückgabe: JSON mit benutzer_ID und email
     const response = await createUser(payload);
     const { benutzerAngelegt, grund } = response;
 
@@ -37,7 +59,7 @@ document.querySelector("#userForm").addEventListener("submit", async (e) => {
       registrierungsFeedback.textContent = "Benutzer erfolgreich angelegt!";
       registrierungsFeedback.style.color = "green";
       registrierungsFeedback.style.display = "block";
-      e.target.reset();
+      e.target.reset(); // Formular leeren
     }
   } catch (err) {
     console.error("Fehler beim Benutzer anlegen:", err);
@@ -47,33 +69,27 @@ document.querySelector("#userForm").addEventListener("submit", async (e) => {
   }
 });
 
-
-
-
 // GET: Klassenliste holen
 async function getKlassen() {
-  const res = await fetch(url + "/class"); // ClassController -> getClass()
-  return res.json(); // erwartet ein Array mit klassen_id, klassenname, ical_link (Json-Link(null)),
-  //muss noch alles außer klassenname herausschmeißen
+  const res = await fetch(url + "/class");
+  return res.json();
 }
 
-// Dropdown befüllen (nur Name)
+// Dropdown befüllen
 async function fillKlasseSelect() {
   const select = document.querySelector("#klasseSelect");
   try {
     let rows = await getKlassen();
 
-    // Minimal robust: in Array verwandeln, falls nötig
     if (!Array.isArray(rows)) {
       rows = Object.values(rows || {});
     }
 
-    // Platzhalter als echte Option
     select.innerHTML = '<option value="">Bitte wählen…</option>';
 
     rows.forEach(k => {
       const opt = document.createElement("option");
-      opt.textContent = k.klassenname; // Nur Name anzeigen
+      opt.textContent = k.klassenname;
       select.appendChild(opt);
     });
   } catch (err) {
@@ -84,13 +100,3 @@ async function fillKlasseSelect() {
 
 // Beim Laden ausführen
 document.addEventListener("DOMContentLoaded", fillKlasseSelect);
-
-
-
-
-
-
-
-
-
-
