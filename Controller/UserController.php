@@ -4,6 +4,7 @@ namespace SDP\Controller;
 
 use SDP\Model\UserModel;
 use SDP\Model\ClassModel;
+use Throwable;
 
 class UserController
 {
@@ -184,5 +185,14 @@ class UserController
         } else {
             echo json_encode(['success' => true, 'message' => 'Keine Änderungen vorgenommen.']);
         }
+    }
+    private function sendErrorResponse(Throwable $e): void
+    {
+        http_response_code($e->getMessage());
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'erfolg' => false,
+            'grund'  => $e->getMessage()
+        ], JSON_UNESCAPED_UNICODE);
     }
 }

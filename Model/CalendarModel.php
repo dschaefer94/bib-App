@@ -22,7 +22,7 @@ class CalendarModel extends Database
       $stmt = $pdo->query($query);
       return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     } catch (\PDOException $e) {
-      return [];
+      throw new \Exception("Stundenplan für Klasse {$klassenname} konnte nicht geladen werden.", 500);
     }
   }
   /**
@@ -39,7 +39,7 @@ class CalendarModel extends Database
       $stmt = $pdo->query($query);
       return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     } catch (\PDOException $e) {
-      return [];
+      throw new \Exception("Änderungen konnten nicht abgefragt werden.", 500);
     }
   }
   /**
@@ -58,7 +58,7 @@ class CalendarModel extends Database
       $stmt->execute();
       return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     } catch (\PDOException $e) {
-      return [];
+      throw new \Exception("Fehler beim Abrufen der gelesenen Termine.", 500);
     }
   }
 
@@ -78,9 +78,9 @@ class CalendarModel extends Database
       $stmt->bindParam(':benutzer_id', $benutzer_id);
       $stmt->bindParam(':termin_id', $termin_id);
       $stmt->execute();
+      return ['aenderungen_notiert' => true];
     } catch (\PDOException $e) {
-      return ['aenderungen_notiert' => false, 'grund' => $e->getMessage()];
+      throw new \Exception("Eintrag konnte nicht gespeichert werden: " . $e->getMessage(), 500);
     }
-    return ['aenderungen_notiert' => true];
   }
 }
