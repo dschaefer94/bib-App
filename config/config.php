@@ -20,12 +20,12 @@ return [
     'port'     => '3306',
     'dbname'   => 'pbd2h24asc_stundenplan_db',
     'user'     => 'pbd2h24asc_backendboi',
-    'password' => 'T3ll3Why!',
+    'password' => 'T3llM3Why!',
     'charset'  => 'utf8mb4'
   ]
 ];
   //localhost 
-  
+
 
     // private $dbName = "pbd2h24asc_stundenplan_db"; //Datenbankname
     // private $linkName = "localhost"; //Datenbank-Server
