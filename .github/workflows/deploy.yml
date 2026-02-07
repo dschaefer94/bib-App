@@ -24,21 +24,15 @@ jobs:
           find . -name "*.php" -print0 | xargs -0 -n1 php -l
 
  # JOB 2: Deployment
-  deploy-to-plesk:
-    needs: test-code
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🚚 Code auschecken
-        uses: actions/checkout@v4
-
-      - name: 🚀 Sync zu Plesk (Safe Mode)
+      - name: Sync zu Plesk
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: ./
-          protocol: ftp
+          protocol: ftps
           port: 21
-          # Wir erzwingen SEHR lange Wartezeiten für die langsame Firewall
+          # WICHTIG: Erhöhtes Timeout und State-File
           timeout: 120000
+          dangerous-clean-slate: false
