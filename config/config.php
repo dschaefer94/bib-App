@@ -16,7 +16,7 @@
 
 return [
   'db' => [
-    'host'     => 'mysql.pb.bib.de',
+    'host'     => 'localhost',
     'port'     => '3306',
     'dbname'   => 'pbd2h24asc_stundenplan_db',
     'user'     => 'pbd2h24asc_backendboi',
