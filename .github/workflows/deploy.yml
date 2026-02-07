@@ -37,7 +37,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ./
+          server-dir: ./bibapp.pbd2h24asc.web.bib.de/
           protocol: ftps
           port: 21
           # WICHTIG: Erhöhtes Timeout und State-File
