@@ -25,6 +25,7 @@ return [
   ]
 ];
   //localhost 
+  
 
     // private $dbName = "pbd2h24asc_stundenplan_db"; //Datenbankname
     // private $linkName = "localhost"; //Datenbank-Server
