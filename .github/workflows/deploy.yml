@@ -1,0 +1,48 @@
+name: CI/CD zu Plesk
+
+# 1. Trigger: Wann soll die Pipeline starten?
+on:
+  push:
+    branches: [ "main" ] # Startet, sobald du Code in den main-Branch pushst
+
+jobs:
+  # JOB 1: Testen
+  test-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code auschecken
+        uses: actions/checkout@v4
+
+      - name: PHP Setup
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3.30' # Passe dies an deine Plesk-PHP-Version an
+
+      - name: PHP Syntax Check (Lint)
+        run: |
+          # Prüft alle PHP-Dateien auf Syntaxfehler (z.B. fehlende Semikolons)
+          find . -name "*.php" -print0 | xargs -0 -n1 php -l
+
+  # JOB 2: Deployment (wird nur ausgeführt, wenn Job 1 erfolgreich war)
+  deploy-to-plesk:
+    needs: test-code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code auschecken
+        uses: actions/checkout@v4
+
+      - name: Dateien via FTP hochladen
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Pfad basierend auf deinem Screenshot:
+          server-dir: ./bibapp.pbd2h24asc.web.bib.de/
+          # Diese Dateien werden NICHT hochgeladen (spart Zeit und erhöht Sicherheit)
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            node_modules/**
+            .env

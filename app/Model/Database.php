@@ -11,7 +11,7 @@ abstract class Database
     // Wir verlangen die Config jetzt direkt im Konstruktor
     public function __construct()
     {
-        $path = __DIR__ . '/../config/config.php';
+        $path = __DIR__ . '/../../config/config.php';
 
         if (file_exists($path)) {
             // Wir löschen den internen Cache für diese Datei, um sicherzugehen

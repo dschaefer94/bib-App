@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Admin-Check Funktion
     async function checkAdminStatus() {
         try {
-            const response = await fetch("./restAPI.php/user", { credentials: 'include' });
+            const response = await fetch("./restapi.php/user", { credentials: 'include' });
             const data = await response.json();
 
             if (data && data.ist_admin == 1) {

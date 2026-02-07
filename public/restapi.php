@@ -6,7 +6,7 @@ spl_autoload_register(function ($className) {
         return;
     }
 
-    $fileName = __DIR__ . '/' . str_replace('\\', DIRECTORY_SEPARATOR, substr($className, 4)) . '.php';
+    $fileName = __DIR__ . '/../app/' . str_replace('\\', DIRECTORY_SEPARATOR, substr($className, 4)) . '.php';
 
     if (file_exists($fileName)) {
         include $fileName;

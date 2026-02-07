@@ -1,5 +1,5 @@
 // Basis-URL für API
-const url = "./restAPI.php";
+const url = "./restapi.php";
 
 // POST: neuen Benutzer anlegen
 async function createUser(payload) {
