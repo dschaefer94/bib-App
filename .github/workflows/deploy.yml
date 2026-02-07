@@ -35,13 +35,12 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          username: github-deploy
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ./bibapp.pbd2h24asc.web.bib.de/
-          # --- HIER SIND DIE ÄNDERUNGEN ---
-          security: ftps
+          # WICHTIG: Da github-deploy schon im richtigen Ordner startet:
+          server-dir: ./ 
+          protocol: ftps
           port: 21
-          # -------------------------------
           exclude: |
             **/.git*
             **/.git*/**
