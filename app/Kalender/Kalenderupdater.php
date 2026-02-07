@@ -38,7 +38,7 @@ function kalenderupdater(string $name, $pdo)
 function updateAlleKalendare()
 {
     try {
-        $config = require __DIR__ . '/../config/config.php';
+        $config = require __DIR__ . '/../../config/config.php';
         $db = $config['db'];
         $dsn = "mysql:host={$db['host']};dbname={$db['dbname']};charset={$db['charset']}";
         $pdo = new \PDO($dsn, $db['user'], $db['password'], [
