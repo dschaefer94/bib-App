@@ -23,7 +23,7 @@ jobs:
           # Prüft alle PHP-Dateien auf Syntaxfehler (z.B. fehlende Semikolons)
           find . -name "*.php" -print0 | xargs -0 -n1 php -l
 
-  # JOB 2: Deployment (wird nur ausgeführt, wenn Job 1 erfolgreich war)
+ # JOB 2: Deployment
   deploy-to-plesk:
     needs: test-code
     runs-on: ubuntu-latest
@@ -37,9 +37,11 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # Pfad basierend auf deinem Screenshot:
           server-dir: ./bibapp.pbd2h24asc.web.bib.de/
-          # Diese Dateien werden NICHT hochgeladen (spart Zeit und erhöht Sicherheit)
+          # --- HIER SIND DIE ÄNDERUNGEN ---
+          security: ftps
+          port: 21
+          # -------------------------------
           exclude: |
             **/.git*
             **/.git*/**
