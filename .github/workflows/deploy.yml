@@ -31,15 +31,7 @@ jobs:
       - name: 🚚 Code auschecken
         uses: actions/checkout@v4
 
-      - name: 🚀 Sync zu Plesk
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ./bibapp.pbd2h24asc.web.bib.de/
-          protocol: ftps
-          port: 21
-          # WICHTIG: Erhöhtes Timeout und State-File
-          timeout: 120000
-          dangerous-clean-slate: false
+      - name: 🚀 Sync zu Plesk via rsync (SFTP)
+        run: |
+          sudo apt-get update && sudo apt-get install -y sshpass rsync
+          sshpass -p "${{ secrets.FTP_PASSWORD }}" rsync -avz -e "ssh -o StrictHostKeyChecking=no -p 22" ./ ${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }}:/bibapp.pbd2h24asc/
