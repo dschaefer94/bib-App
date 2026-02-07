@@ -24,7 +24,14 @@ jobs:
           find . -name "*.php" -print0 | xargs -0 -n1 php -l
 
  # JOB 2: Deployment
-      - name: Sync zu Plesk
+  deploy-to-plesk:
+    needs: test-code
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Code auschecken
+        uses: actions/checkout@v4
+
+      - name: 🚀 Sync zu Plesk
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
