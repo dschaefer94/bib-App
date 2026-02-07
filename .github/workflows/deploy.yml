@@ -31,20 +31,17 @@ jobs:
       - name: Code auschecken
         uses: actions/checkout@v4
 
-      - name: Dateien via FTP hochladen
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: github-deploy
-          password: ${{ secrets.FTP_PASSWORD }}
-          # WICHTIG: Da github-deploy schon im richtigen Ordner startet:
-          server-dir: ./ 
-          protocol: ftps
-          port: 21
-          timeout: 60000
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/.github/**
-            node_modules/**
-            .env
+      - name: Dateien via LFTP hochladen
+        run: |
+          sudo apt-get update && sudo apt-get install -y lftp
+          lftp -e "
+          set ftp:ssl-allow yes; 
+          set ftp:ssl-force yes; 
+          set ssl:verify-certificate no; 
+          set ftp:passive-mode yes;
+          set net:timeout 10;
+          set net:max-retries 3;
+          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }}; 
+          mirror -R ./ ./ --exclude .git/ --exclude .github/ --exclude node_modules/ --verbose; 
+          quit
+          "
