@@ -1,0 +1,18 @@
+name: Code Quality Check
+
+on: [push, pull_request]
+
+jobs:
+  php-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Check PHP Syntax (Lint)
+        run: find . -name "*.php" -print0 | xargs -0 -n1 php -l
