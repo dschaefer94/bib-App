@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Registrieren</title>
+    <link rel="stylesheet" href="CSS/layout.css">
+</head>
+
+<body class="login-page">
+
+    <main class="login-form">
+        <div class="card">
+            <h1>Registrieren</h1>
+            <form id="userForm">
+                <div class="input-group">
+                    <label for="email">E-Mail-Adresse</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Passwort</label>
+                    <input type="password" id="password" name="password" autocomplete="new-password" required>
+                </div>
+                <div class="input-group">
+                    <label for="passwordConfirm">Passwort bestätigen</label>
+                    <input type="password" id="passwordConfirm" name="passwordConfirm" autocomplete="new-password"
+                        required>
+                </div>
+                <div class="input-group">
+                    <label for="vorname">Vorname</label>
+                    <input type="text" id="vorname" name="vorname" required>
+                </div>
+                <div class="input-group">
+                    <label for="name">Nachname</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="input-group">
+                    <label for="klasseSelect">Klasse</label>
+                    <select id="klasseSelect" name="klasseSelect" required>
+                        <option value="">Bitte wählen…</option>
+                    </select>
+                </div>
+                <div class="actions">
+                    <button type="submit" class="btn">Registrieren</button>
+                </div>
+            </form>
+            <div id="registrierungsFeedback"></div>
+            <div class="sub-links">
+                <a href="index.html">Bereits ein Konto? Anmelden</a>
+            </div>
+        </div>
+    </main>
+    <script src="js/registrieren.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Passwort vergessen</title>
+  <link rel="stylesheet" href="CSS/layout.css">
+</head>
+
+<body class="login-page">
+  <main class="login-form">
+    <div class="card">
+      <h1>Passwort zurücksetzen</h1>
+      
+      <!-- Schritt 1: Email-Verifizierung -->
+      <div id="emailStep">
+        <form id="emailForm">
+          <div class="input-group">
+            <label for="email">E-Mail-Adresse</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div id="emailError" class="error-message" style="display: none;"></div>
+          <div id="emailSuccess" class="success-message" style="display: none;"></div>
+          <div class="actions">
+            <button type="submit" class="btn">E-Mail prüfen</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Schritt 2: Passwort zurücksetzen (wird nach Email-Verifizierung angezeigt) -->
+      <div id="passwordStep" style="display: none;">
+        <form id="resetForm">
+          <input type="hidden" id="resetEmail" name="email">
+          <div class="input-group">
+            <label for="newPassword">Neues Passwort</label>
+            <input type="password" id="newPassword" name="passwort" required>
+          </div>
+          <div class="input-group">
+            <label for="confirmPassword">Passwort bestätigen</label>
+            <input type="password" id="confirmPassword" name="passwort_confirm" required>
+          </div>
+          <div id="resetError" class="error-message" style="display: none;"></div>
+          <div id="resetSuccess" class="success-message" style="display: none;"></div>
+          <div class="actions">
+            <button type="submit" class="btn">Passwort ändern</button>
+            <button type="button" class="btn" id="backBtn">Zurück</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="sub-links">
+        <a href="index.html">Zurück zum Login</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/passwortVergessen.js"></script>
+</body>
+
+</html>
